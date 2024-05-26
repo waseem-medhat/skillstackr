@@ -9,7 +9,8 @@ module.exports = {
   content: [
     "./js/**/*.js",
     "../lib/skillstackr_web.ex",
-    "../lib/skillstackr_web/**/*.*ex"
+    "../lib/skillstackr_web/**/*.*ex",
+    "node_modules/preline/dist/*.js"
   ],
   theme: {
     extend: {
@@ -19,6 +20,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("preline/plugin"),
     require("@tailwindcss/forms"),
     // Allows prefixing tailwind classes with LiveView classes to add rules
     // only when LiveView classes are applied, for example:
