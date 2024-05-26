@@ -12,6 +12,10 @@ module.exports = {
     "../lib/skillstackr_web/**/*.*ex",
     "node_modules/preline/dist/*.js"
   ],
+
+  // enable dark mode via class strategy
+  darkMode: 'class',
+
   theme: {
     extend: {
       colors: {
@@ -19,6 +23,7 @@ module.exports = {
       }
     },
   },
+
   plugins: [
     require("preline/plugin"),
     require("@tailwindcss/forms"),

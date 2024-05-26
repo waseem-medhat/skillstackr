@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" class="[scrollbar-gutter:stable]">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title suffix=" · Phoenix Framework">
-      <%= assigns[:page_title] || "Skillstackr" %>
-    </.live_title>
-    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
-    </script>
-  </head>
-  <body class="bg-white antialiased">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="csrf-token" content={get_csrf_token()} />
+  <.live_title suffix=" · Phoenix Framework">
+    <%= assigns[:page_title] || "Skillstackr" %>
+  </.live_title>
+  <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+  <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+  </script>
+</head>
+
+<body class="bg-slate-100 antialiased dark:bg-zinc-900 dark:text-white">
+  <main class="container mx-auto max-w-3xl mt-10 p-5">
+    <div class="w-full flex justify-end">
+      <.theme_switcher />
+    </div>
     <%= @inner_content %>
-  </body>
+  </main>
+</body>
+
 </html>
