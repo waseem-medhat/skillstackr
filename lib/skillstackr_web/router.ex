@@ -18,6 +18,7 @@ defmodule SkillstackrWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    resources "/profiles", ProfileController, except: [:index]
   end
 
   # Other scopes may use custom stacks.
