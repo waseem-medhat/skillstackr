@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :skillstackr, Skillstackr.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "pgadmin",
+  password: "pgadmin",
   hostname: "localhost",
   database: "skillstackr_dev",
   stacktrace: true,
