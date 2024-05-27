@@ -46,33 +46,8 @@ defmodule SkillstackrWeb.ProfileComponents do
   end
 
   def tech_badge(assigns) do
-    case badge_data(assigns.tech) do
-      %{bg_class: bg_class, name: name, slug: slug} ->
-        assigns =
-          assigns
-          |> assign(:bg_class, bg_class)
-          |> assign(:name, name)
-          |> assign(:slug, slug)
-
-        ~H"""
-        <span class={"inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-bold text-white #{@bg_class}"}>
-          <img src={"https://cdn.simpleicons.org/#{@slug}/FFF"} width="15" alt="elixir logo" />
-          <%= @name %>
-        </span>
-        """
-
-      _ ->
-        ~H""
-    end
-  end
-
-  defp badge_data(tech) do
-    %{
-      docker: %{bg_class: "bg-[#2496ED]", slug: "docker", name: "Docker"},
-      elixir: %{bg_class: "bg-[#4B275F]", slug: "elixir", name: "Elixir"},
-      phoenix: %{bg_class: "bg-[#FD4F00]", slug: "phoenixframework", name: "Phoenix"},
-      typescript: %{bg_class: "bg-[#3178C6]", slug: "typescript", name: "TypeScript"},
-    }
-    |> Map.get(tech)
+    ~H"""
+    <img src={"https://cdn.simpleicons.org/#{@tech}"} width="25" alt={"#{@tech}"} />
+    """
   end
 end
