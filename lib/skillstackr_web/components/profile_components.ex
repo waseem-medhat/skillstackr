@@ -68,9 +68,10 @@ defmodule SkillstackrWeb.ProfileComponents do
 
   defp badge_data(tech) do
     %{
+      docker: %{bg_class: "bg-[#2496ED]", slug: "docker", name: "Docker"},
       elixir: %{bg_class: "bg-[#4B275F]", slug: "elixir", name: "Elixir"},
       phoenix: %{bg_class: "bg-[#FD4F00]", slug: "phoenixframework", name: "Phoenix"},
-      typescript: %{bg_class: "bg-[#3178C6]", slug: "typescript", name: "TypeScript"}
+      typescript: %{bg_class: "bg-[#3178C6]", slug: "typescript", name: "TypeScript"},
     }
     |> Map.get(tech)
   end
