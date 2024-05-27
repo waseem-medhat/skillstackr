@@ -46,28 +46,32 @@ defmodule SkillstackrWeb.ProfileComponents do
   end
 
   def tech_badge(assigns) do
-    %{bg_class: bg_class, name: name, slug: slug} = tech_data(assigns.tech)
+    case badge_data(assigns.tech) do
+      %{bg_class: bg_class, name: name, slug: slug} ->
+        assigns =
+          assigns
+          |> assign(:bg_class, bg_class)
+          |> assign(:name, name)
+          |> assign(:slug, slug)
 
-    assigns =
-      assigns
-      |> assign(:bg_class, bg_class)
-      |> assign(:name, name)
-      |> assign(:slug, slug)
+        ~H"""
+        <span class={"inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-bold text-white #{@bg_class}"}>
+          <img src={"https://cdn.simpleicons.org/#{@slug}/FFF"} width="15" alt="elixir logo" />
+          <%= @name %>
+        </span>
+        """
 
-    ~H"""
-    <span class={"inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-bold text-white #{@bg_class}"}>
-      <img src={"https://cdn.simpleicons.org/#{@slug}/FFF"} width="15" alt="elixir logo" />
-      <%= @name %>
-    </span>
-    """
+      _ ->
+        ~H""
+    end
   end
 
-  defp tech_data(:elixir),
-    do: %{bg_class: "bg-[#4B275F]", slug: "elixir", name: "Elixir"}
-
-  defp tech_data(:phoenix),
-    do: %{bg_class: "bg-[#FD4F00]", slug: "phoenixframework", name: "Phoenix"}
-
-  defp tech_data(:typescript),
-    do: %{bg_class: "bg-[#3178C6]", slug: "typescript", name: "TypeScript"}
+  defp badge_data(tech) do
+    %{
+      elixir: %{bg_class: "bg-[#4B275F]", slug: "elixir", name: "Elixir"},
+      phoenix: %{bg_class: "bg-[#FD4F00]", slug: "phoenixframework", name: "Phoenix"},
+      typescript: %{bg_class: "bg-[#3178C6]", slug: "typescript", name: "TypeScript"}
+    }
+    |> Map.get(tech)
+  end
 end
