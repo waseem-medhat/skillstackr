@@ -86,6 +86,7 @@ defmodule SkillstackrWeb do
       # Core UI components and translation
       import SkillstackrWeb.CoreComponents
       import SkillstackrWeb.Gettext
+      import SkillstackrWeb.ProfileComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
