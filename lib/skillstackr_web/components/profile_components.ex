@@ -47,6 +47,7 @@ defmodule SkillstackrWeb.ProfileComponents do
 
   def tech_badge(assigns) do
     assigns = assign(assigns, :size, Map.get(assigns, :size, 25))
+
     ~H"""
     <img src={"https://cdn.simpleicons.org/#{@tech}"} width={@size} alt={"#{@tech}"} />
     """
@@ -79,6 +80,122 @@ defmodule SkillstackrWeb.ProfileComponents do
         <a class="text-blue-600 hover:underline hover:decoration-blue-600" href="#">
           Website
         </a>
+      </div>
+    </div>
+    """
+  end
+
+  def job_accordion(assigns) do
+    ~H"""
+    <div class="hs-accordion-group">
+      <div
+        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
+        id="hs-bordered-heading-two"
+      >
+        <button
+          class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+          aria-controls="hs-basic-bordered-collapse-two"
+        >
+          <svg
+            class="hs-accordion-active:hidden block size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+            <path d="M12 5v14"></path>
+          </svg>
+          <svg
+            class="hs-accordion-active:block hidden size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+          </svg>
+          Accordion #2
+        </button>
+        <div
+          id="hs-basic-bordered-collapse-two"
+          class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+          aria-labelledby="hs-bordered-heading-two"
+        >
+          <div class="pb-4 px-5">
+            <p class="text-gray-800 dark:text-neutral-200">
+              <em>This is the second item's accordion body.</em>
+              It is hidden by default, until the collapse plugin adds
+              the appropriate classes that we use to style each element. These classes control the overall appearance, as
+              well as the showing and hiding via CSS transitions.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
+        id="hs-bordered-heading-three"
+      >
+        <button
+          class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+          aria-controls="hs-basic-bordered-collapse-three"
+        >
+          <svg
+            class="hs-accordion-active:hidden block size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+            <path d="M12 5v14"></path>
+          </svg>
+          <svg
+            class="hs-accordion-active:block hidden size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+          </svg>
+          Accordion #3
+        </button>
+        <div
+          id="hs-basic-bordered-collapse-three"
+          class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+          aria-labelledby="hs-bordered-heading-three"
+        >
+          <div class="pb-4 px-5">
+            <p class="text-gray-800 dark:text-neutral-200">
+              <em>This is the first item's accordion body.</em>
+              It is hidden by default, until the collapse plugin adds
+              the appropriate classes that we use to style each element. These classes control the overall appearance, as
+              well as the showing and hiding via CSS transitions.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
     """
