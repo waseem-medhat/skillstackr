@@ -24,7 +24,7 @@
   </section>
 </div>
 
-<section id="professional-summary" class="my-5">
+<section id="professional-summary" class="mb-5">
   <h2 class="text-xl font-bold mb-3">Full-Stack Developer</h2>
   <p id="summary-text">
     Highly motivated Full-Stack Developer with a strong foundation in front-end and back-end technologies. Proven
@@ -34,33 +34,33 @@
   </p>
 </section>
 
-<section>
-  <h2 class="text-xl font-bold mb-3">Skills</h2>
-  <div class="space-y-3">
-    <div class="flex items-center gap-2">
-      <span class="w-20 font-light">Front-end</span>
-      <%= for tech <- [:typescript, :react, :svelte, :htmx] do %>
-        <.tech_badge tech={tech} />
-      <% end %>
-    </div>
-    <div class="flex items-center gap-2">
-      <span class="w-20 font-light">Back-end</span>
-      <%= for tech <- [:elixir, :phoenixframework, :go] do %>
-        <.tech_badge tech={tech} />
-      <% end %>
-    </div>
-    <div class="flex items-center gap-2">
-      <span class="w-20 font-light">DevOps</span>
-      <%= for tech <- [:ubuntu, :docker] do %>
-        <.tech_badge tech={tech} />
-      <% end %>
-    </div>
-    <div class="flex items-center gap-2">
-      <span class="w-20 font-light">Dev Tools</span>
-      <%= for tech <- [:visualstudiocode, :neovim, :tmux] do %>
-        <.tech_badge tech={tech} />
-      <% end %>
-    </div>
+<section id="skills" class="grid grid-cols-2 gap-3">
+  <div class="flex items-center gap-2">
+    <span class="w-20 font-light">Front-end</span>
+    <%= for tech <- [:typescript, :react, :svelte, :htmx] do %>
+      <.tech_badge tech={tech} />
+    <% end %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="w-20 font-light">Back-end</span>
+    <%= for tech <- [:elixir, :phoenixframework, :go] do %>
+      <.tech_badge tech={tech} />
+    <% end %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="w-20 font-light">DevOps</span>
+    <%= for tech <- [:ubuntu, :docker] do %>
+      <.tech_badge tech={tech} />
+    <% end %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="w-20 font-light">Dev Tools</span>
+    <%= for tech <- [:visualstudiocode, :neovim, :tmux] do %>
+      <.tech_badge tech={tech} />
+    <% end %>
   </div>
 </section>
 
