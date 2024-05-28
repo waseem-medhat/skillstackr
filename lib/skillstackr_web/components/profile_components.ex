@@ -46,8 +46,41 @@ defmodule SkillstackrWeb.ProfileComponents do
   end
 
   def tech_badge(assigns) do
+    assigns = assign(assigns, :size, Map.get(assigns, :size, 25))
     ~H"""
-    <img src={"https://cdn.simpleicons.org/#{@tech}"} width="25" alt={"#{@tech}"} />
+    <img src={"https://cdn.simpleicons.org/#{@tech}"} width={@size} alt={"#{@tech}"} />
+    """
+  end
+
+  def project_card(assigns) do
+    ~H"""
+    <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+      <img
+        class="w-full h-auto rounded-t-xl"
+        src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80"
+        alt="Image Description"
+      />
+      <div class="p-4 md:p-5">
+        <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+          Card title
+        </h3>
+        <div class="flex gap-2 mt-1 mb-2">
+          <.tech_badge tech={:typescript} size={18} />
+          <.tech_badge tech={:svelte} size={18} />
+          <.tech_badge tech={:supabase} size={18} />
+        </div>
+        <p class="mt-1 text-gray-500 dark:text-neutral-400">
+          Some quick example text to build on the card title and make up the bulk of the card's content.
+        </p>
+        <a class="text-blue-600 hover:underline hover:decoration-blue-600" href="#">
+          Code
+        </a>
+        <span class="text-gray-300 mx-1">|</span>
+        <a class="text-blue-600 hover:underline hover:decoration-blue-600" href="#">
+          Website
+        </a>
+      </div>
+    </div>
     """
   end
 end
