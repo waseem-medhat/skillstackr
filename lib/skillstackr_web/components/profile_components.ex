@@ -201,36 +201,44 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  def profile_link(%{site: :github} = assigns) do
+  def profile_link(%{site: :github, url: url} = assigns) do
+    slug = url
+      |> String.split("/")
+      |> List.last()
+
+    assigns = assign(assigns, :slug, slug)
+
     ~H"""
-      <a href={@url} class="flex items-center gap-2" target="_blank">
-        <.github_icon size={20} /> kekw-kekw
-      </a>
+    <a href={@url} class="flex items-center gap-2" target="_blank">
+      <.github_icon size={20} /> <%= @slug %>
+    </a>
     """
   end
 
-  def profile_link(%{site: :linkedin} = assigns) do
+  def profile_link(%{site: :linkedin, url: url} = assigns) do
+    slug = String.trim_leading(url, "https://linkedin.com/")
+    assigns = assign(assigns, :slug, slug)
+
     ~H"""
-      <a href={@url} class="flex items-center gap-2" target="_blank">
-        <.linkedin_icon size={20} /> kekw-kekw
-      </a>
+    <a href={@url} class="flex items-center gap-2" target="_blank">
+      <.linkedin_icon size={20} /> <%= @slug %>
+    </a>
     """
   end
 
   def profile_link(%{site: :website} = assigns) do
     ~H"""
-      <a href={@url} class="flex items-center gap-2" target="_blank">
-        <.website_icon size={20} /> kekw-kekw
-      </a>
+    <a href={@url} class="flex items-center gap-2" target="_blank">
+      <.website_icon size={20} /> <%= @url %>
+    </a>
     """
   end
 
   def profile_link(%{site: :resume} = assigns) do
     ~H"""
-      <a href={@url} class="flex items-center gap-2" target="_blank">
-        <.pdf_icon size={20} /> kekw-kekw
-      </a>
+    <a href={@url} class="flex items-center gap-2" target="_blank">
+      <.pdf_icon size={20} /> PDF resume
+    </a>
     """
   end
-
 end
