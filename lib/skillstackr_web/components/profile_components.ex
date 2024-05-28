@@ -23,7 +23,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  def site_icon(assigns) do
+  def website_icon(assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 256 256">
       <path
@@ -200,4 +200,37 @@ defmodule SkillstackrWeb.ProfileComponents do
     </div>
     """
   end
+
+  def profile_link(%{site: :github} = assigns) do
+    ~H"""
+      <a href={@url} class="flex items-center gap-2" target="_blank">
+        <.github_icon size={20} /> kekw-kekw
+      </a>
+    """
+  end
+
+  def profile_link(%{site: :linkedin} = assigns) do
+    ~H"""
+      <a href={@url} class="flex items-center gap-2" target="_blank">
+        <.linkedin_icon size={20} /> kekw-kekw
+      </a>
+    """
+  end
+
+  def profile_link(%{site: :website} = assigns) do
+    ~H"""
+      <a href={@url} class="flex items-center gap-2" target="_blank">
+        <.website_icon size={20} /> kekw-kekw
+      </a>
+    """
+  end
+
+  def profile_link(%{site: :resume} = assigns) do
+    ~H"""
+      <a href={@url} class="flex items-center gap-2" target="_blank">
+        <.pdf_icon size={20} /> kekw-kekw
+      </a>
+    """
+  end
+
 end

@@ -1,6 +1,10 @@
 <div id="profile-header" class="grid grid-cols-3">
   <section class="flex items-center gap-3 col-span-2">
-    <img class="inline-block size-[62px] rounded-full" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Image Description">
+    <img
+      class="inline-block size-[62px] rounded-full"
+      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+      alt="Image Description"
+    />
 
     <h1 id="name-heading" class="text-3xl">
       <span class="font-bold">Kek W.</span>
@@ -11,26 +15,12 @@
   </section>
 
   <section id="profile-links" class="my-5">
-    <a href="https://github.com/waseem-medhat" class="flex items-center gap-2" target="_blank">
-      <.github_icon size={20} /> kekw-kekw
-    </a>
-    <a
-      href="https://linkedin.com/in/waseem-medhat"
-      class="flex items-center gap-2"
-      target="_blank"
-    >
-      <.linkedin_icon size={20} /> /in/kekw
-    </a>
-    <a href="https://wipdev.netlify.app" class="flex items-center gap-2" target="_blank">
-      <.site_icon size={20} /> wipdev.netlify.app
-    </a>
-    <a
-      href="https://linkedin.com/in/waseem-medhat"
-      class="flex items-center gap-2"
-      target="_blank"
-    >
-      <.pdf_icon size={20} /> PDF resume
-    </a>
+    <%= for %{:site=> site, :url => url} <- [ %{site: :github, url: "https://github.com/waseem-medhat" }, %{site:
+        :linkedin, url: "https://linkedin.com/in/waseem-medhat" }, %{site: :website,
+        url: "https://linkedin.com/in/waseem-medhat" }, %{site: :resume, url: "https://linkedin.com/in/waseem-medhat" },
+        ] do %>
+      <.profile_link site={site} url={url} />
+    <% end %>
   </section>
 </div>
 
@@ -49,27 +39,27 @@
   <div class="space-y-3">
     <div class="flex items-center gap-2">
       <span class="w-20 font-light">Front-end</span>
-      <.tech_badge tech={:typescript} />
-      <.tech_badge tech={:react} />
-      <.tech_badge tech={:svelte} />
-      <.tech_badge tech={:htmx} />
+      <%= for tech <- [:typescript, :react, :svelte, :htmx] do %>
+        <.tech_badge tech={tech} />
+      <% end %>
     </div>
     <div class="flex items-center gap-2">
       <span class="w-20 font-light">Back-end</span>
-      <.tech_badge tech={:elixir} />
-      <.tech_badge tech={:phoenixframework} />
-      <.tech_badge tech={:go} />
+      <%= for tech <- [:elixir, :phoenixframework, :go] do %>
+        <.tech_badge tech={tech} />
+      <% end %>
     </div>
     <div class="flex items-center gap-2">
       <span class="w-20 font-light">DevOps</span>
-      <.tech_badge tech={:ubuntu} />
-      <.tech_badge tech={:docker} />
+      <%= for tech <- [:ubuntu, :docker] do %>
+        <.tech_badge tech={tech} />
+      <% end %>
     </div>
     <div class="flex items-center gap-2">
       <span class="w-20 font-light">Dev Tools</span>
-      <.tech_badge tech={:visualstudiocode} />
-      <.tech_badge tech={:neovim} />
-      <.tech_badge tech={:tmux} />
+      <%= for tech <- [:visualstudiocode, :neovim, :tmux] do %>
+        <.tech_badge tech={tech} />
+      <% end %>
     </div>
   </div>
 </section>
