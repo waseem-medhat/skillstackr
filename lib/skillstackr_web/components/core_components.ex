@@ -682,7 +682,7 @@ defmodule SkillstackrWeb.CoreComponents do
       data-hs-theme-click-value="dark"
     >
       <svg
-        class="flex-shrink-0 size-4"
+        class="flex-shrink-0 size-5"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
@@ -702,7 +702,7 @@ defmodule SkillstackrWeb.CoreComponents do
       data-hs-theme-click-value="light"
     >
       <svg
-        class="flex-shrink-0 size-4"
+        class="flex-shrink-0 size-5"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
