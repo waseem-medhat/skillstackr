@@ -5,7 +5,7 @@ defmodule SkillstackrWeb.ProfileController do
     links = [
       %{id: 1, site: :github, url: "https://github.com/waseem-medhat"},
       %{id: 2, site: :linkedin, url: "https://linkedin.com/in/waseem-medhat"},
-      %{id: 3, site: :website, url: "https://linkedin.com/in/waseem-medhat"},
+      %{id: 3, site: :website, url: "https://wipdev.netlify.app"},
       %{id: 4, site: :resume, url: "https://linkedin.com/in/waseem-medhat"}
     ]
 
@@ -78,13 +78,14 @@ defmodule SkillstackrWeb.ProfileController do
 
     %{
       name: "John Doe",
+      photo_url: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
       summary: summary,
       id: id,
       links: links,
       skills: skills,
       projects: projects,
       experience: experience,
-      total_exp_years: total_exp_years,
+      total_exp_years: total_exp_years
     }
   end
 

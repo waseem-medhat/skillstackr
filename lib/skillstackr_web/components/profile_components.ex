@@ -1,7 +1,7 @@
 defmodule SkillstackrWeb.ProfileComponents do
   use Phoenix.Component
 
-  def github_icon(assigns) do
+  defp link_icon(%{site: :github} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 24 24">
       <path
@@ -12,7 +12,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  def linkedin_icon(assigns) do
+  defp link_icon(%{site: :linkedin} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 24 24">
       <path
@@ -23,7 +23,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  def website_icon(assigns) do
+  defp link_icon(%{site: :website} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 256 256">
       <path
@@ -34,7 +34,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  def pdf_icon(assigns) do
+  defp link_icon(%{site: :resume} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 1024 1024">
       <path
@@ -155,44 +155,32 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  def profile_link(%{site: :github, url: url} = assigns) do
+  def profile_link(%{site: site, url: url} = assigns) do
     slug =
-      url
-      |> String.split("/")
-      |> List.last()
+      case site do
+        :github ->
+          url |> String.split("/") |> List.last()
+
+        :linkedin ->
+          url |> String.trim_leading("https://linkedin.com/")
+
+        :website ->
+          url
+
+        :resume ->
+          "PDF Resume"
+      end
 
     assigns = assign(assigns, :slug, slug)
 
     ~H"""
-    <a href={@url} class="flex items-center gap-2" target="_blank">
-      <.github_icon size={20} /> <%= @slug %>
-    </a>
-    """
-  end
-
-  def profile_link(%{site: :linkedin, url: url} = assigns) do
-    slug = String.trim_leading(url, "https://linkedin.com/")
-    assigns = assign(assigns, :slug, slug)
-
-    ~H"""
-    <a href={@url} class="flex items-center gap-2" target="_blank">
-      <.linkedin_icon size={20} /> <%= @slug %>
-    </a>
-    """
-  end
-
-  def profile_link(%{site: :website} = assigns) do
-    ~H"""
-    <a href={@url} class="flex items-center gap-2" target="_blank">
-      <.website_icon size={20} /> <%= @url %>
-    </a>
-    """
-  end
-
-  def profile_link(%{site: :resume} = assigns) do
-    ~H"""
-    <a href={@url} class="flex items-center gap-2" target="_blank">
-      <.pdf_icon size={20} /> PDF resume
+    <a
+      href={@url}
+      class="flex 6tems-center gap-2 opacity-60 hover:opacity-100 transition-all duration-200"
+      target="_blank"
+      title={@slug}
+    >
+      <.link_icon site={@site} size={20} />
     </a>
     """
   end

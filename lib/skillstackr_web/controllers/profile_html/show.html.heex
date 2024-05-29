@@ -1,11 +1,11 @@
-<div id="profile-header" class="grid grid-cols-3">
-  <section class="flex items-center gap-3 col-span-2">
-    <img
-      class="inline-block size-[62px] rounded-full"
-      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-      alt="Image Description"
-    />
+<div id="profile-header" class="grid grid-cols-[62px_1fr] items-center gap-3 mt-5 mb-8">
+  <img
+    class="inline-block size-[62px] rounded-full"
+    src={@user.photo_url}
+    alt="Image Description"
+  />
 
+  <div class="space-y-0.5">
     <h1 id="name-heading" class="text-3xl">
       <span class="font-bold">
         <%= @user.name %>
@@ -14,18 +14,20 @@
         <%= @user.id %>
       </small>
     </h1>
-  </section>
 
-  <section id="profile-links" class="my-5">
-    <%= for %{:site=> site, :url => url} <- @user.links do %>
-      <.profile_link site={site} url={url} />
-    <% end %>
-  </section>
+    <div id="profile-links" class="flex gap-1">
+      <%= for %{:site=> site, :url => url} <- @user.links do %>
+        <.profile_link site={site} url={url} />
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <section id="professional-summary" class="mb-5">
   <h2 class="text-xl font-bold mb-3">Full-Stack Developer</h2>
-  <p id="summary-text"><%= @user.summary %></p>
+  <p id="summary-text">
+    <%= @user.summary %>
+  </p>
 </section>
 
 <section id="skills" class="grid grid-cols-2 gap-3">
@@ -70,7 +72,9 @@
 <section id="professional-experience" class="my-5">
   <div class="flex items-center justify-between">
     <h2 class="text-xl font-bold mb-3">Professional Experience</h2>
-    <p><%= @user.total_exp_years %> Years</p>
+    <p>
+      <%= @user.total_exp_years %> Years
+    </p>
   </div>
   <.job_accordion experience={@user.experience} />
 </section>
