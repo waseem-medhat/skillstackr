@@ -25,39 +25,34 @@
 
 <section id="professional-summary" class="mb-5">
   <h2 class="text-xl font-bold mb-3">Full-Stack Developer</h2>
-  <p id="summary-text">
-    Highly motivated Full-Stack Developer with a strong foundation in front-end and back-end technologies. Proven
-    ability
-    to design, develop, and deploy user-friendly web applications. Eager to learn and contribute to a fast-paced
-    development environment.
-  </p>
+  <p id="summary-text"><%= @user.summary %></p>
 </section>
 
 <section id="skills" class="grid grid-cols-2 gap-3">
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">Front-end</span>
-    <%= for tech <- [:typescript, :react, :svelte, :htmx] do %>
+    <%= for tech <- @user.skills.frontend do %>
       <.tech_badge tech={tech} />
     <% end %>
   </div>
 
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">Back-end</span>
-    <%= for tech <- [:elixir, :phoenixframework, :go] do %>
+    <%= for tech <- @user.skills.backend do %>
       <.tech_badge tech={tech} />
     <% end %>
   </div>
 
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">DevOps</span>
-    <%= for tech <- [:ubuntu, :docker] do %>
+    <%= for tech <- @user.skills.devops do %>
       <.tech_badge tech={tech} />
     <% end %>
   </div>
 
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">Dev Tools</span>
-    <%= for tech <- [:visualstudiocode, :neovim, :tmux] do %>
+    <%= for tech <- @user.skills.dev_tools do %>
       <.tech_badge tech={tech} />
     <% end %>
   </div>
@@ -66,15 +61,16 @@
 <section id="professional-experience" class="my-5">
   <h2 class="text-xl font-bold mb-3">Projects</h2>
   <div class="grid grid-cols-2 gap-2">
-    <.project_card />
-    <.project_card />
+    <%= for project <- @user.projects do %>
+      <.project_card project={project} />
+    <% end %>
   </div>
 </section>
 
 <section id="professional-experience" class="my-5">
   <div class="flex items-center justify-between">
     <h2 class="text-xl font-bold mb-3">Professional Experience</h2>
-    <p>4 years</p>
+    <p><%= @user.total_exp_years %> Years</p>
   </div>
-  <.job_accordion />
+  <.job_accordion experience={@user.experience} />
 </section>

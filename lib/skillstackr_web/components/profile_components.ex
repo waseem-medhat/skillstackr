@@ -56,28 +56,32 @@ defmodule SkillstackrWeb.ProfileComponents do
   def project_card(assigns) do
     ~H"""
     <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
-      <img
-        class="w-full h-auto rounded-t-xl"
-        src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80"
-        alt="Image Description"
-      />
+      <img class="w-full h-auto rounded-t-xl" src={@project.cover_url} alt={@project.title} />
       <div class="p-4 md:p-5">
         <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-          Card title
+          <%= @project.title %>
         </h3>
         <div class="flex gap-2 mt-1 mb-2">
-          <.tech_badge tech={:typescript} size={18} />
-          <.tech_badge tech={:svelte} size={18} />
-          <.tech_badge tech={:supabase} size={18} />
+          <%= for tech <- @project.technologies do %>
+            <.tech_badge tech={tech} size={18} />
+          <% end %>
         </div>
         <p class="mt-1 text-gray-500 dark:text-neutral-400">
-          Some quick example text to build on the card title and make up the bulk of the card's content.
+          <%= @project.description %>
         </p>
-        <a class="text-blue-600 hover:underline hover:decoration-blue-600" href="#">
+        <a
+          class="text-blue-600 hover:underline hover:decoration-blue-600"
+          href={@project.code_url}
+          target="_blank"
+        >
           Code
         </a>
-        <span class="text-gray-300 mx-1">|</span>
-        <a class="text-blue-600 hover:underline hover:decoration-blue-600" href="#">
+        <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
+        <a
+          class="text-blue-600 hover:underline hover:decoration-blue-600"
+          href={@project.code_url}
+          target="_blank"
+        >
           Website
         </a>
       </div>
@@ -88,121 +92,72 @@ defmodule SkillstackrWeb.ProfileComponents do
   def job_accordion(assigns) do
     ~H"""
     <div class="hs-accordion-group">
-      <div
-        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
-        id="hs-bordered-heading-two"
-      >
-        <button
-          class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
-          aria-controls="hs-basic-bordered-collapse-two"
-        >
-          <svg
-            class="hs-accordion-active:hidden block size-3.5"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M5 12h14"></path>
-            <path d="M12 5v14"></path>
-          </svg>
-          <svg
-            class="hs-accordion-active:block hidden size-3.5"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M5 12h14"></path>
-          </svg>
-          Accordion #2
-        </button>
+      <%= for job <- @experience do %>
         <div
-          id="hs-basic-bordered-collapse-two"
-          class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
-          aria-labelledby="hs-bordered-heading-two"
+          class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
+          id={"hs-bordered-heading-#{job.id}"}
         >
-          <div class="pb-4 px-5">
-            <p class="text-gray-800 dark:text-neutral-200">
-              <em>This is the second item's accordion body.</em>
-              It is hidden by default, until the collapse plugin adds
-              the appropriate classes that we use to style each element. These classes control the overall appearance, as
-              well as the showing and hiding via CSS transitions.
-            </p>
-          </div>
-        </div>
-      </div>
+          <button
+            class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+            aria-controls={"hs-basic-bordered-collapse-#{job.id}"}
+          >
+            <div class="flex items-center gap-2">
+              <svg
+                class="hs-accordion-active:hidden block size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
 
-      <div
-        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
-        id="hs-bordered-heading-three"
-      >
-        <button
-          class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
-          aria-controls="hs-basic-bordered-collapse-three"
-        >
-          <svg
-            class="hs-accordion-active:hidden block size-3.5"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M5 12h14"></path>
-            <path d="M12 5v14"></path>
-          </svg>
-          <svg
-            class="hs-accordion-active:block hidden size-3.5"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M5 12h14"></path>
-          </svg>
-          Accordion #3
-        </button>
-        <div
-          id="hs-basic-bordered-collapse-three"
-          class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
-          aria-labelledby="hs-bordered-heading-three"
-        >
-          <div class="pb-4 px-5">
-            <p class="text-gray-800 dark:text-neutral-200">
-              <em>This is the first item's accordion body.</em>
-              It is hidden by default, until the collapse plugin adds
-              the appropriate classes that we use to style each element. These classes control the overall appearance, as
-              well as the showing and hiding via CSS transitions.
+                <path d="M12 5v14"></path>
+              </svg>
+              <svg
+                class="hs-accordion-active:block hidden size-3.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
+              </svg>
+              <h3><%= job.title %></h3>
+            </div>
+            <p class="text-sm font-medium text-right">
+              <%= job.years %> years @ <%= job.company %>
             </p>
+          </button>
+          <div
+            id={"hs-basic-bordered-collapse-#{job.id}"}
+            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby={"hs-bordered-heading-#{job.id}"}
+          >
+            <div class="pb-4 px-5">
+              <p class="text-gray-800 dark:text-neutral-200">
+                <%= job.description %>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
     """
   end
 
   def profile_link(%{site: :github, url: url} = assigns) do
-    slug = url
+    slug =
+      url
       |> String.split("/")
       |> List.last()
 
