@@ -1,1 +1,115 @@
-New profile
+<h1 class="text-2xl font-bold mb-8">New profile</h1>
+<form class="space-y-8">
+  <section class="space-y-5">
+    <h2 class="text-xl">Basic Info</h2>
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <label for="full-name" class="block text-sm font-medium mb-2 dark:text-white">
+          Full Name
+        </label>
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          placeholder="you@site.com"
+        />
+      </div>
+
+      <div>
+        <label for="summary" class="block text-sm font-medium mb-2 dark:text-white">
+          Professional Summary
+        </label>
+        <textarea
+          id="summary"
+          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          rows="3"
+          placeholder="Describe yourself in 140 characters or less. Make it count!"
+        ></textarea>
+      </div>
+    </div>
+  </section>
+
+  <hr class="dark:border-gray-800" />
+
+  <section class="space-y-5">
+    <h2 class="text-xl">Profile Links</h2>
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <label
+          for="github"
+          class="flex items-center gap-1 text-sm font-medium mb-2 dark:text-white"
+        >
+          <.link_icon site={:github} size={18} /> GitHub
+        </label>
+        <input
+          type="text"
+          id="github"
+          name="github"
+          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          placeholder="https://github.com/your-username"
+        />
+      </div>
+
+      <div>
+        <label
+          for="linkedin"
+          class="flex items-center gap-1 text-sm font-medium mb-2 dark:text-white"
+        >
+          <.link_icon site={:linkedin} size={18} /> LinkedIn
+        </label>
+        <input
+          type="text"
+          id="linkedin"
+          name="linkedin"
+          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          placeholder="https://www.linkedin.com/in/your-username"
+        />
+      </div>
+
+      <div>
+        <label
+          for="website"
+          class="flex items-center gap-1 text-sm font-medium mb-2 dark:text-white"
+        >
+          <.link_icon site={:website} size={18} /> Personal Website/Blog
+        </label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </div>
+
+      <div>
+        <label
+          for="website"
+          class="flex items-center gap-1 text-sm font-medium mb-2 dark:text-white"
+        >
+          <.link_icon site={:resume} size={18} /> PDF Resume
+        </label>
+        <input
+          type="file"
+          name="resume"
+          id="resume"
+          class="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400"
+        />
+      </div>
+    </div>
+  </section>
+
+  <hr class="dark:border-gray-800" />
+</form>

@@ -1,7 +1,7 @@
 defmodule SkillstackrWeb.ProfileComponents do
   use Phoenix.Component
 
-  defp link_icon(%{site: :github} = assigns) do
+  def link_icon(%{site: :github} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 24 24">
       <path
@@ -12,7 +12,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  defp link_icon(%{site: :linkedin} = assigns) do
+  def link_icon(%{site: :linkedin} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 24 24">
       <path
@@ -23,7 +23,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  defp link_icon(%{site: :website} = assigns) do
+  def link_icon(%{site: :website} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 256 256">
       <path
@@ -34,7 +34,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
-  defp link_icon(%{site: :resume} = assigns) do
+  def link_icon(%{site: :resume} = assigns) do
     ~H"""
     <svg xmlns="http://www.w3.org/2000/svg" width={@size} height={@size} viewBox="0 0 1024 1024">
       <path
