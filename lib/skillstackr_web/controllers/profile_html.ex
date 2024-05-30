@@ -69,9 +69,7 @@ defmodule SkillstackrWeb.ProfileHTML do
           <%= @project.title %>
         </h3>
         <div class="flex gap-2 mt-1 mb-2">
-          <%= for tech <- @project.technologies do %>
-            <.tech_badge tech={tech} size={18} />
-          <% end %>
+          <.tech_badge :for={tech <- @project.technologies} tech={tech} size={18} />
         </div>
         <p class="mt-1 text-gray-500 dark:text-neutral-400">
           <%= @project.description %>
@@ -99,65 +97,64 @@ defmodule SkillstackrWeb.ProfileHTML do
   def job_accordion(assigns) do
     ~H"""
     <div class="hs-accordion-group">
-      <%= for job <- @experience do %>
-        <div
-          class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
-          id={"hs-bordered-heading-#{job.id}"}
+      <div
+        :for={job <- @experience}
+        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
+        id={"hs-bordered-heading-#{job.id}"}
+      >
+        <button
+          class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+          aria-controls={"hs-basic-bordered-collapse-#{job.id}"}
         >
-          <button
-            class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
-            aria-controls={"hs-basic-bordered-collapse-#{job.id}"}
-          >
-            <div class="flex items-center gap-2">
-              <svg
-                class="hs-accordion-active:hidden block size-3.5"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 12h14"></path>
+          <div class="flex items-center gap-2">
+            <svg
+              class="hs-accordion-active:hidden block size-3.5"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14"></path>
 
-                <path d="M12 5v14"></path>
-              </svg>
-              <svg
-                class="hs-accordion-active:block hidden size-3.5"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 12h14"></path>
-              </svg>
-              <h3><%= job.title %></h3>
-            </div>
-            <p class="text-sm font-medium text-right">
-              <%= job.years %> years @ <%= job.company %>
+              <path d="M12 5v14"></path>
+            </svg>
+            <svg
+              class="hs-accordion-active:block hidden size-3.5"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14"></path>
+            </svg>
+            <h3><%= job.title %></h3>
+          </div>
+          <p class="text-sm font-medium text-right">
+            <%= job.years %> years @ <%= job.company %>
+          </p>
+        </button>
+        <div
+          id={"hs-basic-bordered-collapse-#{job.id}"}
+          class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+          aria-labelledby={"hs-bordered-heading-#{job.id}"}
+        >
+          <div class="pb-4 px-5">
+            <p class="text-gray-800 dark:text-neutral-200">
+              <%= job.description %>
             </p>
-          </button>
-          <div
-            id={"hs-basic-bordered-collapse-#{job.id}"}
-            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
-            aria-labelledby={"hs-bordered-heading-#{job.id}"}
-          >
-            <div class="pb-4 px-5">
-              <p class="text-gray-800 dark:text-neutral-200">
-                <%= job.description %>
-              </p>
-            </div>
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
     """
   end

@@ -16,9 +16,7 @@
     </h1>
 
     <div id="profile-links" class="flex gap-1">
-      <%= for %{:site=> site, :url => url} <- @user.links do %>
-        <.profile_link site={site} url={url} />
-      <% end %>
+      <.profile_link :for={%{:site => site, :url => url} <- @user.links} site={site} url={url} />
     </div>
   </div>
 </div>
@@ -33,39 +31,29 @@
 <section id="skills" class="grid grid-cols-2 gap-3">
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">Front-end</span>
-    <%= for tech <- @user.skills.frontend do %>
-      <.tech_badge tech={tech} />
-    <% end %>
+    <.tech_badge :for={tech <- @user.skills.frontend} tech={tech} />
   </div>
 
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">Back-end</span>
-    <%= for tech <- @user.skills.backend do %>
-      <.tech_badge tech={tech} />
-    <% end %>
+    <.tech_badge :for={tech <- @user.skills.backend} tech={tech} />
   </div>
 
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">DevOps</span>
-    <%= for tech <- @user.skills.devops do %>
-      <.tech_badge tech={tech} />
-    <% end %>
+    <.tech_badge :for={tech <- @user.skills.devops} tech={tech} />
   </div>
 
   <div class="flex items-center gap-2">
     <span class="w-20 font-light">Dev Tools</span>
-    <%= for tech <- @user.skills.dev_tools do %>
-      <.tech_badge tech={tech} />
-    <% end %>
+    <.tech_badge :for={tech <- @user.skills.dev_tools} tech={tech} />
   </div>
 </section>
 
 <section id="professional-experience" class="my-5">
   <h2 class="text-xl font-bold mb-3">Projects</h2>
   <div class="grid grid-cols-2 gap-2">
-    <%= for project <- @user.projects do %>
-      <.project_card project={project} />
-    <% end %>
+    <.project_card :for={project <- @user.projects} project={project} />
   </div>
 </section>
 
