@@ -1,6 +1,16 @@
 defmodule SkillstackrWeb.ProfileController do
   use SkillstackrWeb, :controller
 
+  def show(conn, %{"id" => id}) do
+    conn
+    |> assign(:user, get_user(id))
+    |> render(:show)
+  end
+
+  def new(conn, _params) do
+    render(conn, :new)
+  end
+
   defp get_user(id) do
     links = [
       %{id: 1, site: :github, url: "https://github.com/waseem-medhat"},
@@ -78,7 +88,8 @@ defmodule SkillstackrWeb.ProfileController do
 
     %{
       name: "John Doe",
-      photo_url: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      photo_url:
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
       summary: summary,
       id: id,
       links: links,
@@ -87,11 +98,5 @@ defmodule SkillstackrWeb.ProfileController do
       experience: experience,
       total_exp_years: total_exp_years
     }
-  end
-
-  def show(conn, %{"id" => id}) do
-    conn
-    |> assign(:user, get_user(id))
-    |> render(:show)
   end
 end
