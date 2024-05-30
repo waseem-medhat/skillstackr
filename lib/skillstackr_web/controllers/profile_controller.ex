@@ -2,13 +2,17 @@ defmodule SkillstackrWeb.ProfileController do
   use SkillstackrWeb, :controller
 
   def show(conn, %{"id" => id}) do
+    user = get_user(id)
     conn
-    |> assign(:user, get_user(id))
+    |> assign(:user, user)
+    |> assign(:page_title, user.name)
     |> render(:show)
   end
 
   def new(conn, _params) do
-    render(conn, :new)
+    conn
+    |> assign(:page_title, "New Profile")
+    |> render(:new)
   end
 
   defp get_user(id) do
