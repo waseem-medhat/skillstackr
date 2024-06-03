@@ -8,6 +8,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProjects do
       add :description, :string
       add :link_repo, :string
       add :link_website, :string
+      add :profile_id, references(:profiles, type: :binary_id)
 
       timestamps(type: :utc_datetime)
     end

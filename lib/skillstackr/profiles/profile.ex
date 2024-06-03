@@ -9,6 +9,7 @@ defmodule Skillstackr.Profiles.Profile do
     field :full_name, :string
     field :headline, :string
     field :summary, :string
+    field :slug, :string
     field :link_github, :string
     field :link_linkedin, :string
     field :link_website, :string
