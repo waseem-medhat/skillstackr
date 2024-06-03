@@ -22,7 +22,16 @@ defmodule Skillstackr.Profiles.Profile do
   @doc false
   def changeset(profile, attrs) do
     profile
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [
+      :full_name,
+      :headline,
+      :summary,
+      :slug,
+      :link_github,
+      :link_linkedin,
+      :link_website,
+      :link_resume
+    ])
+    |> validate_required([:slug])
   end
 end
