@@ -1,12 +1,20 @@
 defmodule Skillstackr.Profiles.Profile do
+  alias Skillstackr.Profiles
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "profiles" do
+    field :full_name, :string
+    field :headline, :string
+    field :summary, :string
+    field :link_github, :string
+    field :link_linkedin, :string
+    field :link_website, :string
+    field :link_resume, :string
 
-
+    has_many :projects, Profiles.Project
     timestamps(type: :utc_datetime)
   end
 
