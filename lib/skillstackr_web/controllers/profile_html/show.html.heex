@@ -5,14 +5,9 @@
     alt="Image Description"
   />
 
-  <div class="space-y-0.5">
-    <h1 id="name-heading" class="text-3xl">
-      <span class="font-bold">
-        <%= @user.name %>
-      </span>
-      <small class="font-medium">
-        <%= @user.id %>
-      </small>
+  <div class="space-y-1">
+    <h1 id="name-heading" class="text-3xl font-bold">
+      <%= @profile.full_name %>
     </h1>
 
     <div id="profile-links" class="flex gap-1">
@@ -22,9 +17,11 @@
 </div>
 
 <section id="professional-summary" class="mb-5">
-  <h2 class="text-xl font-bold mb-3">Full-Stack Developer</h2>
+  <h2 class="text-xl font-bold mb-3">
+    <%= @profile.headline %>
+  </h2>
   <p id="summary-text">
-    <%= @user.summary %>
+    <%= @profile.summary %>
   </p>
 </section>
 

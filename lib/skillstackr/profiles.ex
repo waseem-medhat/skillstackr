@@ -37,6 +37,23 @@ defmodule Skillstackr.Profiles do
   """
   def get_profile!(id), do: Repo.get!(Profile, id)
 
+
+  @doc """
+  Gets a single profile by slug.
+
+  Raises `Ecto.NoResultsError` if the Profile does not exist.
+
+  ## Examples
+
+      iex> get_profile!("johndoe")
+      %Profile{}
+
+      iex> get_profile!("noone")
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_profile_by_slug!(slug), do: Repo.get_by!(Profile, slug: slug)
+
   @doc """
   Creates a profile.
 

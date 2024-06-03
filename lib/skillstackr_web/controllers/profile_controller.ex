@@ -1,11 +1,14 @@
 defmodule SkillstackrWeb.ProfileController do
+  alias Skillstackr.Profiles
   use SkillstackrWeb, :controller
 
   def show(conn, %{"id" => id}) do
     user = get_user(id)
+    profile = Profiles.get_profile_by_slug!(id)
 
     conn
     |> assign(:user, user)
+    |> assign(:profile, profile)
     |> assign(:page_title, user.name)
     |> render(:show)
   end
