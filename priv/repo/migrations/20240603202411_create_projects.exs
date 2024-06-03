@@ -4,6 +4,10 @@ defmodule Skillstackr.Repo.Migrations.CreateProjects do
   def change do
     create table(:projects, primary_key: false) do
       add :id, :binary_id, primary_key: true
+      add :title, :string
+      add :description, :string
+      add :link_repo, :string
+      add :link_website, :string
 
       timestamps(type: :utc_datetime)
     end
