@@ -3,6 +3,7 @@ defmodule SkillstackrWeb.ProfileController do
 
   def show(conn, %{"id" => id}) do
     user = get_user(id)
+
     conn
     |> assign(:user, user)
     |> assign(:page_title, user.name)

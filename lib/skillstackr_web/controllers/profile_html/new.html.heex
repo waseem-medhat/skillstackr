@@ -1,44 +1,57 @@
 <h1 class="text-2xl font-bold mb-8">New profile</h1>
 <form class="space-y-8">
   <section class="space-y-5">
-    <h2 class="text-xl">Basic Info</h2>
     <div class="grid grid-cols-2 gap-8">
-      <div>
-        <label for="full-name" class="block text-sm font-medium mb-2 dark:text-white">
-          Full Name
-        </label>
+      <label for="full-name" class="block text-sm font-medium dark:text-white">
+        Full Name
         <input
           type="text"
           id="full-name"
           name="full-name"
-          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
         />
-      </div>
+      </label>
 
-      <div>
-        <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
-          Email
-        </label>
+      <label for="full-name" class="block text-sm font-medium dark:text-white">
+        Profile ID
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="full-name" class="block text-sm font-medium dark:text-white">
+        Headline
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
+        Email
         <input
           type="email"
           id="email"
           name="email"
-          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
           placeholder="you@site.com"
         />
-      </div>
+      </label>
 
-      <div>
-        <label for="summary" class="block text-sm font-medium mb-2 dark:text-white">
-          Professional Summary
-        </label>
+      <label for="summary" class="col-span-2 block text-sm font-medium dark:text-white">
+        Professional Summary
         <textarea
           id="summary"
-          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
           rows="3"
           placeholder="Describe yourself in 140 characters or less. Make it count!"
-        ></textarea>
-      </div>
+        />
+      </label>
     </div>
   </section>
 
@@ -112,4 +125,126 @@
   </section>
 
   <hr class="dark:border-gray-800" />
+
+  <section class="space-y-5">
+    <h2 class="text-xl flex items-center justify-between">
+      Projects
+      <button type="button" class="text-blue-500 text-sm">
+        <b>+</b> Add Project
+      </button>
+    </h2>
+    <div class="grid grid-cols-2 gap-8">
+      <label for="project-title" class="block text-sm font-medium dark:text-white">
+        Title
+        <input
+          type="text"
+          id="project-title"
+          name="project-title"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
+        Link
+        <input
+          type="text"
+          id="email"
+          name="email"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          placeholder="you@site.com"
+        />
+      </label>
+
+      <label for="summary" class="col-span-2 block text-sm font-medium dark:text-white">
+        Description
+        <textarea
+          id="summary"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          rows="3"
+        />
+      </label>
+
+      <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
+        Technologies
+        <div class="flex gap-1 items-center">
+          <input
+            type="text"
+            id="tech"
+            name="tech"
+            class="py-2 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          />
+
+          <button
+            type="button"
+            class="py-2 px-3 my-2 items-center font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+          >
+            +
+          </button>
+
+          <div id="tech-preview">
+            <.tech_badge tech={nil} size={40} />
+          </div>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <hr class="dark:border-gray-800" />
+
+  <section class="space-y-5">
+    <h2 class="text-xl flex items-center justify-between">
+      Professional Experience
+      <button type="button" class="text-blue-500 text-sm">
+        <b>+</b> Add Job
+      </button>
+    </h2>
+    <div class="grid grid-cols-2 gap-8">
+      <label for="full-name" class="block text-sm font-medium dark:text-white">
+        Job Title
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="full-name" class="block text-sm font-medium dark:text-white">
+        Company name
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
+        Years of Experience
+        <input
+          type="number"
+          id="email"
+          min="0"
+          value="100"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="summary" class="col-span-2 block text-sm font-medium dark:text-white">
+        Description
+        <textarea
+          id="summary"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          rows="3"
+        />
+      </label>
+    </div>
+  </section>
 </form>
+
+<script>
+  document.querySelector("#tech").addEventListener("keyup", (e) => {
+    const tech = e.target.value
+    document.querySelector("#tech-preview img").src = `https://cdn.simpleicons.org/${tech}`
+  })
+</script>
