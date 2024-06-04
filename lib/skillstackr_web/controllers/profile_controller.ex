@@ -1,4 +1,5 @@
 defmodule SkillstackrWeb.ProfileController do
+  alias Skillstackr.Profiles.Profile
   alias Skillstackr.Profiles
   use SkillstackrWeb, :controller
 
@@ -16,6 +17,7 @@ defmodule SkillstackrWeb.ProfileController do
   def new(conn, _params) do
     conn
     |> assign(:page_title, "New Profile")
+    |> assign(:changeset, Profiles.change_profile(%Profile{}))
     |> render(:new)
   end
 

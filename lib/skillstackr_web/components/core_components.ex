@@ -202,7 +202,7 @@ defmodule SkillstackrWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -272,6 +272,8 @@ defmodule SkillstackrWeb.CoreComponents do
   attr :name, :any
   attr :label, :string, default: nil
   attr :value, :any
+  attr :icon, :string, default: nil
+  attr :icon_type, :atom, default: nil
 
   attr :type, :string,
     default: "text",
@@ -367,11 +369,35 @@ defmodule SkillstackrWeb.CoreComponents do
     """
   end
 
+  # File inputs, this component is a merge between what came in with Phoenix
+  # and the Preline file input component
+  def input(%{type: "file"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <.label for={@id}><%= @label %></.label>
+      <input
+        type={@type}
+        name={@name}
+        id={@id}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        class={[
+          "mt-2 block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400",
+          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          @errors == [] && "border-zinc-300 focus:border-zinc-400",
+          @errors != [] && "border-rose-400 focus:border-rose-400"
+        ]}
+        {@rest}
+      />
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
-      <.label for={@id}><%= @label %></.label>
+      <.label for={@id} icon={@icon} icon_type={@icon_type}><%= @label %></.label>
       <input
         type={@type}
         name={@name}
@@ -394,11 +420,23 @@ defmodule SkillstackrWeb.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
+  attr :icon, :string, default: nil, doc: "simpleicons.org or heroicons.com icon slug"
+  attr :icon_type, :atom, default: nil, doc: ":simpleicons or :heroicons"
   slot :inner_block, required: true
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label
+      for={@for}
+      class="text-sm font-semibold leading-6 text-zinc-800 dark:text-zinc-200 flex gap-1 items-center"
+    >
+      <img
+        :if={@icon && @icon_type == :simpleicons}
+        src={"https://cdn.simpleicons.org/#{@icon}/222"}
+        width="14"
+        class="dark:brightness-[1000%]"
+      />
+      <.icon :if={@icon && @icon_type == :heroicons} name={@icon} class="text-xl" />
       <%= render_slot(@inner_block) %>
     </label>
     """
