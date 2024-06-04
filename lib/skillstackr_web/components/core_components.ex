@@ -357,8 +357,7 @@ defmodule SkillstackrWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          "mt-2 py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -374,7 +373,7 @@ defmodule SkillstackrWeb.CoreComponents do
   def input(%{type: "file"} = assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
-      <.label for={@id}><%= @label %></.label>
+      <.label for={@id} icon={@icon}><%= @label %></.label>
       <input
         type={@type}
         name={@name}
@@ -397,15 +396,14 @@ defmodule SkillstackrWeb.CoreComponents do
   def input(assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
-      <.label for={@id} icon={@icon} icon_type={@icon_type}><%= @label %></.label>
+      <.label for={@id} icon={@icon}><%= @label %></.label>
       <input
         type={@type}
         name={@name}
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          "mt-2 py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -420,8 +418,11 @@ defmodule SkillstackrWeb.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
-  attr :icon, :string, default: nil, doc: "simpleicons.org or heroicons.com icon slug"
-  attr :icon_type, :atom, default: nil, doc: ":simpleicons or :heroicons"
+
+  attr :icon, :string,
+    default: nil,
+    doc: "`simple-slug` for simpleicons or `hero-slug` for heroicons"
+
   slot :inner_block, required: true
 
   def label(assigns) do
@@ -430,13 +431,7 @@ defmodule SkillstackrWeb.CoreComponents do
       for={@for}
       class="text-sm font-semibold leading-6 text-zinc-800 dark:text-zinc-200 flex gap-1 items-center"
     >
-      <img
-        :if={@icon && @icon_type == :simpleicons}
-        src={"https://cdn.simpleicons.org/#{@icon}/222"}
-        width="14"
-        class="dark:brightness-[1000%]"
-      />
-      <.icon :if={@icon && @icon_type == :heroicons} name={@icon} class="text-xl" />
+      <.icon :if={@icon} name={@icon} class="text-xl" />
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -634,6 +629,16 @@ defmodule SkillstackrWeb.CoreComponents do
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
     <span class={[@name, @class]} />
+    """
+  end
+
+  def icon(%{name: "simple-" <> icon_slug} = assigns) do
+    assigns =
+      assigns
+      |> assign(:slug, String.replace(icon_slug, ~r/^simple-/, ""))
+
+    ~H"""
+    <img src={"https://cdn.simpleicons.org/#{@slug}/222"} width="14" class="dark:brightness-[1000%]" />
     """
   end
 

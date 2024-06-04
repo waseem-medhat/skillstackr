@@ -17,34 +17,10 @@
 
   <h2 class="text-xl">Profile Links</h2>
   <section class="grid grid-cols-2 gap-8">
-    <.input
-      field={f[:link_github]}
-      type="text"
-      label="GitHub"
-      icon="github"
-      icon_type={:simpleicons}
-    />
-    <.input
-      field={f[:link_linkedin]}
-      type="text"
-      label="LinkedIn"
-      icon="linkedin"
-      icon_type={:simpleicons}
-    />
-    <.input
-      field={f[:link_website]}
-      type="text"
-      label="Personal Website/Blog"
-      icon="hero-newspaper-micro"
-      icon_type={:heroicons}
-    />
-    <.input
-      field={f[:link_resume]}
-      type="text"
-      label="PDF Resume"
-      icon="adobeacrobatreader"
-      icon_type={:simpleicons}
-    />
+    <.input field={f[:link_github]} type="text" label="GitHub" icon="simple-github" />
+    <.input field={f[:link_linkedin]} type="text" label="LinkedIn" icon="simple-linkedin" />
+    <.input field={f[:link_website]} type="text" label="Website/Blog" icon="hero-globe-alt-micro" />
+    <.input field={f[:link_resume]} type="file" label="CV" icon="simple-adobeacrobatreader" />
   </section>
 
   <hr class="dark:border-gray-800" />
@@ -65,7 +41,6 @@
     <.button>Save Product</.button>
   </:actions>
 </.simple_form>
-
 <!-- old form -->
 <!--
 <form class="space-y-8">
