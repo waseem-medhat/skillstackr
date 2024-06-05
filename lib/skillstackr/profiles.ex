@@ -119,7 +119,7 @@ defmodule Skillstackr.Profiles do
     Profile.changeset(profile, attrs)
   end
 
-  alias Skillstackr.Profiles.Project
+  alias Skillstackr.Projects.Project
 
   @doc """
   Returns the list of projects.

@@ -1,5 +1,4 @@
-defmodule Skillstackr.Profiles.Project do
-  alias Skillstackr.Profiles
+defmodule Skillstackr.Projects.Project do
   use Ecto.Schema
   import Ecto.Changeset
 

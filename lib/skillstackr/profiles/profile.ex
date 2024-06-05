@@ -1,5 +1,5 @@
 defmodule Skillstackr.Profiles.Profile do
-  alias Skillstackr.Profiles
+  alias Skillstackr.Projects
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -15,7 +15,7 @@ defmodule Skillstackr.Profiles.Profile do
     field :link_website, :string
     field :link_resume, :string
 
-    has_many :projects, Profiles.Project
+    has_many :projects, Projects.Project
     timestamps(type: :utc_datetime)
   end
 
@@ -34,5 +34,6 @@ defmodule Skillstackr.Profiles.Profile do
     ])
     |> validate_required([:full_name, :slug])
     |> unique_constraint(:slug)
+    |> validate_length(:summary, max: 140)
   end
 end
