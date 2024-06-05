@@ -37,9 +37,8 @@ defmodule Skillstackr.Profiles do
   """
   def get_profile!(id), do: Repo.get!(Profile, id)
 
-
   @doc """
-  Gets a single profile by slug.
+  Gets a single profile associated with the given slug.
 
   Raises `Ecto.NoResultsError` if the Profile does not exist.
 
@@ -52,7 +51,25 @@ defmodule Skillstackr.Profiles do
       ** (Ecto.NoResultsError)
 
   """
-  def get_profile_by_slug!(slug), do: Repo.get_by!(Profile, slug: slug)
+  def get_profile_by_slug!(slug) do
+    Repo.one!(
+      from p in Profile,
+        select: %{
+          full_name: p.full_name,
+          headline: p.headline,
+          slug: p.slug,
+          summary: p.summary,
+          link_github: p.link_github,
+          link_linkedin: p.link_linkedin,
+          link_website: p.link_website
+        },
+        where: p.slug == ^slug
+    )
+  end
+
+  def get_resume_by_slug!(slug) do
+    Repo.one!(from p in Profile, select: p.resume, where: p.slug == ^slug)
+  end
 
   @doc """
   Creates a profile.

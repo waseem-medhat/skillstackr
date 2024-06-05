@@ -22,6 +22,14 @@ defmodule SkillstackrWeb.ProfileController do
   end
 
   def create(conn, %{"profile" => profile}) do
+    {:ok, resume_bin} =
+      profile
+      |> Map.get("resume")
+      |> Map.get(:path)
+      |> File.read()
+
+    profile = Map.put(profile, "resume", resume_bin)
+
     case Profiles.create_profile(profile) do
       {:ok, _} ->
         conn
@@ -31,6 +39,19 @@ defmodule SkillstackrWeb.ProfileController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)
     end
+  end
+
+  def get_resume(conn, %{"slug" => slug}) do
+    filename = "/tmp/#{slug}.pdf"
+
+    if not File.exists?(filename) do
+      resume_bin = Profiles.get_resume_by_slug!(slug)
+      File.write(filename, resume_bin)
+    end
+
+    conn
+    |> put_resp_content_type("application/pdf")
+    |> send_file(200, filename)
   end
 
   defp get_user(id) do

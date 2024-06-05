@@ -13,7 +13,7 @@ defmodule Skillstackr.Profiles.Profile do
     field :link_github, :string
     field :link_linkedin, :string
     field :link_website, :string
-    field :link_resume, :string
+    field :resume, :binary
 
     has_many :projects, Projects.Project
     timestamps(type: :utc_datetime)
@@ -30,7 +30,7 @@ defmodule Skillstackr.Profiles.Profile do
       :link_github,
       :link_linkedin,
       :link_website,
-      :link_resume
+      :resume
     ])
     |> validate_required([:full_name, :slug])
     |> unique_constraint(:slug)

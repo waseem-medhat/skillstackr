@@ -19,6 +19,7 @@ defmodule SkillstackrWeb.Router do
 
     get "/", PageController, :home
     resources "/profiles", ProfileController, except: [:index]
+    get "/profiles/:slug/resume", ProfileController, :get_resume
   end
 
   # Other scopes may use custom stacks.

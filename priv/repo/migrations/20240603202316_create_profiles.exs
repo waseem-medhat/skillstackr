@@ -11,7 +11,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProfiles do
       add :link_github, :string
       add :link_linkedin, :string
       add :link_website, :string
-      add :link_resume, :string
+      add :resume, :binary
 
       timestamps(type: :utc_datetime)
     end
