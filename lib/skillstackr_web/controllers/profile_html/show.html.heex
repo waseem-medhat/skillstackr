@@ -11,7 +11,26 @@
     </h1>
 
     <div id="profile-links" class="flex gap-1">
-      <.profile_link :for={%{:site => site, :url => url} <- @user.links} site={site} url={url} />
+      <.profile_link
+        :if={@profile.link_github}
+        url={@profile.link_github}
+        icon_name="simple-github"
+      />
+      <.profile_link
+        :if={@profile.link_linkedin}
+        url={@profile.link_linkedin}
+        icon_name="simple-linkedin"
+      />
+      <.profile_link
+        :if={@profile.link_website}
+        url={@profile.link_website}
+        icon_name="hero-globe-alt-micro"
+      />
+      <.profile_link
+        :if={@profile.link_resume}
+        url={@profile.link_resume}
+        icon_name="simple-adobeacrobatreader"
+      />
     </div>
   </div>
 </div>
