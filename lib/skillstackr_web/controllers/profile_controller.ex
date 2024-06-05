@@ -24,7 +24,7 @@ defmodule SkillstackrWeb.ProfileController do
   def create(conn, %{"profile" => profile}) do
     {:ok, resume_bin} =
       profile
-      |> Map.get("resume")
+      |> Map.get("resume", %{})
       |> Map.get(:path)
       |> File.read()
 
@@ -42,16 +42,11 @@ defmodule SkillstackrWeb.ProfileController do
   end
 
   def get_resume(conn, %{"slug" => slug}) do
-    filename = "/tmp/#{slug}.pdf"
-
-    if not File.exists?(filename) do
-      resume_bin = Profiles.get_resume_by_slug!(slug)
-      File.write(filename, resume_bin)
-    end
+    resume_bin = Profiles.get_resume_by_slug!(slug)
 
     conn
     |> put_resp_content_type("application/pdf")
-    |> send_file(200, filename)
+    |> send_resp(200, resume_bin)
   end
 
   defp get_user(id) do

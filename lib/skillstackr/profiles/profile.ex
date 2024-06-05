@@ -32,8 +32,9 @@ defmodule Skillstackr.Profiles.Profile do
       :link_website,
       :resume
     ])
-    |> validate_required([:full_name, :slug])
     |> unique_constraint(:slug)
+    |> validate_required([:full_name, :slug, :resume])
     |> validate_length(:summary, max: 140)
+    |> validate_length(:resume, max: 5_000_000, count: :bytes, message: "must be smaller than 5 MB")
   end
 end
