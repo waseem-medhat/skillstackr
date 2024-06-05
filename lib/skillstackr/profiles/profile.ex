@@ -36,5 +36,7 @@ defmodule Skillstackr.Profiles.Profile do
     |> validate_required([:full_name, :slug, :resume])
     |> validate_length(:summary, max: 140)
     |> validate_length(:resume, max: 5_000_000, count: :bytes, message: "must be smaller than 5 MB")
+    |> validate_format(:slug, ~r/^[a-z0-9_]+$/, message: "must be only lowercase letters, numbers, or underscores")
+    |> validate_length(:slug, max: 30)
   end
 end
