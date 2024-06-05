@@ -13,32 +13,18 @@
     </div>
   </section>
 
-  <hr class="dark:border-gray-800" />
-
   <h2 class="text-xl">Profile Links</h2>
   <section class="grid grid-cols-2 gap-8">
     <.input field={f[:link_github]} type="text" label="GitHub" icon="simple-github" />
     <.input field={f[:link_linkedin]} type="text" label="LinkedIn" icon="simple-linkedin" />
     <.input field={f[:link_website]} type="text" label="Website/Blog" icon="hero-globe-alt-micro" />
-    <.input field={f[:link_resume]} type="file" label="CV" icon="simple-adobeacrobatreader" />
+    <.input field={f[:link_resume]} type="file" label="Resume" icon="simple-adobeacrobatreader" />
   </section>
 
   <hr class="dark:border-gray-800" />
 
-  <h2 class="text-xl flex items-center justify-between">
-    Projects
-    <button type="button" class="text-blue-500 text-sm">
-      <b>+</b> Add Project
-    </button>
-  </h2>
-  <section class="grid grid-cols-2 gap-8">
-    <.input field={f[:project_title]} type="text" label="Title" />
-    <.input field={f[:project_link]} type="text" label="Link" />
-    <.input field={f[:project_description]} type="textarea" label="Description" />
-  </section>
-
   <:actions>
-    <.button>Save Product</.button>
+    <.button>Save Profile</.button>
   </:actions>
 </.simple_form>
 <!-- old form -->

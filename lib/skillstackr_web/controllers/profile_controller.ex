@@ -21,6 +21,18 @@ defmodule SkillstackrWeb.ProfileController do
     |> render(:new)
   end
 
+  def create(conn, %{"profile" => profile}) do
+    case Profiles.create_profile(profile) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "Profile saved. Start adding some projects to it!")
+        |> redirect(to: ~p"/")
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, :new, changeset: changeset)
+    end
+  end
+
   defp get_user(id) do
     links = [
       %{id: 1, site: :github, url: "https://github.com/waseem-medhat"},

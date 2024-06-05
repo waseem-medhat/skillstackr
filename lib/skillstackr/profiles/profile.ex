@@ -32,6 +32,7 @@ defmodule Skillstackr.Profiles.Profile do
       :link_website,
       :link_resume
     ])
-    |> validate_required([:slug])
+    |> validate_required([:full_name, :slug])
+    |> unique_constraint(:slug)
   end
 end
