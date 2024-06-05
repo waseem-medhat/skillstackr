@@ -64,7 +64,7 @@ defmodule SkillstackrWeb.ProfileHTML do
         >
           <div class="flex items-center gap-2">
             <svg
-              class="hs-accordion-active:hidden block size-3.5"
+              class="hs-accordion-active:hidden block size-4"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -75,12 +75,10 @@ defmodule SkillstackrWeb.ProfileHTML do
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M5 12h14"></path>
-
-              <path d="M12 5v14"></path>
+              <path d="m6 9 6 6 6-6"></path>
             </svg>
             <svg
-              class="hs-accordion-active:block hidden size-3.5"
+              class="hs-accordion-active:block hidden size-4"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -91,7 +89,7 @@ defmodule SkillstackrWeb.ProfileHTML do
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M5 12h14"></path>
+              <path d="m18 15-6-6-6 6"></path>
             </svg>
             <h3><%= job.title %></h3>
           </div>
@@ -136,10 +134,10 @@ defmodule SkillstackrWeb.ProfileHTML do
     ~H"""
     <a
       href={@url}
-      class="flex 6tems-center gap-2 opacity-60 hover:opacity-100 transition-all duration-200"
+      class="flex 6tems-center gap-2 opacity-70 hover:opacity-100 transition-all duration-200"
       target="_blank"
     >
-      <.icon name={@icon_name} />
+      <.icon name={@icon_name} size={20} />
     </a>
     """
   end

@@ -624,6 +624,7 @@ defmodule SkillstackrWeb.CoreComponents do
   """
   attr :name, :string, required: true
   attr :class, :string, default: nil
+  attr :size, :integer, default: 14
 
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
@@ -631,13 +632,14 @@ defmodule SkillstackrWeb.CoreComponents do
     """
   end
 
-  def icon(%{name: "simple-" <> icon_slug} = assigns) do
+  def icon(%{name: "simple-" <> icon_slug, size: size} = assigns) do
     assigns =
       assigns
       |> assign(:slug, String.replace(icon_slug, ~r/^simple-/, ""))
+      |> assign(:size, size)
 
     ~H"""
-    <img src={"https://cdn.simpleicons.org/#{@slug}/222"} width="14" class="dark:brightness-[1000%]" />
+    <img src={"https://cdn.simpleicons.org/#{@slug}/222"} width={@size} class="dark:brightness-[1000%]" />
     """
   end
 
