@@ -21,16 +21,23 @@ defmodule SkillstackrWeb.ProfileController do
     |> render(:new)
   end
 
-  def create(conn, %{"profile" => profile}) do
-    {:ok, resume_bin} =
-      profile
-      |> Map.get("resume", %{})
-      |> Map.get(:path)
-      |> File.read()
+  def create(conn, %{"profile" => profile_params}) do
+    profile_params =
+      case profile_params["resume"] do
+        %Plug.Upload{} ->
+          {:ok, resume_blob} =
+            profile_params
+            |> Map.get("resume", %{})
+            |> Map.get(:path)
+            |> File.read()
 
-    profile = Map.put(profile, "resume", resume_bin)
+          Map.put(profile_params, "resume", resume_blob)
 
-    case Profiles.create_profile(profile) do
+        _ ->
+          profile_params
+      end
+
+    case Profiles.create_profile(profile_params) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Profile saved. Start adding some projects to it!")
@@ -42,11 +49,11 @@ defmodule SkillstackrWeb.ProfileController do
   end
 
   def get_resume(conn, %{"slug" => slug}) do
-    resume_bin = Profiles.get_resume_by_slug!(slug)
+    resume_blob = Profiles.get_resume_by_slug!(slug)
 
     conn
     |> put_resp_content_type("application/pdf")
-    |> send_resp(200, resume_bin)
+    |> send_resp(200, resume_blob)
   end
 
   defp get_user(id) do
