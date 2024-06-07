@@ -15,8 +15,9 @@ defmodule Skillstackr.Profiles.Profile do
     field :link_website, :string
     field :resume, :binary
 
-    has_many :projects, Projects.Project
     timestamps(type: :utc_datetime)
+    has_many :projects, Projects.Project
+    many_to_many :technologies, Technology, join_through: "profiles_technologies"
   end
 
   @doc false

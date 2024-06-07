@@ -4,6 +4,7 @@ defmodule Skillstackr.Repo.Migrations.CreateTechnologies do
   def change do
     create table(:technologies, primary_key: false) do
       add :id, :binary_id, primary_key: true
+      add :name, :string
 
       timestamps(type: :utc_datetime)
     end
