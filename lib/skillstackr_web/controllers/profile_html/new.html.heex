@@ -44,13 +44,7 @@
     />
     <div class="h-36 overflow-y-auto my-2 py-2 border rounded">
       <div class="flex items-center justify-center gap-1 flex-wrap">
-        <button
-          :for={tech <- @technologies}
-          type="button"
-          class="form-tech-button hidden py-3 px-4 items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400"
-        >
-          <%= tech %>
-        </button>
+        <TechnologyComponents.choice_button :for={tech <- @technologies} tech={tech} />
       </div>
     </div>
   </section>
