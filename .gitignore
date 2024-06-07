@@ -35,5 +35,5 @@ skillstackr-*.tar
 npm-debug.log
 /assets/node_modules/
 
-/priv/utils/simple-icons/
-/priv/utils/simpleicons_map.json
+# The Simpleicons GitHub repo used to parse the icon data.
+simple-icons
