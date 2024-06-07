@@ -21,9 +21,9 @@ defmodule Skillstackr.Utils.SimpleIcons do
     slug = String.replace(file_name, ~r/\.svg$/, "")
 
     icon_map
-    |> put_in([:svg_map, slug], file)
-    |> put_in([:translation_map, slug], %{translation: name, common_key: slug})
-    |> put_in([:translation_map, name], %{translation: slug, common_key: slug})
+    |> put_in([:translation_map, slug], %{translation: name, common_key: name})
+    |> put_in([:translation_map, name], %{translation: slug, common_key: name})
+    |> put_in([:svg_map, name], file)
   end
 
   def parse_files() do
@@ -40,4 +40,4 @@ json =
   |> File.cd!(&SimpleIcons.parse_files/0)
   |> Jason.encode!()
 
-File.write!(Path.join(["priv", "static", "assets", "simpleicons_map.json"]), json)
+File.write!(Path.join(["priv", "utils", "simpleicons_map.json"]), json)

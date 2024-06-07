@@ -23,6 +23,17 @@
 
   <hr class="dark:border-gray-800" />
 
+  <h2 class="text-xl">Technologies</h2>
+  <section>
+    <.input
+      field={f[:technologies]}
+      options={@technologies}
+      type="select"
+      label="Select Technologies"
+      multiple={true}
+    />
+  </section>
+
   <:actions>
     <.button>Save Profile</.button>
   </:actions>

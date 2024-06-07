@@ -15,9 +15,16 @@ defmodule SkillstackrWeb.ProfileController do
   end
 
   def new(conn, _params) do
+    technologies = Path.join(["priv", "utils", "simpleicons_map.json"])
+    |> File.read!()
+    |> Jason.decode!()
+    |> Map.get("svg_map")
+    |> Map.keys()
+
     conn
     |> assign(:page_title, "New Profile")
     |> assign(:changeset, Profiles.change_profile(%Profile{}))
+    |> assign(:technologies, technologies)
     |> render(:new)
   end
 
