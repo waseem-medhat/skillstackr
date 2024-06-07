@@ -25,19 +25,53 @@
 
   <h2 class="text-xl">Technologies</h2>
   <section>
+    <div class="hidden">
+      <.input
+        field={f[:technologies]}
+        options={[]}
+        type="select"
+        label="Select Technologies"
+        multiple={true}
+      />
+    </div>
+
     <.input
-      field={f[:technologies]}
-      options={@technologies}
-      type="select"
-      label="Select Technologies"
-      multiple={true}
+      type="search"
+      name="search-technologies"
+      id="search-technologies"
+      placeholder="Start searching"
+      value={nil}
     />
+    <div class="h-36 overflow-y-auto my-2 py-2 border rounded">
+      <div class="flex items-center justify-center gap-1 flex-wrap">
+        <button
+          :for={tech <- @technologies}
+          type="button"
+          class="form-tech-button hidden py-3 px-4 items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400"
+        >
+          <%= tech %>
+        </button>
+      </div>
+    </div>
   </section>
 
   <:actions>
     <.button>Save Profile</.button>
   </:actions>
 </.simple_form>
+
+<script>
+  document.querySelector("#search-technologies").addEventListener("keyup", (e) => {
+    const searchQuery = e.target.value.toLowerCase()
+    document.querySelectorAll(".form-tech-button").forEach((button) => {
+      if (searchQuery && button.innerHTML.toLowerCase().includes(searchQuery)) {
+        button.classList.remove("hidden")
+      } else {
+        button.classList.add("hidden")
+      }
+    })
+  })
+</script>
 <!-- old form -->
 <!--
 <form class="space-y-8">
