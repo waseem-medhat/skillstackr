@@ -11,24 +11,24 @@
 
   <div id="profile-links" class="flex gap-3">
     <.profile_link
-        :if={@profile.link_github}
-        url={@profile.link_github}
-        icon_name="simple-github"
-      />
+      :if={@profile.link_github}
+      url={@profile.link_github}
+      icon_name="simple-github"
+    />
     <.profile_link
-        :if={@profile.link_linkedin}
-        url={@profile.link_linkedin}
-        icon_name="simple-linkedin"
-      />
+      :if={@profile.link_linkedin}
+      url={@profile.link_linkedin}
+      icon_name="simple-linkedin"
+    />
     <.profile_link
-        :if={@profile.link_website}
-        url={@profile.link_website}
-        icon_name="hero-globe-alt"
-      />
+      :if={@profile.link_website}
+      url={@profile.link_website}
+      icon_name="hero-globe-alt"
+    />
     <.profile_link
-        url={~p"/profiles/#{@profile.slug}/resume.pdf"}
-        icon_name="simple-adobeacrobatreader"
-      />
+      url={~p"/profiles/#{@profile.slug}/resume.pdf"}
+      icon_name="simple-adobeacrobatreader"
+    />
   </div>
 </div>
 
@@ -40,6 +40,12 @@
     <%= @profile.summary %>
   </p>
 </section>
+
+<div class="h-10 w-full flex gap-2 my-5">
+  <div :for={tech <- @profile.technologies} class="w-8">
+    <%= raw(tech.svg) %>
+  </div>
+</div>
 
 <section id="skills" class="grid grid-cols-2 gap-3">
   <div class="flex items-center gap-2">

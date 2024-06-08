@@ -52,19 +52,7 @@ defmodule Skillstackr.Profiles do
 
   """
   def get_profile_by_slug!(slug) do
-    Repo.one!(
-      from p in Profile,
-        select: %{
-          full_name: p.full_name,
-          headline: p.headline,
-          slug: p.slug,
-          summary: p.summary,
-          link_github: p.link_github,
-          link_linkedin: p.link_linkedin,
-          link_website: p.link_website
-        },
-        where: p.slug == ^slug
-    )
+    Repo.one!(from p in Profile, preload: :technologies, where: p.slug == ^slug)
   end
 
   def get_resume_by_slug!(slug) do

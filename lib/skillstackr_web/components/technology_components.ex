@@ -19,6 +19,12 @@ defmodule TechnologyComponents do
     |> Map.keys()
   end
 
+  def name_to_svg(tech_name) do
+    @technology_map
+    |> Map.get("svg_map")
+    |> Map.get(tech_name)
+  end
+
   attr :tech, :string
 
   def choice_button(%{:tech => tech} = assigns) do

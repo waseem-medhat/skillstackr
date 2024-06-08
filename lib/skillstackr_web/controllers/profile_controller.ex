@@ -7,10 +7,16 @@ defmodule SkillstackrWeb.ProfileController do
     user = get_user(id)
     profile = Profiles.get_profile_by_slug!(id)
 
+    technologies =
+      profile
+      |> Map.get(:technologies)
+      |> Enum.map(fn t -> %{name: t.name, svg: TechnologyComponents.name_to_svg(t.name)} end)
+
+    profile = Map.put(profile, :technologies, technologies)
+
     conn
     |> assign(:user, user)
     |> assign(:profile, profile)
-    |> assign(:page_title, user.name)
     |> render(:show)
   end
 
