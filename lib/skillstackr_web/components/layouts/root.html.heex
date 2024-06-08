@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix="Skillstackr">
+      <%= assigns[:page_title] && assigns[:page_title] <> " // " %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="csrf-token" content={get_csrf_token()} />
-  <.live_title suffix="Skillstackr" >
-    <%= assigns[:page_title] && assigns[:page_title] <> " // " %>
-  </.live_title>
-  <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-  <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
-  </script>
-</head>
-
-<body class="bg-slate-100 antialiased dark:bg-zinc-900 dark:text-white">
-  <main class="container mx-auto max-w-5xl mt-3 p-5">
-    <div class="fixed top-5 right-5">
-      <.theme_switcher />
-    </div>
-    <%= @inner_content %>
-  </main>
-</body>
-
+  <body class="bg-slate-100 antialiased dark:bg-zinc-900 dark:text-white">
+    <header class="fixed top-0 w-full flex items-center justify-between px-5 py-4 bg-slate-50 dark:bg-zinc-950 shadow z-10">
+      <a href={~p"/"}>
+        <p class="font-bold">Skillstackr</p>
+      </a>
+      <section>
+        <.theme_switcher />
+      </section>
+    </header>
+    <main class="container mx-auto max-w-5xl px-5 pt-16">
+      <%= @inner_content %>
+    </main>
+  </body>
 </html>
