@@ -31,4 +31,18 @@ defmodule Skillstackr.ProfilesFixtures do
 
     project
   end
+
+  @doc """
+  Generate a resume.
+  """
+  def resume_fixture(attrs \\ %{}) do
+    {:ok, resume} =
+      attrs
+      |> Enum.into(%{
+        blob: "some blob"
+      })
+      |> Skillstackr.Profiles.create_resume()
+
+    resume
+  end
 end

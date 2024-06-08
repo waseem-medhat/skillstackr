@@ -28,16 +28,15 @@ defmodule SkillstackrWeb.ProfileController do
     |> render(:new)
   end
 
-  defp prep_resume_blob(%{"profile" => profile_params} = params) do
-    case profile_params["resume"] do
+  defp prep_resume_blob(%{"resume" => resume} = params) do
+    case resume do
       %Plug.Upload{} ->
         {:ok, resume_blob} =
-          profile_params
-          |> Map.get("resume", %{})
+          resume
           |> Map.get(:path)
           |> File.read()
 
-        put_in(params, ["profile", "resume"], resume_blob)
+        put_in(params, ["profile", "resume"], %{"blob" => resume_blob})
 
       _ ->
         params
@@ -67,6 +66,7 @@ defmodule SkillstackrWeb.ProfileController do
         |> redirect(to: ~p"/")
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset)
         conn
         |> assign(:changeset, changeset)
         |> assign(:technologies, TechnologyComponents.get_names())
@@ -75,7 +75,7 @@ defmodule SkillstackrWeb.ProfileController do
   end
 
   def get_resume(conn, %{"slug" => slug}) do
-    resume_blob = Profiles.get_resume_by_slug!(slug)
+    resume_blob = Profiles.get_resume_blob!(slug)
 
     conn
     |> put_resp_content_type("application/pdf")
