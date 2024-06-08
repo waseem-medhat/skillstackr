@@ -63,7 +63,7 @@ defmodule SkillstackrWeb.ProfileController do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Profile saved. Start adding some projects to it!")
-        |> redirect(to: ~p"/")
+        |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         IO.inspect(changeset)
