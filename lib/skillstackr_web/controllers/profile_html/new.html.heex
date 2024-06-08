@@ -25,16 +25,6 @@
 
   <h2 class="text-xl">Technologies</h2>
   <section>
-    <div class="hidden">
-      <.input
-        field={f[:technologies]}
-        options={[]}
-        type="select"
-        label="Select Technologies"
-        multiple={true}
-      />
-    </div>
-
     <.input
       type="search"
       name="search-technologies"
@@ -42,6 +32,9 @@
       placeholder="Start searching"
       value={nil}
     />
+
+    <.input type="text" name="technologies" id="technologies" disabled={true} value={nil} />
+
     <div class="h-36 overflow-y-auto my-2 py-2 border rounded">
       <div class="flex items-center justify-center gap-1 flex-wrap">
         <TechnologyComponents.choice_button :for={tech <- @technologies} tech={tech} />
@@ -54,18 +47,6 @@
   </:actions>
 </.simple_form>
 
-<script>
-  document.querySelector("#search-technologies").addEventListener("keyup", (e) => {
-    const searchQuery = e.target.value.toLowerCase()
-    document.querySelectorAll(".form-tech-button").forEach((button) => {
-      if (searchQuery && button.innerHTML.toLowerCase().includes(searchQuery)) {
-        button.classList.remove("hidden")
-      } else {
-        button.classList.add("hidden")
-      }
-    })
-  })
-</script>
 <!-- old form -->
 <!--
 <form class="space-y-8">

@@ -18,19 +18,19 @@
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
-import {Socket} from "phoenix"
-import {LiveSocket} from "phoenix_live_view"
+import { Socket } from "phoenix"
+import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import "preline"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
-  longPollFallbackMs: 2500,
-  params: {_csrf_token: csrfToken}
+    longPollFallbackMs: 2500,
+    params: { _csrf_token: csrfToken }
 })
 
 // Show progress bar on live navigation and form submits
-topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
+topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" })
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 
@@ -55,3 +55,34 @@ if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dar
 else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
 else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
 else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
+
+
+// technology search in 'new' form
+const searchTechnologiesInput = document.querySelector("#search-technologies")
+const techButtons = document.querySelectorAll(".form-tech-button")
+
+if (searchTechnologiesInput) {
+    searchTechnologiesInput.addEventListener("keyup", (e) => {
+        const searchQuery = e.target.value.toLowerCase()
+        techButtons.forEach((button) => {
+            if (searchQuery && button.innerHTML.toLowerCase().includes(searchQuery)) {
+                button.classList.remove("hidden")
+            } else {
+                button.classList.add("hidden")
+            }
+        })
+    })
+}
+
+if (techButtons.length > 0) {
+    [...techButtons].forEach((button) => {
+        button.addEventListener("click", (e) => {
+            const techsString = document.querySelector("#technologies").value
+            const techs = techsString === "" ? [] : techsString.split(", ")
+            const newTech = e.target.querySelector(".tech-text").innerText
+            const newTechs = techs.includes(newTech) ? techs.filter(t => t !== newTech) : [...techs, newTech]
+            document.querySelector("#technologies").value = newTechs.join(", ")
+            
+        })
+    })
+}
