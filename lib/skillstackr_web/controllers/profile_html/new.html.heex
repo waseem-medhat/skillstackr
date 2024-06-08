@@ -33,7 +33,13 @@
       value={nil}
     />
 
-    <.input type="text" name="technologies" id="technologies" disabled={true} value={nil} />
+    <.input
+      field={f[:technologies]}
+      type="text"
+      name="technologies"
+      id="technologies"
+      value={nil}
+    />
 
     <div class="h-36 overflow-y-auto my-2 py-2 border rounded">
       <div class="flex items-center justify-center gap-1 flex-wrap">
@@ -46,7 +52,6 @@
     <.button>Save Profile</.button>
   </:actions>
 </.simple_form>
-
 <!-- old form -->
 <!--
 <form class="space-y-8">

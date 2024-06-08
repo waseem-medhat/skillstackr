@@ -22,21 +22,37 @@ defmodule SkillstackrWeb.ProfileController do
     |> render(:new)
   end
 
-  def create(conn, %{"profile" => profile_params}) do
-    profile_params =
-      case profile_params["resume"] do
-        %Plug.Upload{} ->
-          {:ok, resume_blob} =
-            profile_params
-            |> Map.get("resume", %{})
-            |> Map.get(:path)
-            |> File.read()
-
-          Map.put(profile_params, "resume", resume_blob)
-
-        _ ->
+  defp prep_resume_blob(%{"profile" => profile_params} = params) do
+    case profile_params["resume"] do
+      %Plug.Upload{} ->
+        {:ok, resume_blob} =
           profile_params
-      end
+          |> Map.get("resume", %{})
+          |> Map.get(:path)
+          |> File.read()
+
+        put_in(params, ["profile", "resume"], resume_blob)
+
+      _ ->
+        params
+    end
+  end
+
+  defp prep_technologies(%{"technologies" => technologies} = params) do
+    tech_structs =
+      technologies
+      |> String.split(", ")
+      |> Enum.map(fn t -> %{"name" => t} end)
+
+    put_in(params, ["profile", "technologies"], tech_structs)
+  end
+
+  def create(conn, params) do
+    profile_params =
+      params
+      |> prep_resume_blob()
+      |> prep_technologies()
+      |> Map.get("profile")
 
     case Profiles.create_profile(profile_params) do
       {:ok, _} ->
@@ -45,7 +61,10 @@ defmodule SkillstackrWeb.ProfileController do
         |> redirect(to: ~p"/")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+        conn
+        |> assign(:changeset, changeset)
+        |> assign(:technologies, TechnologyComponents.get_names())
+        |> render(:new)
     end
   end
 

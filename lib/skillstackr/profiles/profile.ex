@@ -1,5 +1,5 @@
 defmodule Skillstackr.Profiles.Profile do
-  alias Skillstackr.Projects
+  alias Skillstackr.{Projects, Technologies}
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -17,7 +17,7 @@ defmodule Skillstackr.Profiles.Profile do
 
     timestamps(type: :utc_datetime)
     has_many :projects, Projects.Project
-    many_to_many :technologies, Technology, join_through: "profiles_technologies"
+    many_to_many :technologies, Technologies.Technology, join_through: "profiles_technologies"
   end
 
   @doc false
@@ -33,6 +33,7 @@ defmodule Skillstackr.Profiles.Profile do
       :link_website,
       :resume
     ])
+    |> cast_assoc(:technologies, with: &Technologies.Technology.changeset/2)
     |> unique_constraint(:slug)
     |> validate_required([:full_name, :slug, :resume])
     |> validate_length(:summary, max: 280)

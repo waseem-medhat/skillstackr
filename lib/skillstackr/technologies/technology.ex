@@ -1,4 +1,5 @@
 defmodule Skillstackr.Technologies.Technology do
+  alias Skillstackr.Profiles
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,8 +8,7 @@ defmodule Skillstackr.Technologies.Technology do
   schema "technologies" do
     field :name, :string
 
-    timestamps(type: :utc_datetime)
-    many_to_many :profiles, Profile, join_through: "profiles_technologies"
+    many_to_many :profiles, Profiles.Profile, join_through: "profiles_technologies"
   end
 
   @doc false
