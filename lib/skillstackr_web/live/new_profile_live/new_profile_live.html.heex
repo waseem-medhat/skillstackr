@@ -1,0 +1,144 @@
+<.simple_form :let={f} for={@changeset} action={~p"/profiles"} multipart>
+  <h1 class="text-2xl font-bold mb-8">New profile</h1>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <section class="grid grid-cols-2 gap-8">
+    <.input field={f[:full_name]} type="text" label="Full Name" />
+    <.input field={f[:slug]} type="text" label="Profile Slug" />
+    <.input field={f[:headline]} type="text" label="Headline" />
+    <.input field={f[:email]} type="email" label="Email" />
+    <div class="col-span-2">
+      <.input field={f[:summary]} type="textarea" label="Professional Summary" />
+    </div>
+  </section>
+
+  <h2 class="text-xl">Profile Links</h2>
+  <section class="grid grid-cols-2 gap-8">
+    <.input field={f[:link_github]} type="text" label="GitHub" icon="simple-github" />
+    <.input field={f[:link_linkedin]} type="text" label="LinkedIn" icon="simple-linkedin" />
+    <.input field={f[:link_website]} type="text" label="Website/Blog" icon="hero-globe-alt-micro" />
+    <.input name="resume" value={nil} type="file" label="Resume" icon="simple-adobeacrobatreader" />
+  </section>
+
+  <hr class="dark:border-gray-800" />
+
+  <h2 class="text-xl">Technologies</h2>
+  <section>
+    <.input
+      type="search"
+      name="search-technologies"
+      id="search-technologies"
+      placeholder="Start searching"
+      value={nil}
+    />
+
+    <.input
+      field={f[:technologies]}
+      type="text"
+      name="technologies"
+      id="technologies"
+      value={nil}
+    />
+
+    <div class="h-36 overflow-y-auto my-2 py-2 border rounded">
+      <div class="flex items-center justify-center gap-1 flex-wrap">
+        <TechnologyComponents.choice_button :for={tech <- @technologies} tech={tech} />
+      </div>
+    </div>
+  </section>
+
+  <:actions>
+    <.button>Save Profile</.button>
+  </:actions>
+</.simple_form>
+<!-- old form -->
+<!--
+<form class="space-y-8">
+  <section class="space-y-5">
+    <div class="grid grid-cols-2 gap-8">
+      <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
+        Technologies
+        <div class="flex gap-1 items-center">
+          <input
+            type="text"
+            id="tech"
+            name="tech"
+            class="py-2 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          />
+
+          <button
+            type="button"
+            class="py-2 px-3 my-2 items-center font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+          >
+            +
+          </button>
+
+          <div id="tech-preview">
+            <.tech_badge tech={nil} size={40} />
+          </div>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <hr class="dark:border-gray-800" />
+
+  <section class="space-y-5">
+    <h2 class="text-xl flex items-center justify-between">
+      Professional Experience
+      <button type="button" class="text-blue-500 text-sm">
+        <b>+</b> Add Job
+      </button>
+    </h2>
+    <div class="grid grid-cols-2 gap-8">
+      <label for="full-name" class="block text-sm font-medium dark:text-white">
+        Job Title
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="full-name" class="block text-sm font-medium dark:text-white">
+        Company name
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="email" class="block text-sm font-medium mb-2 dark:text-white">
+        Years of Experience
+        <input
+          type="number"
+          id="email"
+          min="0"
+          value="100"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+        />
+      </label>
+
+      <label for="summary" class="col-span-2 block text-sm font-medium dark:text-white">
+        Description
+        <textarea
+          id="summary"
+          class="py-3 px-4 my-2 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          rows="3"
+        />
+      </label>
+    </div>
+  </section>
+</form>
+
+<script>
+  document.querySelector("#tech").addEventListener("keyup", (e) => {
+    const tech = e.target.value
+    document.querySelector("#tech-preview img").src = `https://cdn.simpleicons.org/${tech}`
+  })
+</script>
+-->
