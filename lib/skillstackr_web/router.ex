@@ -18,7 +18,8 @@ defmodule SkillstackrWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    resources "/profiles", ProfileController, except: [:index]
+    live "/profiles/new", NewProfileLive
+    resources "/profiles", ProfileController, except: [:index, :new]
     get "/profiles/:slug/resume.pdf", ProfileController, :get_resume
   end
 
