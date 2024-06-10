@@ -245,7 +245,9 @@ defmodule Skillstackr.Profiles do
       ** (Ecto.NoResultsError)
 
   """
-  def get_resume_blob!(id), do: Repo.one!(from r in Resume, select: r.blob)
+  def get_resume_blob!(id) do
+    Repo.one!(from r in Resume, where: r.id == ^id, select: r.blob)
+  end
 
   @doc """
   Creates a resume.
