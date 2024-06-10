@@ -13,10 +13,15 @@ defmodule TechnologyComponents do
                   |> File.read!()
                   |> Jason.decode!()
 
-  def get_names() do
+  def get_names(search \\ "") do
     @technology_map
     |> Map.get("svg_map")
     |> Map.keys()
+    |> Enum.filter(fn s ->
+      s
+      |> String.downcase()
+      |> String.contains?(String.downcase(search))
+    end)
   end
 
   def name_to_svg(tech_name) do

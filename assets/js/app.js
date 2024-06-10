@@ -58,21 +58,21 @@ else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add(
 
 
 // technology search in 'new' form
-const searchTechnologiesInput = document.querySelector("#search-technologies")
+// const searchTechnologiesInput = document.querySelector("#search-technologies")
 const techButtons = document.querySelectorAll(".form-tech-button")
 
-if (searchTechnologiesInput) {
-    searchTechnologiesInput.addEventListener("keyup", (e) => {
-        const searchQuery = e.target.value.toLowerCase()
-        techButtons.forEach((button) => {
-            if (searchQuery && button.innerHTML.toLowerCase().includes(searchQuery)) {
-                button.classList.remove("hidden")
-            } else {
-                button.classList.add("hidden")
-            }
-        })
-    })
-}
+// if (searchTechnologiesInput) {
+//     searchTechnologiesInput.addEventListener("keyup", (e) => {
+//         const searchQuery = e.target.value.toLowerCase()
+//         techButtons.forEach((button) => {
+//             if (searchQuery && button.innerHTML.toLowerCase().includes(searchQuery)) {
+//                 button.classList.remove("hidden")
+//             } else {
+//                 button.classList.add("hidden")
+//             }
+//         })
+//     })
+// }
 
 if (techButtons.length > 0) {
     [...techButtons].forEach((button) => {
