@@ -9,7 +9,12 @@ defmodule SkillstackrWeb.NewProfileLive do
       |> assign(:page_title, "New Profile")
       |> assign(:trigger_submit, false)
       |> assign(:form, to_form(Profiles.change_profile(%Profile{})))
-      |> assign(:technologies, [])
+      |> assign(:technologies, %{
+        "frontend" => [],
+        "backend" => [],
+        "devops" => [],
+        "devtools" => []
+      })
       |> assign(:tech_search_results, [])
 
     {:ok, socket}
@@ -35,9 +40,8 @@ defmodule SkillstackrWeb.NewProfileLive do
   end
 
   def handle_event("toggle-technology-" <> category, params, socket) do
-    current_technologies = socket.assigns.technologies
+    current_technologies = Map.get(socket.assigns.technologies, category)
     selected = params["value"]
-    IO.inspect("Checking #{selected} as a #{category} tech")
 
     new_technologies =
       case Enum.find(current_technologies, &(&1 == selected)) do
@@ -45,6 +49,7 @@ defmodule SkillstackrWeb.NewProfileLive do
         ^selected -> Enum.filter(current_technologies, &(&1 != selected))
       end
 
-    {:noreply, assign(socket, :technologies, new_technologies)}
+    {:noreply,
+     assign(socket, :technologies, Map.put(socket.assigns.technologies, category, new_technologies))}
   end
 end

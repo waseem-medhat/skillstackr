@@ -13,7 +13,13 @@ defmodule TechnologyComponents do
                   |> File.read!()
                   |> Jason.decode!()
 
-  def name_to_svg(tech_name), do: get_in(@technology_map, ["svg_map", tech_name])
+  def name_to_svg(tech_name) do
+    get_in(@technology_map, ["svg_map", tech_name])
+  end
+
+  def name_to_slug(tech_name) do
+    get_in(@technology_map, ["translation_map", tech_name, "translation"])
+  end
 
   def get_names(search_str \\ "") do
     search_str = String.downcase(search_str)
@@ -73,6 +79,15 @@ defmodule TechnologyComponents do
         </button>
       </section>
     </div>
+    """
+  end
+
+  attr :tech, :string
+  attr :size, :integer, default: 25
+
+  def tech_badge(assigns) do
+    ~H"""
+    <img src={"https://cdn.simpleicons.org/#{name_to_slug(@tech)}"} width={@size} alt={"#{@tech}"} />
     """
   end
 end

@@ -26,6 +26,29 @@
   <hr class="dark:border-gray-800" />
 
   <h2 class="text-xl">Technologies</h2>
+
+  <section id="skills" class="grid grid-cols-2 gap-3">
+    <div class="flex items-center gap-2">
+      <span class="w-20 font-light">Front-end</span>
+      <TechnologyComponents.tech_badge :for={tech <- @technologies["frontend"]} tech={tech} />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span class="w-20 font-light">Back-end</span>
+      <TechnologyComponents.tech_badge :for={tech <- @technologies["backend"]} tech={tech} />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span class="w-20 font-light">DevOps</span>
+      <TechnologyComponents.tech_badge :for={tech <- @technologies["devops"]} tech={tech} />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span class="w-20 font-light">Dev tools</span>
+      <TechnologyComponents.tech_badge :for={tech <- @technologies["devtools"]} tech={tech} />
+    </div>
+  </section>
+
   <section>
     <.input
       type="search"
@@ -35,14 +58,6 @@
       phx-change="search-technologies"
       phx-debounce="300"
       value=""
-    />
-
-    <.input
-      field={@form[:technologies]}
-      type="text"
-      name="technologies"
-      id="technologies"
-      value={Enum.join(@technologies, ", ")}
     />
 
     <div class="h-36 overflow-y-auto my-2 p-2 border rounded">
