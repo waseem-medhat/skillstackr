@@ -43,6 +43,8 @@ defmodule TechnologyComponents do
     ~H"""
     <button
       type="button"
+      phx-click="toggle-technology"
+      value={@tech}
       class="form-tech-button py-3 px-4 flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400"
     >
       <div class="w-5 fill-blue-800 pointer-events-none"><%= raw(@svg) %></div>

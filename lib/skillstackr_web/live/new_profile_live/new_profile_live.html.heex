@@ -1,10 +1,4 @@
-<.simple_form
-  for={@form}
-  phx-change="validate"
-  phx-trigger-action={@trigger_submit}
-  action={~p"/profiles"}
-  multipart
->
+<.simple_form for={@form} phx-change="validate" action={~p"/profiles"} multipart>
   <h1 class="text-2xl font-bold mb-8">New profile</h1>
   <section class="grid grid-cols-2 gap-8">
     <.input field={@form[:full_name]} type="text" label="Full Name" />
@@ -40,7 +34,7 @@
       placeholder="Start searching"
       phx-change="search-technologies"
       phx-debounce="300"
-      value={nil}
+      value=""
     />
 
     <.input
@@ -48,12 +42,12 @@
       type="text"
       name="technologies"
       id="technologies"
-      value={nil}
+      value={Enum.join(@technologies, ", ")}
     />
 
     <div class="h-36 overflow-y-auto my-2 py-2 border rounded">
       <div class="flex items-center justify-center gap-1 flex-wrap">
-        <TechnologyComponents.choice_button :for={tech <- @technologies} tech={tech} />
+        <TechnologyComponents.choice_button :for={tech <- @tech_search_results} tech={tech} />
       </div>
     </div>
   </section>
