@@ -45,7 +45,7 @@
       value={Enum.join(@technologies, ", ")}
     />
 
-    <div class="h-36 overflow-y-auto my-2 py-2 border rounded">
+    <div class="h-36 overflow-y-auto my-2 p-2 border rounded">
       <div class="flex items-center justify-center gap-1 flex-wrap">
         <TechnologyComponents.choice_button :for={tech <- @tech_search_results} tech={tech} />
       </div>

@@ -13,6 +13,8 @@ defmodule TechnologyComponents do
                   |> File.read!()
                   |> Jason.decode!()
 
+  def name_to_svg(tech_name), do: get_in(@technology_map, ["svg_map", tech_name])
+
   def get_names(search_str \\ "") do
     search_str = String.downcase(search_str)
 
@@ -38,32 +40,39 @@ defmodule TechnologyComponents do
     end)
   end
 
-  def name_to_svg(tech_name) do
-    @technology_map
-    |> Map.get("svg_map")
-    |> Map.get(tech_name)
-  end
-
   attr :tech, :string
 
-  def choice_button(%{:tech => tech} = assigns) do
-    svg =
-      @technology_map
-      |> Map.get("svg_map")
-      |> Map.get(tech)
-
-    assigns = assign(assigns, :svg, svg)
+  def choice_button(%{:tech => tech_name} = assigns) do
+    assigns = assign(assigns, :svg, name_to_svg(tech_name))
 
     ~H"""
-    <button
-      type="button"
-      phx-click="toggle-technology"
+    <div
       value={@tech}
-      class="form-tech-button py-3 px-4 flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400"
+      class="w-full py-3 px-4 flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800"
     >
-      <div class="w-5 fill-blue-800 pointer-events-none"><%= raw(@svg) %></div>
-      <span class="tech-text pointer-events-none"><%= @tech %></span>
-    </button>
+      <section class="flex-grow flex items-center gap-2">
+        <div class="w-5 fill-blue-800 pointer-events-none"><%= raw(@svg) %></div>
+        <span class="tech-text pointer-events-none"><%= @tech %></span>
+      </section>
+      <section class="flex items-center gap-2">
+        <span class="font-light text-blue-600">Add to:</span>
+        <button type="button" phx-click="toggle-technology-frontend" value={@tech}>
+          Front-end
+        </button>
+        <span class="font-light text-blue-600">|</span>
+        <button type="button" phx-click="toggle-technology-backend" value={@tech}>
+          Back-end
+        </button>
+        <span class="font-light text-blue-600">|</span>
+        <button type="button" phx-click="toggle-technology-devops" value={@tech}>
+          DevOps
+        </button>
+        <span class="font-light text-blue-600">|</span>
+        <button type="button" phx-click="toggle-technology-devtools" value={@tech}>
+          Dev tools
+        </button>
+      </section>
+    </div>
     """
   end
 end

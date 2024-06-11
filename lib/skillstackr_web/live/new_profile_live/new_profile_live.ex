@@ -34,9 +34,10 @@ defmodule SkillstackrWeb.NewProfileLive do
     {:noreply, assign(socket, form: new_form)}
   end
 
-  def handle_event("toggle-technology", params, socket) do
+  def handle_event("toggle-technology-" <> category, params, socket) do
     current_technologies = socket.assigns.technologies
     selected = params["value"]
+    IO.inspect("Checking #{selected} as a #{category} tech")
 
     new_technologies =
       case Enum.find(current_technologies, &(&1 == selected)) do
