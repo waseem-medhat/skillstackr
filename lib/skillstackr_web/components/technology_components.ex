@@ -13,14 +13,28 @@ defmodule TechnologyComponents do
                   |> File.read!()
                   |> Jason.decode!()
 
-  def get_names(search \\ "") do
+  def get_names(search_str \\ "") do
+    search_str = String.downcase(search_str)
+
     @technology_map
     |> Map.get("svg_map")
     |> Map.keys()
-    |> Enum.filter(fn s ->
-      s
-      |> String.downcase()
-      |> String.contains?(String.downcase(search))
+    |> Enum.reduce([], fn s, acc ->
+      s_downcase = String.downcase(s)
+
+      cond do
+        search_str == s_downcase ->
+          [s | acc]
+
+        String.contains?(s_downcase, search_str) ->
+          case acc do
+            [] -> [s | acc]
+            [hd | tl] -> [hd | [s | tl]]
+          end
+
+        true ->
+          acc
+      end
     end)
   end
 
