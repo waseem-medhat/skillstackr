@@ -1,23 +1,31 @@
-<.simple_form :let={f} for={@changeset} action={~p"/profiles"} multipart>
+<.simple_form
+  for={@form}
+  phx-change="validate"
+  phx-trigger-action={@trigger_submit}
+  action={~p"/profiles"}
+  multipart
+>
   <h1 class="text-2xl font-bold mb-8">New profile</h1>
-  <.error :if={@changeset.action}>
-    Oops, something went wrong! Please check the errors below.
-  </.error>
   <section class="grid grid-cols-2 gap-8">
-    <.input field={f[:full_name]} type="text" label="Full Name" />
-    <.input field={f[:slug]} type="text" label="Profile Slug" />
-    <.input field={f[:headline]} type="text" label="Headline" />
-    <.input field={f[:email]} type="email" label="Email" />
+    <.input field={@form[:full_name]} type="text" label="Full Name" />
+    <.input field={@form[:slug]} type="text" label="Profile Slug" />
+    <.input field={@form[:headline]} type="text" label="Headline" />
+    <.input field={@form[:email]} type="email" label="Email" />
     <div class="col-span-2">
-      <.input field={f[:summary]} type="textarea" label="Professional Summary" />
+      <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
     </div>
   </section>
 
   <h2 class="text-xl">Profile Links</h2>
   <section class="grid grid-cols-2 gap-8">
-    <.input field={f[:link_github]} type="text" label="GitHub" icon="simple-github" />
-    <.input field={f[:link_linkedin]} type="text" label="LinkedIn" icon="simple-linkedin" />
-    <.input field={f[:link_website]} type="text" label="Website/Blog" icon="hero-globe-alt-micro" />
+    <.input field={@form[:link_github]} type="text" label="GitHub" icon="simple-github" />
+    <.input field={@form[:link_linkedin]} type="text" label="LinkedIn" icon="simple-linkedin" />
+    <.input
+      field={@form[:link_website]}
+      type="text"
+      label="Website/Blog"
+      icon="hero-globe-alt-micro"
+    />
     <.input name="resume" value={nil} type="file" label="Resume" icon="simple-adobeacrobatreader" />
   </section>
 
@@ -36,7 +44,7 @@
     />
 
     <.input
-      field={f[:technologies]}
+      field={@form[:technologies]}
       type="text"
       name="technologies"
       id="technologies"

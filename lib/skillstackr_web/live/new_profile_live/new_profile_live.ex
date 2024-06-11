@@ -7,7 +7,8 @@ defmodule SkillstackrWeb.NewProfileLive do
     socket =
       socket
       |> assign(:page_title, "New Profile")
-      |> assign(:changeset, Profiles.change_profile(%Profile{}))
+      |> assign(:trigger_submit, false)
+      |> assign(:form, to_form(Profiles.change_profile(%Profile{})))
       |> assign(:technologies, [])
 
     {:ok, socket}
@@ -21,5 +22,14 @@ defmodule SkillstackrWeb.NewProfileLive do
       end
 
     {:noreply, assign(socket, :technologies, results)}
+  end
+
+  def handle_event("validate", params, socket) do
+    new_form =
+      Profiles.change_profile(%Profile{}, params["profile"])
+      |> Map.put(:action, :validate)
+      |> to_form(as: "profile")
+
+    {:noreply, assign(socket, form: new_form)}
   end
 end
