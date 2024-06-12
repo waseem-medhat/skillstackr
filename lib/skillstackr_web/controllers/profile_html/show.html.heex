@@ -1,13 +1,14 @@
-<div id="profile-header" class="flex items-center gap-3 mt-5 mb-8">
+<div id="profile-header" class="flex items-center gap-5 mt-5 mb-8">
   <img
     class="inline-block size-20 aspect-square rounded-full"
     src={@user.photo_url}
     alt="Image Description"
   />
 
-  <h1 id="name-heading" class="text-4xl font-bold flex-grow">
-    <%= @profile.full_name %>
-  </h1>
+  <hgroup class="flex-grow">
+    <h1 class="text-4xl font-bold mb-1"><%= @profile.full_name %></h1>
+    <h2 class="text-xl font-semibold"><%= @profile.headline %></h2>
+  </hgroup>
 
   <div id="profile-links" class="flex gap-3">
     <.profile_link
@@ -33,9 +34,6 @@
 </div>
 
 <section id="professional-summary" class="mb-5">
-  <h2 class="text-xl font-bold mb-3">
-    <%= @profile.headline %>
-  </h2>
   <p id="summary-text">
     <%= @profile.summary %>
   </p>
@@ -44,34 +42,22 @@
 <section id="skills" class="grid grid-cols-2 gap-3">
   <div :if={length(@frontend) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Front-end</span>
-    <TechnologyComponents.tech_badge
-      :for={tech <- @frontend}
-      tech={tech.name}
-    />
+    <TechnologyComponents.tech_badge :for={tech <- @frontend} tech={tech.name} />
   </div>
 
   <div :if={length(@backend) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Back-end</span>
-    <TechnologyComponents.tech_badge
-      :for={tech <- @backend}
-      tech={tech.name}
-    />
+    <TechnologyComponents.tech_badge :for={tech <- @backend} tech={tech.name} />
   </div>
 
   <div :if={length(@devops) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">DevOps</span>
-    <TechnologyComponents.tech_badge
-      :for={tech <- @devops}
-      tech={tech.name}
-    />
+    <TechnologyComponents.tech_badge :for={tech <- @devops} tech={tech.name} />
   </div>
 
   <div :if={length(@devtools) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Dev tools</span>
-    <TechnologyComponents.tech_badge
-      :for={tech <- @devtools}
-      tech={tech.name}
-    />
+    <TechnologyComponents.tech_badge :for={tech <- @devtools} tech={tech.name} />
   </div>
 </section>
 
