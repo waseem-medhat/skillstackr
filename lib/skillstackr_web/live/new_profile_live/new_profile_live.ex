@@ -61,7 +61,8 @@ defmodule SkillstackrWeb.NewProfileLive do
     profile_params =
       params
       |> Map.get("profile")
-      |> Map.put("resume", %{"blob" => get_resume_blob(socket)})
+      |> Map.put("resume", get_resume_blob(socket))
+      |> Map.put("technologies", get_technologies(socket))
 
     case Profiles.create_profile(profile_params) do
       {:ok, _} ->
@@ -81,11 +82,20 @@ defmodule SkillstackrWeb.NewProfileLive do
         nil
 
       _ ->
-        consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
-          resume_blob = File.read!(path)
-          {:ok, resume_blob}
-        end)
-        |> Enum.at(0)
+        [resume_blob] =
+          consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
+            resume_blob = File.read!(path)
+            {:ok, resume_blob}
+          end)
+
+        %{"blob" => resume_blob}
     end
+  end
+
+  defp get_technologies(socket) do
+    socket.assigns.technologies
+    |> Enum.flat_map(fn {category, tech_list} ->
+      Enum.map(tech_list, &%{"name" => &1, "category" => category})
+    end)
   end
 end
