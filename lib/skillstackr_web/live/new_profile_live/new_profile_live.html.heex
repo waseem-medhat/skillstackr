@@ -1,4 +1,4 @@
-<.simple_form for={@form} phx-change="validate" action={~p"/profiles"} multipart>
+<.simple_form for={@form} phx-change="validate" phx-submit="save" action={~p"/profiles"} multipart>
   <h1 class="text-2xl font-bold mb-8">New profile</h1>
   <section class="grid grid-cols-2 gap-8">
     <.input field={@form[:full_name]} type="text" label="Full Name" />
@@ -20,7 +20,14 @@
       label="Website/Blog"
       icon="hero-globe-alt-micro"
     />
-    <.input name="resume" value={nil} type="file" label="Resume" icon="simple-adobeacrobatreader" />
+      <.live_file_input upload={@uploads.resume} />
+    <.input
+      name="resume"
+      value={nil}
+      type="file"
+      label="Resume"
+      icon="simple-adobeacrobatreader"
+    />
   </section>
 
   <hr class="dark:border-gray-800" />

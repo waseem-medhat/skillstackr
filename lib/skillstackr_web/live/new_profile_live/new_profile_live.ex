@@ -7,7 +7,6 @@ defmodule SkillstackrWeb.NewProfileLive do
     socket =
       socket
       |> assign(:page_title, "New Profile")
-      |> assign(:trigger_submit, false)
       |> assign(:form, to_form(Profiles.change_profile(%Profile{})))
       |> assign(:technologies, %{
         "frontend" => [],
@@ -16,6 +15,7 @@ defmodule SkillstackrWeb.NewProfileLive do
         "devtools" => []
       })
       |> assign(:tech_search_results, [])
+      |> allow_upload(:resume, accept: ~w(.pdf))
 
     {:ok, socket}
   end
@@ -50,6 +50,42 @@ defmodule SkillstackrWeb.NewProfileLive do
       end
 
     {:noreply,
-     assign(socket, :technologies, Map.put(socket.assigns.technologies, category, new_technologies))}
+     assign(
+       socket,
+       :technologies,
+       Map.put(socket.assigns.technologies, category, new_technologies)
+     )}
+  end
+
+  def handle_event("save", params, socket) do
+    profile_params =
+      params
+      |> Map.get("profile")
+      |> Map.put("resume", %{"blob" => get_resume_blob(socket)})
+
+    case Profiles.create_profile(profile_params) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Profile saved. Start adding some projects to it!")
+         |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
+  end
+
+  defp get_resume_blob(socket) do
+    case socket.assigns.uploads.resume.entries do
+      [] ->
+        nil
+
+      _ ->
+        consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
+          resume_blob = File.read!(path)
+          {:ok, resume_blob}
+        end)
+        |> Enum.at(0)
+    end
   end
 end

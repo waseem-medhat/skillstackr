@@ -16,6 +16,7 @@ defmodule SkillstackrWeb.ProfileController do
 
     conn
     |> assign(:user, user)
+    |> assign(:page_title, profile.full_name)
     |> assign(:profile, profile)
     |> render(:show)
   end
