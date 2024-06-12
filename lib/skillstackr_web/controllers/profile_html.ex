@@ -8,14 +8,6 @@ defmodule SkillstackrWeb.ProfileHTML do
 
   embed_templates "profile_html/*"
 
-  def tech_badge(assigns) do
-    assigns = assign(assigns, :size, Map.get(assigns, :size, 25))
-
-    ~H"""
-    <img src={"https://cdn.simpleicons.org/#{@tech}"} width={@size} alt={"#{@tech}"} />
-    """
-  end
-
   def project_card(assigns) do
     ~H"""
     <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
@@ -25,7 +17,7 @@ defmodule SkillstackrWeb.ProfileHTML do
           <%= @project.title %>
         </h3>
         <div class="flex gap-2 mt-1 mb-2">
-          <.tech_badge :for={tech <- @project.technologies} tech={tech} size={18} />
+          <TechnologyComponents.tech_badge :for={tech <- @project.technologies} tech={tech} size={18} />
         </div>
         <p class="mt-1 text-gray-500 dark:text-neutral-400">
           <%= @project.description %>

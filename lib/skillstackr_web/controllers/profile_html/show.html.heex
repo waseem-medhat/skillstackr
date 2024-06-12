@@ -41,31 +41,37 @@
   </p>
 </section>
 
-<div class="h-10 w-full flex gap-2 my-5">
-  <div :for={tech <- @profile.technologies} class="w-8">
-    <%= raw(tech.svg) %>
-  </div>
-</div>
-
 <section id="skills" class="grid grid-cols-2 gap-3">
-  <div class="flex items-center gap-2">
+  <div :if={length(@frontend) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Front-end</span>
-    <.tech_badge :for={tech <- @user.skills.frontend} tech={tech} />
+    <TechnologyComponents.tech_badge
+      :for={tech <- @frontend}
+      tech={tech.name}
+    />
   </div>
 
-  <div class="flex items-center gap-2">
+  <div :if={length(@backend) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Back-end</span>
-    <.tech_badge :for={tech <- @user.skills.backend} tech={tech} />
+    <TechnologyComponents.tech_badge
+      :for={tech <- @backend}
+      tech={tech.name}
+    />
   </div>
 
-  <div class="flex items-center gap-2">
+  <div :if={length(@devops) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">DevOps</span>
-    <.tech_badge :for={tech <- @user.skills.devops} tech={tech} />
+    <TechnologyComponents.tech_badge
+      :for={tech <- @devops}
+      tech={tech.name}
+    />
   </div>
 
-  <div class="flex items-center gap-2">
+  <div :if={length(@devtools) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Dev tools</span>
-    <.tech_badge :for={tech <- @user.skills.dev_tools} tech={tech} />
+    <TechnologyComponents.tech_badge
+      :for={tech <- @devtools}
+      tech={tech.name}
+    />
   </div>
 </section>
 

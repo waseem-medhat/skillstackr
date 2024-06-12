@@ -7,17 +7,14 @@ defmodule SkillstackrWeb.ProfileController do
     user = get_user(id)
     profile = Profiles.get_profile_by_slug!(id)
 
-    technologies =
-      profile
-      |> Map.get(:technologies)
-      |> Enum.map(fn t -> %{name: t.name, svg: TechnologyComponents.name_to_svg(t.name)} end)
-
-    profile = Map.put(profile, :technologies, technologies)
-
     conn
     |> assign(:user, user)
     |> assign(:page_title, profile.full_name)
     |> assign(:profile, profile)
+    |> assign(:frontend, Enum.filter(profile.technologies, &(&1.category == "frontend")))
+    |> assign(:backend, Enum.filter(profile.technologies, &(&1.category == "backend")))
+    |> assign(:devops, Enum.filter(profile.technologies, &(&1.category == "devops")))
+    |> assign(:devtools, Enum.filter(profile.technologies, &(&1.category == "devtools")))
     |> render(:show)
   end
 
@@ -68,6 +65,7 @@ defmodule SkillstackrWeb.ProfileController do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         IO.inspect(changeset)
+
         conn
         |> assign(:changeset, changeset)
         |> assign(:technologies, TechnologyComponents.get_names())
