@@ -19,7 +19,7 @@
       </a>
       <section class="text-sm font-medium">
         <ul class="flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-        <.theme_switcher />
+          <.theme_switcher />
           <%= if @current_account do %>
             <li class="leading-6 text-zinc-900">
               <%= @current_account.email %>
@@ -27,7 +27,7 @@
             <li>
               <.link
                 href={~p"/accounts/settings"}
-                class="leading-6 text-zinc-900 hover:text-zinc-700"
+                class="hover:text-zinc-700 dark:hover:text-zinc-300"
               >
                 Settings
               </.link>
@@ -36,7 +36,7 @@
               <.link
                 href={~p"/accounts/log_out"}
                 method="delete"
-                class="leading-6 text-zinc-900 hover:text-zinc-700"
+                class="hover:text-zinc-700 dark:hover:text-zinc-300"
               >
                 Log out
               </.link>
@@ -45,7 +45,7 @@
             <li>
               <.link
                 href={~p"/accounts/register"}
-                class="leading-6 text-zinc-900 hover:text-zinc-700"
+                class="hover:text-zinc-700 dark:hover:text-zinc-300"
               >
                 Register
               </.link>
@@ -53,7 +53,7 @@
             <li>
               <.link
                 href={~p"/accounts/log_in"}
-                class="leading-6 text-zinc-900 hover:text-zinc-700"
+                class="hover:text-zinc-700 dark:hover:text-zinc-300"
               >
                 Log in
               </.link>
