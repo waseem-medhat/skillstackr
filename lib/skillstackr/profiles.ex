@@ -245,8 +245,14 @@ defmodule Skillstackr.Profiles do
       ** (Ecto.NoResultsError)
 
   """
-  def get_resume_blob!(id) do
-    Repo.one!(from r in Resume, where: r.id == ^id, select: r.blob)
+  def get_resume_blob!(slug) do
+    Repo.one!(
+      from p in Profile,
+        join: r in Resume,
+        on: r.profile_id == p.id,
+        where: p.slug == ^slug,
+        select: r.blob
+    )
   end
 
   @doc """

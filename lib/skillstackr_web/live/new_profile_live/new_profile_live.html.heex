@@ -20,14 +20,8 @@
       label="Website/Blog"
       icon="hero-globe-alt-micro"
     />
-      <.live_file_input upload={@uploads.resume} />
-    <.input
-      name="resume"
-      value={nil}
-      type="file"
-      label="Resume"
-      icon="simple-adobeacrobatreader"
-    />
+    <.live_file_input upload={@uploads.resume} required={true} />
+    <.input name="resume" value={nil} type="file" label="Resume" icon="simple-adobeacrobatreader" />
   </section>
 
   <hr class="dark:border-gray-800" />
