@@ -7,6 +7,7 @@ defmodule Skillstackr.Technologies.Technology do
   @foreign_key_type :binary_id
   schema "technologies" do
     field :name, :string
+    field :category, :string
 
     many_to_many :profiles, Profiles.Profile, join_through: "profiles_technologies"
   end
@@ -14,7 +15,7 @@ defmodule Skillstackr.Technologies.Technology do
   @doc false
   def changeset(technology, attrs) do
     technology
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :category])
+    |> validate_required([:name, :category])
   end
 end
