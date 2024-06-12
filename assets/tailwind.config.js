@@ -20,6 +20,10 @@ module.exports = {
     extend: {
       colors: {
         brand: "#FD4F00",
+      },
+      fontFamily: {
+        cairo: "Cairo, sans-serif",
+        body: "'Open Sans', sans-serif"
       }
     },
   },

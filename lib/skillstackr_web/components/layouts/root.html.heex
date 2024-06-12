@@ -10,15 +10,22 @@
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
-  <body class="bg-slate-100 antialiased dark:bg-zinc-900 dark:text-white">
-    <header class="fixed top-0 w-full flex items-center justify-between px-5 py-4 bg-slate-50 dark:bg-zinc-950 shadow z-10">
+  <body class="bg-slate-100 antialiased dark:bg-zinc-900 dark:text-white font-body">
+    <header class="fixed top-0 w-full flex items-center justify-between px-8 py-4 bg-slate-50 dark:bg-zinc-950 shadow z-10 text-zinc-800 dark:text-zinc-200">
       <a href={~p"/"}>
-        <p class="font-bold">Skillstackr</p>
+        <p class="font-cairo font-bold text-3xl">Skillstackr</p>
       </a>
-      <section class="text-sm font-medium">
-        <ul class="flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+      <section class="font-medium text-sm">
+        <ul class="flex items-center gap-4 justify-end">
           <.theme_switcher />
           <%= if @current_account do %>
             <li class="leading-6 text-zinc-900">
@@ -62,7 +69,7 @@
         </ul>
       </section>
     </header>
-    <main class="container mx-auto max-w-5xl px-5 pt-16">
+    <main class="container mx-auto max-w-5xl px-5 mt-24">
       <%= @inner_content %>
     </main>
   </body>
