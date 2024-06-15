@@ -32,21 +32,20 @@ defmodule Mix.Tasks.Simpleicons do
   defp parse_name(<<char::utf8, rest::binary>>, title),
     do: parse_name(rest, <<title::bitstring, char::utf8>>)
 
-  defp parse_files() do
-    File.ls!()
-    |> Enum.reduce(%{translation_map: %{}, svg_map: %{}}, &build_map_entry/2)
-  end
-
   defp build_map_entry(file_name, icon_map) do
     file = File.read!(file_name)
     name = parse_name(file)
     slug = String.replace(file_name, ~r/\.svg$/, "")
 
-    icon_map
-    |> put_in([:translation_map, slug], %{translation: name, common_key: name})
-    |> put_in([:translation_map, name], %{translation: slug, common_key: name})
-    |> put_in([:svg_map, name], file)
+    # icon_map
+    # |> put_in([:translation_map, slug], %{translation: name, common_key: name})
+    # |> put_in([:translation_map, name], %{translation: slug, common_key: name})
+    # |> put_in([:svg_map, name], file)
+
+    Map.put(icon_map, name, %{slug: slug, svg: file})
   end
+
+  defp parse_files(), do: Enum.reduce(File.ls!(), %{}, &build_map_entry/2)
 
   def run([]) do
     assets_path = Path.join(["priv", "static", "assets"])
