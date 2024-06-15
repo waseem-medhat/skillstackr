@@ -17,15 +17,6 @@ defmodule SkillstackrWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SkillstackrWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-    live "/profiles/new", NewProfileLive
-    resources "/profiles", ProfileController, except: [:index, :new]
-    get "/profiles/:slug/resume.pdf", ProfileController, :get_resume
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", SkillstackrWeb do
   #   pipe_through :api
@@ -69,6 +60,7 @@ defmodule SkillstackrWeb.Router do
 
     live_session :require_authenticated_account,
       on_mount: [{SkillstackrWeb.AccountAuth, :ensure_authenticated}] do
+      live "/profiles/new", NewProfileLive
       live "/accounts/settings", AccountSettingsLive, :edit
       live "/accounts/settings/confirm_email/:token", AccountSettingsLive, :confirm_email
     end
@@ -84,5 +76,13 @@ defmodule SkillstackrWeb.Router do
       live "/accounts/confirm/:token", AccountConfirmationLive, :edit
       live "/accounts/confirm", AccountConfirmationInstructionsLive, :new
     end
+  end
+
+  scope "/", SkillstackrWeb do
+    pipe_through :browser
+
+    get "/", PageController, :home
+    resources "/profiles", ProfileController, except: [:index, :new]
+    get "/profiles/:slug/resume.pdf", ProfileController, :get_resume
   end
 end
