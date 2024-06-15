@@ -26,7 +26,6 @@
       </a>
       <section class="font-medium text-sm">
         <ul class="flex items-center gap-4 justify-end">
-          <.theme_switcher />
           <%= if @current_account do %>
             <li class="leading-6 opacity-60">
               <%= @current_account.email %>
@@ -51,7 +50,7 @@
           <% else %>
             <li>
               <.link
-                href={~p"/accounts/register"}
+                navigate={~p"/accounts/register"}
                 class="hover:text-zinc-700 dark:hover:text-zinc-300"
               >
                 Register
@@ -59,13 +58,14 @@
             </li>
             <li>
               <.link
-                href={~p"/accounts/log_in"}
+                navigate={~p"/accounts/log_in"}
                 class="hover:text-zinc-700 dark:hover:text-zinc-300"
               >
                 Log in
               </.link>
             </li>
           <% end %>
+          <.theme_switcher />
         </ul>
       </section>
     </header>
