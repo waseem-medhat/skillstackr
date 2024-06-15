@@ -10,7 +10,7 @@ defmodule SkillstackrWeb.AccountSettingsLive do
       <:subtitle>Manage your account email address and password settings</:subtitle>
     </.header>
 
-    <div class="space-y-12 divide-y">
+    <div class="space-y-12">
       <div>
         <.simple_form
           for={@email_form}
@@ -33,6 +33,9 @@ defmodule SkillstackrWeb.AccountSettingsLive do
           </:actions>
         </.simple_form>
       </div>
+
+      <hr class="dark:border-gray-800" />
+
       <div>
         <.simple_form
           for={@password_form}
@@ -93,6 +96,7 @@ defmodule SkillstackrWeb.AccountSettingsLive do
 
     socket =
       socket
+      |> assign(:page_title, "Account Settings")
       |> assign(:current_password, nil)
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, account.email)

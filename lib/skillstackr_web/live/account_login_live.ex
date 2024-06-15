@@ -8,7 +8,7 @@ defmodule SkillstackrWeb.AccountLoginLive do
         Log in to account
         <:subtitle>
           Don't have an account?
-          <.link navigate={~p"/accounts/register"} class="font-semibold text-brand hover:underline">
+          <.link navigate={~p"/accounts/register"} class="font-semibold text-blue-600 hover:text-blue-500">
             Sign up
           </.link>
           for an account now.
@@ -38,6 +38,12 @@ defmodule SkillstackrWeb.AccountLoginLive do
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "account")
-    {:ok, assign(socket, form: form), temporary_assigns: [form: form]}
+
+    socket =
+      socket
+      |> assign(:page_title, "Log In")
+      |> assign(:form, form)
+
+    {:ok, socket, temporary_assigns: [form: form]}
   end
 end

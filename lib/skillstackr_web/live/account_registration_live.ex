@@ -11,7 +11,7 @@ defmodule SkillstackrWeb.AccountRegistrationLive do
         Register for an account
         <:subtitle>
           Already registered?
-          <.link navigate={~p"/accounts/log_in"} class="font-semibold text-brand hover:underline">
+          <.link navigate={~p"/accounts/log_in"} class="font-semibold text-blue-600 hover:text-blue-500">
             Log in
           </.link>
           to your account now.

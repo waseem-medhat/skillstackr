@@ -311,7 +311,7 @@ defmodule SkillstackrWeb.CoreComponents do
 
     ~H"""
     <div phx-feedback-for={@name}>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+      <label class="flex items-center gap-2 text-sm leading-6">
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -319,7 +319,7 @@ defmodule SkillstackrWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
           {@rest}
         />
         <%= @label %>
@@ -439,10 +439,10 @@ defmodule SkillstackrWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -702,7 +702,7 @@ defmodule SkillstackrWeb.CoreComponents do
     ~H"""
     <button
       type="button"
-      class="hs-dark-mode-active:hidden block hs-dark-mode group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-neutral-400 dark:hover:text-neutral-500"
+      class="hs-dark-mode-active:hidden block hs-dark-mode group flex items-center hover:text-blue-600 font-medium dark:hover:text-neutral-400"
       data-hs-theme-click-value="dark"
     >
       <svg
@@ -722,7 +722,7 @@ defmodule SkillstackrWeb.CoreComponents do
     </button>
     <button
       type="button"
-      class="hs-dark-mode-active:block hidden hs-dark-mode group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-neutral-400 dark:hover:text-neutral-500"
+      class="hs-dark-mode-active:block hidden hs-dark-mode group flex items-center hover:text-blue-600 font-medium dark:hover:text-neutral-400"
       data-hs-theme-click-value="light"
     >
       <svg
