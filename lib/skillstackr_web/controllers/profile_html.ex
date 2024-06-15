@@ -126,7 +126,7 @@ defmodule SkillstackrWeb.ProfileHTML do
     ~H"""
     <a
       href={@url}
-      class="flex 6tems-center gap-2 opacity-70 hover:opacity-100 transition-all duration-200"
+      class="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all duration-200"
       target="_blank"
     >
       <.icon name={@icon_name} size={20} />

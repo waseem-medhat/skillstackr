@@ -367,30 +367,6 @@ defmodule SkillstackrWeb.CoreComponents do
     """
   end
 
-  # File inputs, this component is a merge between what came in with Phoenix
-  # and the Preline file input component
-  def input(%{type: "file"} = assigns) do
-    ~H"""
-    <div phx-feedback-for={@name}>
-      <.label for={@id} icon={@icon}><%= @label %></.label>
-      <input
-        type={@type}
-        name={@name}
-        id={@id}
-        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        class={[
-          "mt-2 block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
-        ]}
-        {@rest}
-      />
-      <.error :for={msg <- @errors}><%= msg %></.error>
-    </div>
-    """
-  end
-
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
@@ -719,6 +695,9 @@ defmodule SkillstackrWeb.CoreComponents do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
 
+  @doc """
+  Preline's theme switcher component.
+  """
   def theme_switcher(assigns) do
     ~H"""
     <button
