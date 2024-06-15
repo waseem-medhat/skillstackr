@@ -8,6 +8,7 @@ defmodule Mix.Tasks.Simpleicons do
   defp download_icons!(download_dir, repo_url) do
     if not File.exists?(download_dir) do
       IO.puts("Icon repo clone not found, cloning...")
+
       case System.cmd("git", ["clone", repo_url, download_dir]) do
         {_, 0} -> :ok
         _ -> raise("error cloning")
@@ -17,20 +18,34 @@ defmodule Mix.Tasks.Simpleicons do
     Path.join(download_dir, "icons")
   end
 
+  defp parse_name(contents, title \\ nil)
+
+  defp parse_name(<<"<title>", char::utf8, rest::binary>>, _title),
+    do: parse_name(rest, <<char::utf8>>)
+
+  defp parse_name(<<"</title>", _rest::binary>>, title),
+    do: title
+
+  defp parse_name(<<_char::utf8, rest::binary>>, nil),
+    do: parse_name(rest, nil)
+
+  defp parse_name(<<char::utf8, rest::binary>>, title),
+    do: parse_name(rest, <<title::bitstring, char::utf8>>)
+
+  defp parse_files() do
+    File.ls!()
+    |> Enum.reduce(%{translation_map: %{}, svg_map: %{}}, &build_map_entry/2)
+  end
+
   defp build_map_entry(file_name, icon_map) do
-    {:ok, file} = File.read(file_name)
-    [_ | [name | _]] = Regex.run(~r/<title>(.+)<\/title>/, file)
+    file = File.read!(file_name)
+    name = parse_name(file)
     slug = String.replace(file_name, ~r/\.svg$/, "")
 
     icon_map
     |> put_in([:translation_map, slug], %{translation: name, common_key: name})
     |> put_in([:translation_map, name], %{translation: slug, common_key: name})
     |> put_in([:svg_map, name], file)
-  end
-
-  defp parse_files() do
-    File.ls!()
-    |> Enum.reduce(%{translation_map: %{}, svg_map: %{}}, &build_map_entry/2)
   end
 
   def run([]) do
