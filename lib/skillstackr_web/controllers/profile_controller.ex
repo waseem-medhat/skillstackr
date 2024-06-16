@@ -2,9 +2,9 @@ defmodule SkillstackrWeb.ProfileController do
   alias Skillstackr.Profiles
   use SkillstackrWeb, :controller
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"slug" => slug}) do
     user = mock_user()
-    profile = Profiles.get_profile_by_slug!(id)
+    profile = Profiles.get_profile_by_slug!(slug)
 
     conn
     |> assign(:user, user)
