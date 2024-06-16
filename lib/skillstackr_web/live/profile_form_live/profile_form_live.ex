@@ -1,4 +1,4 @@
-defmodule SkillstackrWeb.NewProfileLive do
+defmodule SkillstackrWeb.ProfileFormLive do
   alias Skillstackr.Profiles
   alias Skillstackr.Profiles.Profile
   use SkillstackrWeb, :live_view
