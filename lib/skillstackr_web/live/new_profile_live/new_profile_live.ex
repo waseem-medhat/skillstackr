@@ -63,6 +63,7 @@ defmodule SkillstackrWeb.NewProfileLive do
       |> Map.get("profile")
       |> Map.put("resume", get_resume_blob(socket))
       |> Map.put("technologies", get_technologies(socket))
+      |> Map.put("account_id", socket.assigns.current_account.id) 
 
     case Profiles.create_profile(profile_params) do
       {:ok, _} ->

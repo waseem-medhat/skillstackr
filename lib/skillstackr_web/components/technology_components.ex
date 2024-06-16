@@ -20,7 +20,6 @@ defmodule TechnologyComponents do
     search_str = String.downcase(search_str)
 
     @technology_map
-    |> Map.get("svg_map")
     |> Map.keys()
     |> Enum.reduce([], fn s, acc ->
       s_downcase = String.downcase(s)
