@@ -21,9 +21,18 @@
 
   <body class="bg-slate-100 antialiased dark:bg-zinc-900 dark:text-white font-body pt-[68px]">
     <header class="fixed top-0 w-full flex items-center justify-between px-8 py-4 bg-slate-50 dark:bg-zinc-950 shadow z-10 text-zinc-800 dark:text-zinc-200">
-      <a href={~p"/"}>
-        <p class="font-cairo font-bold text-3xl">Skillstackr</p>
-      </a>
+      <section>
+        <ul class="flex items-center gap-4 justify-end">
+          <li>
+            <.link navigate={~p"/"}>
+              <p class="font-cairo font-bold text-3xl">Skillstackr</p>
+            </.link>
+          </li>
+          <li>
+            <.link navigate={~p"/projects"}>Projects</.link>
+          </li>
+        </ul>
+      </section>
       <section class="font-medium text-sm">
         <ul class="flex items-center gap-4 justify-end">
           <%= if @current_account do %>

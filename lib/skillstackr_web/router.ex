@@ -61,6 +61,7 @@ defmodule SkillstackrWeb.Router do
     live_session :require_authenticated_account,
       on_mount: [{SkillstackrWeb.AccountAuth, :ensure_authenticated}] do
       live "/profiles/new", NewProfileLive
+      live "/projects", ProjectsLive
       live "/accounts/settings", AccountSettingsLive, :edit
       live "/accounts/settings/confirm_email/:token", AccountSettingsLive, :confirm_email
     end
