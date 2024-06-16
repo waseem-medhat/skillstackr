@@ -68,7 +68,7 @@ defmodule SkillstackrWeb.NewProfileLive do
      )}
   end
 
-  def handle_event("save", params, socket) do
+  def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
     profile_params =
       params
       |> Map.get("profile")
@@ -76,22 +76,7 @@ defmodule SkillstackrWeb.NewProfileLive do
       |> Map.put("technologies", get_technologies(socket))
       |> Map.put("account_id", socket.assigns.current_account.id)
 
-    profile_params =
-      cond do
-        socket.assigns.live_action == :edit and is_nil(profile_params["resume"]) ->
-          Map.drop(profile_params, ["resume"])
-
-        true ->
-          profile_params
-      end
-
-    save_result =
-      case socket.assigns.live_action do
-        :edit -> Profiles.update_profile(socket.assigns.profile, profile_params)
-        :new -> Profiles.create_profile(profile_params)
-      end
-
-    case save_result do
+    case Profiles.create_profile(profile_params) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -102,6 +87,32 @@ defmodule SkillstackrWeb.NewProfileLive do
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
+
+  def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
+    profile_params =
+      params
+      |> Map.get("profile")
+      |> Map.put("technologies", get_technologies(socket))
+      |> Map.put("account_id", socket.assigns.current_account.id)
+
+    profile_params =
+      case get_resume_blob(socket) do
+        nil -> profile_params
+        blob -> Map.put(profile_params, "resume", blob)
+      end
+
+    case Profiles.update_profile(socket.assigns.profile, profile_params) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Profile saved!")
+         |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
+  end
+
 
   defp get_resume_blob(socket) do
     case socket.assigns.uploads.resume.entries do
