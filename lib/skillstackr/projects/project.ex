@@ -10,7 +10,7 @@ defmodule Skillstackr.Projects.Project do
     field :link_repo, :string
     field :link_website, :string
 
-    belongs_to :profile, Profiles.Profile
+    many_to_many :profiles, Profiles.Profile, join_through: "profiles_projects"
     timestamps(type: :utc_datetime)
   end
 

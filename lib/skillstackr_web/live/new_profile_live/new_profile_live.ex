@@ -3,17 +3,28 @@ defmodule SkillstackrWeb.NewProfileLive do
   alias Skillstackr.Profiles.Profile
   use SkillstackrWeb, :live_view
 
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
+    profile =
+      case socket.assigns.live_action do
+        :edit -> Profiles.get_profile_by_slug!(params["id"])
+        :new -> %Profile{}
+      end
+
+    IO.inspect(profile.technologies)
+
+    technologies = %{
+      "frontend" => [],
+      "backend" => [],
+      "devops" => [],
+      "devtools" => []
+    }
+
     socket =
       socket
       |> assign(:page_title, "New Profile")
-      |> assign(:form, to_form(Profiles.change_profile(%Profile{})))
-      |> assign(:technologies, %{
-        "frontend" => [],
-        "backend" => [],
-        "devops" => [],
-        "devtools" => []
-      })
+      |> assign(:profile, profile)
+      |> assign(:form, to_form(Profiles.change_profile(profile)))
+      |> assign(:technologies, technologies)
       |> assign(:tech_search_results, [])
       |> allow_upload(:resume, accept: ~w(.pdf))
 
@@ -63,9 +74,24 @@ defmodule SkillstackrWeb.NewProfileLive do
       |> Map.get("profile")
       |> Map.put("resume", get_resume_blob(socket))
       |> Map.put("technologies", get_technologies(socket))
-      |> Map.put("account_id", socket.assigns.current_account.id) 
+      |> Map.put("account_id", socket.assigns.current_account.id)
 
-    case Profiles.create_profile(profile_params) do
+    profile_params =
+      cond do
+        socket.assigns.live_action == :edit and is_nil(profile_params["resume"]) ->
+          Map.drop(profile_params, ["resume"])
+
+        true ->
+          profile_params
+      end
+
+    save_result =
+      case socket.assigns.live_action do
+        :edit -> Profiles.update_profile(socket.assigns.profile, profile_params)
+        :new -> Profiles.create_profile(profile_params)
+      end
+
+    case save_result do
       {:ok, _} ->
         {:noreply,
          socket

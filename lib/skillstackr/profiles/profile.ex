@@ -16,8 +16,8 @@ defmodule Skillstackr.Profiles.Profile do
 
     timestamps(type: :utc_datetime)
     belongs_to :account, Accounts.Account
-    has_many :projects, Projects.Project
     has_one :resume, Profiles.Resume
+    many_to_many :projects, Projects.Project, join_through: "profiles_projects"
     many_to_many :technologies, Technologies.Technology, join_through: "profiles_technologies"
   end
 
