@@ -20,20 +20,27 @@
   </head>
 
   <body class="bg-slate-100 antialiased dark:bg-zinc-900 dark:text-white font-body pt-[68px]">
-    <header class="fixed top-0 w-full flex items-center justify-between px-8 py-4 bg-slate-50 dark:bg-zinc-950 shadow z-10 text-zinc-800 dark:text-zinc-200">
-      <section>
-        <ul class="flex items-center gap-4 justify-end">
-          <li>
-            <.link navigate={~p"/"}>
-              <p class="font-cairo font-bold text-3xl">Skillstackr</p>
-            </.link>
-          </li>
-          <li>
-            <.link navigate={~p"/projects"}>Projects</.link>
-          </li>
-        </ul>
+    <header class="fixed top-0 w-full flex items-center justify-between px-8 py-4 bg-slate-50 dark:bg-zinc-950 shadow z-10 text-zinc-800 dark:text-zinc-200 font-medium text-sm">
+      <section class="flex gap-x-8 items-center">
+        <.link navigate={~p"/"}>
+          <p class="font-cairo font-bold text-3xl">Skillstackr</p>
+        </.link>
+        <%= if @current_account do %>
+          <ul class="flex items-center gap-4 justify-end">
+            <li>
+              <.link class="hover:text-zinc-700 dark:hover:text-zinc-300" navigate={~p"/profiles"}>
+                Profiles
+              </.link>
+            </li>
+            <li>
+              <.link class="hover:text-zinc-700 dark:hover:text-zinc-300" navigate={~p"/projects"}>
+                Projects
+              </.link>
+            </li>
+          </ul>
+        <% end %>
       </section>
-      <section class="font-medium text-sm">
+      <section>
         <ul class="flex items-center gap-4 justify-end">
           <%= if @current_account do %>
             <li class="leading-6 opacity-60">
