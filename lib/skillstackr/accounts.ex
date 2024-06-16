@@ -60,6 +60,15 @@ defmodule Skillstackr.Accounts do
   """
   def get_account!(id), do: Repo.get!(Account, id)
 
+  @doc """
+  Gets all profile slugs associated with the given account.
+  """
+  def get_account_slugs!(account) do
+    Repo.preload(account, :profiles)
+    |> Map.get(:profiles)
+    |> Enum.map(& &1.slug)
+  end
+
   ## Account registration
 
   @doc """
@@ -154,7 +163,10 @@ defmodule Skillstackr.Accounts do
 
     Ecto.Multi.new()
     |> Ecto.Multi.update(:account, changeset)
-    |> Ecto.Multi.delete_all(:tokens, AccountToken.by_account_and_contexts_query(account, [context]))
+    |> Ecto.Multi.delete_all(
+      :tokens,
+      AccountToken.by_account_and_contexts_query(account, [context])
+    )
   end
 
   @doc ~S"""
@@ -166,12 +178,21 @@ defmodule Skillstackr.Accounts do
       {:ok, %{to: ..., body: ...}}
 
   """
-  def deliver_account_update_email_instructions(%Account{} = account, current_email, update_email_url_fun)
+  def deliver_account_update_email_instructions(
+        %Account{} = account,
+        current_email,
+        update_email_url_fun
+      )
       when is_function(update_email_url_fun, 1) do
-    {encoded_token, account_token} = AccountToken.build_email_token(account, "change:#{current_email}")
+    {encoded_token, account_token} =
+      AccountToken.build_email_token(account, "change:#{current_email}")
 
     Repo.insert!(account_token)
-    AccountNotifier.deliver_update_email_instructions(account, update_email_url_fun.(encoded_token))
+
+    AccountNotifier.deliver_update_email_instructions(
+      account,
+      update_email_url_fun.(encoded_token)
+    )
   end
 
   @doc """
@@ -263,7 +284,11 @@ defmodule Skillstackr.Accounts do
     else
       {encoded_token, account_token} = AccountToken.build_email_token(account, "confirm")
       Repo.insert!(account_token)
-      AccountNotifier.deliver_confirmation_instructions(account, confirmation_url_fun.(encoded_token))
+
+      AccountNotifier.deliver_confirmation_instructions(
+        account,
+        confirmation_url_fun.(encoded_token)
+      )
     end
   end
 
@@ -286,7 +311,10 @@ defmodule Skillstackr.Accounts do
   defp confirm_account_multi(account) do
     Ecto.Multi.new()
     |> Ecto.Multi.update(:account, Account.confirm_changeset(account))
-    |> Ecto.Multi.delete_all(:tokens, AccountToken.by_account_and_contexts_query(account, ["confirm"]))
+    |> Ecto.Multi.delete_all(
+      :tokens,
+      AccountToken.by_account_and_contexts_query(account, ["confirm"])
+    )
   end
 
   ## Reset password
@@ -304,7 +332,11 @@ defmodule Skillstackr.Accounts do
       when is_function(reset_password_url_fun, 1) do
     {encoded_token, account_token} = AccountToken.build_email_token(account, "reset_password")
     Repo.insert!(account_token)
-    AccountNotifier.deliver_reset_password_instructions(account, reset_password_url_fun.(encoded_token))
+
+    AccountNotifier.deliver_reset_password_instructions(
+      account,
+      reset_password_url_fun.(encoded_token)
+    )
   end
 
   @doc """

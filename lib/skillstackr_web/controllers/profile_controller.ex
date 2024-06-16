@@ -1,15 +1,27 @@
 defmodule SkillstackrWeb.ProfileController do
-  alias Skillstackr.Profiles
+  alias Skillstackr.{Accounts, Profiles}
   use SkillstackrWeb, :controller
 
   def show(conn, %{"slug" => slug}) do
     user = mock_user()
     profile = Profiles.get_profile_by_slug!(slug)
 
+    editable =
+      case conn.assigns.current_account do
+        nil ->
+          nil
+
+        acc ->
+          acc
+          |> Accounts.get_account_slugs!()
+          |> Enum.find_value(&(&1 == slug))
+      end
+
     conn
     |> assign(:user, user)
     |> assign(:page_title, profile.full_name)
     |> assign(:profile, profile)
+    |> assign(:editable, editable)
     |> assign(:frontend, Enum.filter(profile.technologies, &(&1.category == "frontend")))
     |> assign(:backend, Enum.filter(profile.technologies, &(&1.category == "backend")))
     |> assign(:devops, Enum.filter(profile.technologies, &(&1.category == "devops")))
