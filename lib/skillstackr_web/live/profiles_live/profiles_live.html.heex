@@ -1,1 +1,29 @@
 <.page_heading page_title={@page_title} />
+
+<div
+  :for={p <- @profiles}
+  class="relative bg-white dark:bg-black rounded-lg my-5 shadow-lg p-5 transition"
+>
+  <hgroup class="flex-grow mb-3">
+    <h1 class="text-2xl font-bold mb-1"><%= p.full_name %></h1>
+    <h2 class="text-lg font-semibold"><%= p.headline %></h2>
+  </hgroup>
+
+  <p><%= p.summary || "No summary" %></p>
+
+  <div class="absolute top-5 right-5 flex gap-2 items-center">
+    <.link
+      navigate={~p"/profiles/#{p.slug}"}
+      class="bg-blue-500 text-white rounded-lg py-1.5 px-2 inline-flex items-center hover:bg-blue-400 z-10 text-sm gap-1"
+    >
+      <.icon name="hero-book-open-micro" /> Open
+    </.link>
+
+    <.link
+      navigate={~p"/profiles/#{p.slug}/edit"}
+      class="bg-blue-500 text-white rounded-lg py-1.5 px-2 inline-flex items-center hover:bg-blue-400 z-10 text-sm gap-1"
+    >
+      <.icon name="hero-pencil-square-micro" /> Edit
+    </.link>
+  </div>
+</div>

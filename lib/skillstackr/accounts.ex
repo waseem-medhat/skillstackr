@@ -64,9 +64,19 @@ defmodule Skillstackr.Accounts do
   Gets all profile slugs associated with the given account.
   """
   def get_account_slugs!(account) do
-    Repo.preload(account, :profiles)
+    account
+    |> Repo.preload(:profiles)
     |> Map.get(:profiles)
     |> Enum.map(& &1.slug)
+  end
+
+  @doc """
+  Gets all profiles associated with the given account.
+  """
+  def get_account_profiles!(account) do
+    account
+    |> Repo.preload(:profiles)
+    |> Map.get(:profiles)
   end
 
   ## Account registration
