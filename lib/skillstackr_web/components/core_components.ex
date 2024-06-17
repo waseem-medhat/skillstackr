@@ -451,6 +451,12 @@ defmodule SkillstackrWeb.CoreComponents do
     """
   end
 
+  def page_heading(assigns) do
+    ~H"""
+    <h1 class="text-3xl font-light mb-8"><%= @page_title %></h1>
+    """
+  end
+
   @doc ~S"""
   Renders a table with generic styling.
 
