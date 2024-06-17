@@ -13,12 +13,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
     technologies =
       Enum.reduce(
         profile.technologies,
-        %{
-          "frontend" => [],
-          "backend" => [],
-          "devops" => [],
-          "devtools" => []
-        },
+        %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []},
         fn %{name: name, category: category}, acc_map ->
           Map.put(acc_map, category, [name | acc_map[category]])
         end
