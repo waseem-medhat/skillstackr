@@ -18,7 +18,10 @@ defmodule Skillstackr.Profiles.Profile do
     belongs_to :account, Accounts.Account
     has_one :resume, Profiles.Resume
     many_to_many :projects, Projects.Project, join_through: "profiles_projects"
-    many_to_many :technologies, Technologies.Technology, join_through: "profiles_technologies"
+
+    many_to_many :technologies, Technologies.Technology,
+      join_through: "profiles_technologies",
+      on_replace: :delete
   end
 
   @doc false
@@ -39,7 +42,9 @@ defmodule Skillstackr.Profiles.Profile do
     |> unique_constraint(:slug)
     |> validate_required([:full_name, :slug, :account_id])
     |> validate_length(:summary, max: 280)
-    |> validate_format(:slug, ~r/^[a-z0-9-]+$/, message: "must be only lowercase letters, numbers, or dashes")
+    |> validate_format(:slug, ~r/^[a-z0-9-]+$/,
+      message: "must be only lowercase letters, numbers, or dashes"
+    )
     |> validate_length(:slug, max: 30)
   end
 end

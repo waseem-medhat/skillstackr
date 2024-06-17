@@ -34,7 +34,7 @@
 
   <%= if @editable do %>
     <.link
-      navigate="edit"
+      navigate={~p"/profiles/#{@profile.slug}/edit"}
       class="py-3 px-4 inline-flex items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white text-sm hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none my-5"
     >
       <.icon name="hero-pencil-square-mini" /> Edit
