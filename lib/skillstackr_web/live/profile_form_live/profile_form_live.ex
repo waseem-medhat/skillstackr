@@ -113,6 +113,19 @@ defmodule SkillstackrWeb.ProfileFormLive do
     end
   end
 
+  def handle_event("delete", _params, socket) do
+    case Profiles.delete_profile(socket.assigns.profile) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Profile deleted successfully!")
+         |> redirect(to: "/profiles")}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, "An error occurred!")}
+    end
+  end
+
   defp get_resume_blob(socket) do
     case socket.assigns.uploads.resume.entries do
       [] ->
