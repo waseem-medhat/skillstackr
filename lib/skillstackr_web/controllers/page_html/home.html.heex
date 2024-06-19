@@ -1,21 +1,21 @@
 <.flash_group flash={@flash} />
 
-<div class="text-center">
-  <hgroup class="text-3xl mb-5">
-    <h1 class="text-4xl font-semibold">Build a cool portfolio</h1>
-    <h1>and share it with the world!</h1>
+<section class="py-16 px-24 bg-brand/5 border-y-4 border-brand w-full absolute left-0">
+  <hgroup class="mb-5 space-y-1 text-brand">
+    <h1 class="text-5xl font-bold">Build a cool portfolio</h1>
+    <h1 class="text-3xl">and share it with the world!</h1>
   </hgroup>
 
   <p>
-    This is the hub where developers come to connect, showcase their work, and inspire each other.
-  </p>
-  <p>
-    Build your online portfolio, find talented collaborators, and become part of a thriving developer network. Let's
-    build something amazing together!
+    Skillstackr gives you a way to create comprehensive, interactive, and
+    professional profiles to present yourself to colleagues or potential
+    employers.
   </p>
 
-  <.link href={~p"/profiles/new"}
-    class="py-3 px-4 inline-flex items-center gap-x-2 text-lg font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none my-5">
-    Start building your portfolio now!
+  <.link
+    href={~p"/accounts/log_in"}
+    class="py-3 px-4 inline-flex items-center gap-x-2 text-lg font-bold rounded-lg border border-transparent bg-brand text-white hover:bg-brand/90 disabled:opacity-50 disabled:pointer-events-none mt-10"
+  >
+    Start now!
   </.link>
-</div>
+</section>
