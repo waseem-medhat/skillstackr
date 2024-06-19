@@ -63,8 +63,13 @@ defmodule SkillstackrWeb.Router do
       live "/profiles", ProfilesLive
       live "/profiles/new", ProfileFormLive, :new
       live "/profiles/:id/edit", ProfileFormLive, :edit
+
       live "/projects", ProjectsLive
-      live "/projects/new", NewProjectLive
+      live "/projects/new", ProjectFormLive
+
+      live "/jobs", JobsLive
+      live "/jobs/new", JobFormLive
+
       live "/accounts/settings", AccountSettingsLive, :edit
       live "/accounts/settings/confirm_email/:token", AccountSettingsLive, :confirm_email
     end
