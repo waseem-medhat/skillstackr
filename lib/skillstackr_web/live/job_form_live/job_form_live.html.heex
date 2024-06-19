@@ -1,1 +1,42 @@
-<.page_heading page_title={@page_title} />
+<.simple_form for={@form}>
+  <.page_heading page_title={@page_title} />
+  <section class="grid grid-cols-2 gap-8">
+    <.input field={@form[:title]} type="text" label="Title" />
+    <.input field={@form[:company]} type="text" label="Company" />
+    <.input field={@form[:experience_years]} type="number" label="Years of Experience" />
+    <div class="col-span-2">
+      <.input field={@form[:description]} type="textarea" label="Description" />
+    </div>
+  </section>
+  <section>
+    <.label>Add to Profiles</.label>
+    <ul class="my-2 space-y-1">
+      <li class="flex">
+        <input
+          type="checkbox"
+          class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+          id="hs-checked-checkbox"
+          checked=""
+        />
+        <label for="hs-checked-checkbox" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">
+          Checked checkbox
+        </label>
+      </li>
+      <li class="flex">
+        <input
+          type="checkbox"
+          class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+          id="hs-checked-checkbox"
+          checked=""
+        />
+        <label for="hs-checked-checkbox" class="text-sm text-gray-500 ms-3 dark:text-neutral-400">
+          Checked checkbox
+        </label>
+      </li>
+    </ul>
+  </section>
+
+  <:actions>
+    <.button>Save Profile</.button>
+  </:actions>
+</.simple_form>
