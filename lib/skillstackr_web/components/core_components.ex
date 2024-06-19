@@ -756,4 +756,19 @@ defmodule SkillstackrWeb.CoreComponents do
     </button>
     """
   end
+
+  def info_box(assigns) do
+    ~H"""
+    <div
+      class="mt-2 bg-gray-100 border border-gray-200 text-sm text-gray-800 rounded-lg p-4 dark:bg-white/10 dark:border-white/20 dark:text-white"
+      role="alert"
+    >
+      <p class="flex gap-1 items-center">
+        <.icon name="hero-information-circle-mini" />
+        <span class="font-bold"><%= @heading %></span>
+      </p>
+      <p class="mt-1"><%= @body %></p>
+    </div>
+    """
+  end
 end

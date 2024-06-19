@@ -1,8 +1,13 @@
 <.page_heading page_title={@page_title} />
 
+<.info_box
+  heading="All your profiles are listed here."
+  body="You are encouraged to make as many as you need and tailor each one for certain job titles, companies, etc."
+/>
+
 <.link
   navigate={~p"/profiles/new"}
-  class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none mb-5"
+  class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none mt-5"
 >
   <.icon name="hero-plus-micro" /> New Profile
 </.link>
