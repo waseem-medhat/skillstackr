@@ -51,7 +51,7 @@ defmodule SkillstackrWeb.ProfileHTML do
         id={"hs-bordered-heading-#{job.id}"}
       >
         <button
-          class="hs-accordion-toggle hs-accordion-active:text-blue-600 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+          class="hs-accordion-toggle hs-accordion-active:text-indigo-600 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-indigo-600 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
           aria-controls={"hs-basic-bordered-collapse-#{job.id}"}
         >
           <div class="flex items-center gap-2">

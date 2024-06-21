@@ -19,7 +19,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: "#6110dc", 
       },
       fontFamily: {
         cairo: "Cairo, sans-serif",
