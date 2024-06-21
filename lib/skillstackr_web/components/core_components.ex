@@ -228,11 +228,17 @@ defmodule SkillstackrWeb.CoreComponents do
   slot :inner_block, required: true
 
   def button(assigns) do
-    style_classes = case assigns.style do
-      "outline" -> "border-indigo-700 text-indigo-700 hover:border-indigo-500 hover:text-indigo-500"
-      "outline-red" -> "border-red-500 text-red-500 hover:border-red-400 hover:text-red-400"
-        _ -> "border-transparent bg-indigo-700 text-white hover:bg-indigo-500"
-    end
+    style_classes =
+      case assigns.style do
+        "outline" ->
+          "border-indigo-700 text-indigo-700 hover:border-indigo-500 hover:text-indigo-500"
+
+        "outline-red" ->
+          "border-red-500 text-red-500 hover:border-red-400 hover:text-red-400"
+
+        _ ->
+          "border-transparent bg-indigo-700 text-white hover:bg-indigo-500"
+      end
 
     assigns = assign(assigns, :style_classes, style_classes)
 
@@ -242,7 +248,7 @@ defmodule SkillstackrWeb.CoreComponents do
       class={[
         "phx-submit-loading:opacity-75 py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border disabled:opacity-50 disabled:pointer-events-none",
         @style_classes,
-        @class,
+        @class
       ]}
       {@rest}
     >
@@ -250,7 +256,6 @@ defmodule SkillstackrWeb.CoreComponents do
     </button>
     """
   end
-
 
   @doc """
   Renders an input with label and error messages.
@@ -770,16 +775,12 @@ defmodule SkillstackrWeb.CoreComponents do
 
   def info_box(assigns) do
     ~H"""
-    <div
-      class="mt-2 bg-gray-100 border border-gray-200 text-sm text-gray-800 rounded-lg p-4 dark:bg-white/10 dark:border-white/20 dark:text-white"
-      role="alert"
-    >
+    <blockquote class="relative border-s-4 border-neutral-300 ps-3 sm:ps-5 dark:border-neutral-700">
       <p class="flex gap-1 items-center">
-        <.icon name="hero-information-circle-mini" />
         <span class="font-bold"><%= @heading %></span>
       </p>
       <p class="mt-1"><%= @body %></p>
-    </div>
+    </blockquote>
     """
   end
 end
