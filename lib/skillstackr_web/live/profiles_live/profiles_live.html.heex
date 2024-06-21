@@ -19,8 +19,11 @@
   :for={p <- @profiles}
   class="relative bg-white dark:bg-black rounded-lg my-5 shadow-lg p-5 transition"
 >
-  <hgroup class="flex-grow mb-3">
-    <h1 class="text-2xl font-bold mb-1"><%= p.full_name %></h1>
+  <hgroup class="flex-grow mb-2">
+    <h1 class="text-2xl font-bold">
+      <%= p.full_name %>
+      <.link class="font-medium text-lg ms-1 text-neutral-500"><%= p.slug %></.link>
+    </h1>
     <h2 class="text-lg font-semibold"><%= p.headline %></h2>
   </hgroup>
 
@@ -31,7 +34,7 @@
       navigate={~p"/profiles/#{p.slug}"}
       class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
     >
-      <.icon name="hero-book-open-micro" />
+      <.icon name="hero-eye-micro" />
     </.link>
 
     <.link
