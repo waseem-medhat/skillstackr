@@ -5,11 +5,10 @@
   body="You are encouraged to make as many as you need and tailor each one for certain job titles, companies, etc."
 />
 
-<.link
-  navigate={~p"/profiles/new"}
-  class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none mt-5"
->
-  <.icon name="hero-plus-micro" /> New Profile
+<.link navigate={~p"/profiles/new"}>
+  <.button class="mt-5">
+    <.icon name="hero-plus-mini" /> New Profile
+  </.button>
 </.link>
 
 <div :if={length(@profiles) == 0} class="my-5">
@@ -30,14 +29,14 @@
   <div class="absolute top-5 right-5 flex gap-2 items-center">
     <.link
       navigate={~p"/profiles/#{p.slug}"}
-      class="bg-blue-500 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-blue-400 z-10 text-sm gap-1"
+      class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
     >
       <.icon name="hero-book-open-micro" />
     </.link>
 
     <.link
       navigate={~p"/profiles/#{p.slug}/edit"}
-      class="bg-blue-500 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-blue-400 z-10 text-sm gap-1"
+      class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
     >
       <.icon name="hero-pencil-square-micro" />
     </.link>

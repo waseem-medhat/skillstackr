@@ -5,11 +5,10 @@
   body="Any project can be added to one or more profiles."
 />
 
-<p class="mt-5">No projects yet.</p>
+<p class="mt-5 italic opacity-60">No projects yet.</p>
 
-<.link
-  navigate={~p"/projects/new"}
-  class="py-3 px-4 inline-flex items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none my-5"
->
-  + Add a project
+<.link navigate={~p"/projects/new"}>
+  <.button class="mt-5">
+    <.icon name="hero-plus-mini" /> Add a project
+  </.button>
 </.link>

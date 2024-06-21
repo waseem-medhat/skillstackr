@@ -82,38 +82,32 @@
 <section :if={@live_action == :edit} class="pb-36">
   <hr class="dark:border-gray-800 my-8" />
 
-  <button
+  <.button
     id="delete-button"
-    type="button"
+    style="outline-red"
     phx-click={
       JS.remove_class("hidden", to: "#confirm-prompt")
       |> JS.add_class("hidden", to: "#delete-button")
     }
-    class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-red-500 text-red-500 hover:border-red-400 hover:text-red-400 disabled:opacity-50 disabled:pointer-events-none"
   >
     Delete Profile
-  </button>
+  </.button>
 
   <div id="confirm-prompt" class="hidden">
     <p class="my-6">
       This will permanently delete the profile but <i>not</i> associated projects. Proceed?
     </p>
-    <button
-      type="button"
+
+    <.button
+      style="outline"
       phx-click={
         JS.add_class("hidden", to: "#confirm-prompt")
         |> JS.remove_class("hidden", to: "#delete-button")
       }
-      class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-indigo-700 text-indigo-700 hover:border-indigo-500 hover:text-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
     >
       Cancel
-    </button>
-    <button
-      type="button"
-      phx-click="delete"
-      class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-red-500 text-red-500 hover:border-red-400 hover:text-red-400 disabled:opacity-50 disabled:pointer-events-none"
-    >
-      Confirm and Delete
-    </button>
+    </.button>
+
+    <.button phx-click="delete" style="outline-red">Confirm and Delete</.button>
   </div>
 </section>

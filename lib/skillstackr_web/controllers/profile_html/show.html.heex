@@ -33,11 +33,10 @@
   </div>
 
   <%= if @editable do %>
-    <.link
-      navigate={~p"/profiles/#{@profile.slug}/edit"}
-      class="py-3 px-4 inline-flex items-center gap-x-2 font-semibold rounded-lg border border-transparent bg-indigo-700 text-white text-sm hover:bg-indigo-500 disabled:opacity-50 disabled:pointer-events-none my-5"
-    >
-      <.icon name="hero-pencil-square-mini" /> Edit
+    <.link navigate={~p"/profiles/#{@profile.slug}/edit"}>
+      <.button>
+        <.icon name="hero-pencil-square-mini" /> Edit
+      </.button>
     </.link>
   <% end %>
 </div>

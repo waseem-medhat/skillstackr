@@ -220,19 +220,29 @@ defmodule SkillstackrWeb.CoreComponents do
       <.button>Send!</.button>
       <.button phx-click="go" class="ml-2">Send!</.button>
   """
-  attr :type, :string, default: nil
+  attr :type, :string, default: "button"
   attr :class, :string, default: nil
+  attr :style, :string, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
 
   def button(assigns) do
+    style_classes = case assigns.style do
+      "outline" -> "border-indigo-700 text-indigo-700 hover:border-indigo-500 hover:text-indigo-500"
+      "outline-red" -> "border-red-500 text-red-500 hover:border-red-400 hover:text-red-400"
+        _ -> "border-transparent bg-indigo-700 text-white hover:bg-indigo-500"
+    end
+
+    assigns = assign(assigns, :style_classes, style_classes)
+
     ~H"""
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none",
-        @class
+        "phx-submit-loading:opacity-75 py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border disabled:opacity-50 disabled:pointer-events-none",
+        @style_classes,
+        @class,
       ]}
       {@rest}
     >
@@ -240,6 +250,7 @@ defmodule SkillstackrWeb.CoreComponents do
     </button>
     """
   end
+
 
   @doc """
   Renders an input with label and error messages.
