@@ -8,8 +8,8 @@ defmodule Skillstackr.ProfilesJobs.ProfileJob do
   @foreign_key_type :binary_id
   schema "profiles_jobs" do
     timestamps(type: :utc_datetime)
-    has_many :profiles, Profiles.Profile, on_delete: :delete_all
-    has_many :jobs, Jobs.Job, on_delete: :delete_all
+    belongs_to :profile, Profiles.Profile
+    belongs_to :job, Jobs.Job
   end
   
   @doc false

@@ -12,7 +12,7 @@ defmodule Skillstackr.Jobs.Job do
     field :description, :string
 
     timestamps(type: :utc_datetime)
-    belongs_to :profile_job, ProfileJob
+    has_many :profiles_jobs, ProfileJob, on_delete: :delete_all
   end
 
   @doc false

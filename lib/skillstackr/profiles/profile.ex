@@ -19,7 +19,7 @@ defmodule Skillstackr.Profiles.Profile do
     belongs_to :account, Accounts.Account
     has_one :resume, Profiles.Resume, on_delete: :delete_all
     many_to_many :projects, Projects.Project, join_through: "profiles_projects"
-    belongs_to :profile_job, ProfileJob
+    has_many :profiles_jobs, ProfileJob, on_delete: :delete_all
 
     many_to_many :technologies, Technologies.Technology,
       join_through: "profiles_technologies",
