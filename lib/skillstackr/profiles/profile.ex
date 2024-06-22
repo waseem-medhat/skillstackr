@@ -1,5 +1,6 @@
 defmodule Skillstackr.Profiles.Profile do
   alias Skillstackr.{Accounts, Projects, Technologies, Profiles, Jobs}
+  alias Skillstackr.ProfilesJobs.ProfileJob
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -18,7 +19,7 @@ defmodule Skillstackr.Profiles.Profile do
     belongs_to :account, Accounts.Account
     has_one :resume, Profiles.Resume, on_delete: :delete_all
     many_to_many :projects, Projects.Project, join_through: "profiles_projects"
-    many_to_many :jobs, Jobs.Job, join_through: "profiles_jobs"
+    belongs_to :profile_job, ProfileJob
 
     many_to_many :technologies, Technologies.Technology,
       join_through: "profiles_technologies",

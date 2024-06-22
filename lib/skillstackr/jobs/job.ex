@@ -1,5 +1,5 @@
 defmodule Skillstackr.Jobs.Job do
-  alias Skillstackr.Profiles
+  alias Skillstackr.ProfilesJobs.ProfileJob
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -12,7 +12,7 @@ defmodule Skillstackr.Jobs.Job do
     field :description, :string
 
     timestamps(type: :utc_datetime)
-    many_to_many :profiles, Profiles.Profile, join_through: "profiles_jobs"
+    belongs_to :profile_job, ProfileJob
   end
 
   @doc false
