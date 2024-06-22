@@ -1,5 +1,5 @@
 defmodule Skillstackr.Profiles.Profile do
-  alias Skillstackr.{Accounts, Projects, Technologies, Profiles, Jobs}
+  alias Skillstackr.{Accounts, Projects, Technologies, Profiles}
   alias Skillstackr.ProfilesJobs.ProfileJob
   use Ecto.Schema
   import Ecto.Changeset

@@ -26,7 +26,7 @@ defmodule SkillstackrWeb.AccountLoginLive do
           </.link>
         </:actions>
         <:actions>
-          <.button phx-disable-with="Logging in..." class="w-full">
+          <.button type="submit" phx-disable-with="Logging in..." class="w-full">
             Log in <span aria-hidden="true">→</span>
           </.button>
         </:actions>

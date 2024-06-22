@@ -6,7 +6,6 @@ defmodule Skillstackr.ProfilesJobs.ProfileJob do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-
   schema "profiles_jobs" do
     timestamps(type: :utc_datetime)
     has_many :profiles, Profiles.Profile, on_delete: :delete_all

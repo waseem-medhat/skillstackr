@@ -11,7 +11,10 @@ defmodule SkillstackrWeb.AccountRegistrationLive do
         Register for an account
         <:subtitle>
           Already registered?
-          <.link navigate={~p"/accounts/log_in"} class="font-semibold text-blue-600 hover:text-blue-500">
+          <.link
+            navigate={~p"/accounts/log_in"}
+            class="font-semibold text-blue-600 hover:text-blue-500"
+          >
             Log in
           </.link>
           to your account now.
@@ -35,7 +38,9 @@ defmodule SkillstackrWeb.AccountRegistrationLive do
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
+          <.button type="submit" phx-disable-with="Creating account..." class="w-full">
+            Create an account
+          </.button>
         </:actions>
       </.simple_form>
     </div>

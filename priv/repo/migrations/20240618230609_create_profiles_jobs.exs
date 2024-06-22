@@ -2,7 +2,8 @@ defmodule Skillstackr.Repo.Migrations.CreateProfilesJobs do
   use Ecto.Migration
 
   def change do
-    create table(:profiles_jobs) do
+    create table(:profiles_jobs, primary_key: false) do
+      add :id, :binary_id, primary_key: true
       add :profile_id, references(:profiles, type: :binary_id)
       add :job_id, references(:jobs, type: :binary_id)
 
