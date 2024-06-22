@@ -4,7 +4,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
   def mount(_params, _session, socket) do
     socket = 
       socket
-      |> assign(:page_title, "New Project")
+      |> assign(:page_title, "Add Project")
 
     {:ok, socket}
   end

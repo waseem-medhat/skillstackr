@@ -21,7 +21,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
 
     socket =
       socket
-      |> assign(:page_title, "New Profile")
+      |> assign(:page_title, "Create Profile")
       |> assign(:profile, profile)
       |> assign(:form, to_form(Profiles.change_profile(profile)))
       |> assign(:technologies, technologies)
