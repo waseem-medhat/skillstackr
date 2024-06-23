@@ -4,7 +4,7 @@ defmodule Skillstackr.ProfilesJobs.ProfileJob do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key {:id, :binary_id, autogenerate: true}
+  @primary_key false
   @foreign_key_type :binary_id
   schema "profiles_jobs" do
     timestamps(type: :utc_datetime)
