@@ -5,7 +5,13 @@
   body="Any job experience can be added to one or more profiles."
 />
 
-<p class="mt-5 italic opacity-60">No job experience yet.</p>
+<p :if={length(@jobs) == 0} class="mt-5 italic opacity-60">No job experience yet.</p>
+
+<section>
+  <div :for={j <- @jobs}>
+    <p><%= j.title %></p>
+  </div>
+</section>
 
 <.link navigate={~p"/jobs/new"}>
   <.button class="mt-5">
