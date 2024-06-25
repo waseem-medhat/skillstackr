@@ -21,18 +21,29 @@ defmodule SkillstackrWeb.JobFormLive do
     {:ok, socket}
   end
 
-  def handle_event("validate", _params, socket) do
-    {:noreply, socket}
+  def handle_event("validate", params, socket) do
+    new_form =
+      Jobs.change_job(%Job{}, params["job"])
+      |> Map.put(:action, :validate)
+      |> to_form(as: "job")
+
+    {:noreply, assign(socket, :form, new_form)}
   end
 
   def handle_event("save", params, socket) do
-    assoc_profiles = 
+    assoc_profiles =
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
 
-    Jobs.create_job(params["job"], assoc_profiles)
-    |> IO.inspect(label: "JOB CHANGESET")
+    case Jobs.create_job(params["job"], assoc_profiles) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Job experience added")
+         |> redirect(to: ~p"/jobs")}
 
-    {:noreply, socket}
+      {:error, :new_job, changeset, _} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
   end
 end
