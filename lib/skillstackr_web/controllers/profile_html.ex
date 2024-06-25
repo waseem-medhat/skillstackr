@@ -10,7 +10,7 @@ defmodule SkillstackrWeb.ProfileHTML do
 
   def project_card(assigns) do
     ~H"""
-    <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+    <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70">
       <img class="w-full h-auto rounded-t-xl" src={@project.cover_url} alt={@project.title} />
       <div class="p-4 md:p-5">
         <h3 class="text-lg font-bold text-gray-800 dark:text-white">
@@ -47,7 +47,7 @@ defmodule SkillstackrWeb.ProfileHTML do
     <div class="hs-accordion-group">
       <div
         :for={job <- @experience}
-        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-neutral-800 dark:border-neutral-700"
+        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-slate-950/90 dark:border-neutral-700"
         id={"hs-bordered-heading-#{job.id}"}
       >
         <button
