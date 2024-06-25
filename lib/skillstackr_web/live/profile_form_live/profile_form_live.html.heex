@@ -1,4 +1,4 @@
-<.simple_form for={@form} phx-change="validate" phx-submit="save" action={~p"/profiles"} multipart>
+<.simple_form for={@form} phx-change="validate" phx-submit="save">
   <.page_heading page_title={@page_title} />
   <section class="grid grid-cols-2 gap-8">
     <.input field={@form[:full_name]} type="text" label="Full Name" />
