@@ -6,7 +6,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProfilesJobs do
       add :profile_id, references(:profiles, type: :binary_id), primary_key: true
       add :job_id, references(:jobs, type: :binary_id), primary_key: true
 
-      timestamps(type: :utc_datetime)
+      timestamps(type: :utc_datetime, default: fragment("now()"))
     end
   end
 end

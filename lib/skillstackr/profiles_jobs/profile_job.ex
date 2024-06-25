@@ -16,5 +16,7 @@ defmodule Skillstackr.ProfilesJobs.ProfileJob do
   def changeset(profile_job, attrs) do
     profile_job
     |> cast(attrs, [])
+    |> cast_assoc(:profile, with: &Profiles.Profile.changeset/2)
+    |> cast_assoc(:job, with: &Jobs.Job.changeset/2)
   end
 end

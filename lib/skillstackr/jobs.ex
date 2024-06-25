@@ -4,7 +4,8 @@ defmodule Skillstackr.Jobs do
   """
 
   import Ecto.Query, warn: false
-  alias Skillstackr.Profiles.Profile
+  alias Ecto.Multi
+  alias Skillstackr.ProfilesJobs.ProfileJob
   alias Skillstackr.Repo
 
   alias Skillstackr.Jobs.Job
@@ -50,21 +51,13 @@ defmodule Skillstackr.Jobs do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_job(attrs \\ %{}, assoc_slugs \\ []) do
-    Repo.transaction(fn ->
-      new_job =
-        %Job{}
-        |> Job.changeset(attrs)
-        |> Repo.insert()
-        |> case do
-          {:error, changeset} -> Repo.rollback(changeset)
-          {:ok, new_job} -> new_job
-        end
-
-      Repo.all(from p in Profile, where: p.slug in ^assoc_slugs)
-      |> Enum.map(fn p -> Ecto.build_assoc(p, :profiles_jobs, job_id: new_job.id) end)
-      |> Enum.map(&Repo.insert!/1)
+  def create_job(attrs \\ %{}, assoc_profiles \\ []) do
+    Multi.new()
+    |> Multi.insert(:new_job, Job.changeset(%Job{}, attrs))
+    |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{new_job: new_job} ->
+      Enum.map(assoc_profiles, fn p -> %{job_id: new_job.id, profile_id: p.id} end)
     end)
+    |> Repo.transaction()
   end
 
   @doc """

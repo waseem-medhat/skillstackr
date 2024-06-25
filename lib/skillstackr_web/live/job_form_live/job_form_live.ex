@@ -26,13 +26,11 @@ defmodule SkillstackrWeb.JobFormLive do
   end
 
   def handle_event("save", params, socket) do
-    profile_slugs =
-      params
-      |> Map.drop(["job"])
-      |> Enum.filter(fn {_slug, selected} -> selected == "true" end)
-      |> Enum.map(fn {slug, "true"} -> slug end)
+    assoc_profiles = 
+      socket.assigns.profiles
+      |> Enum.filter(fn p -> params[p.slug] === "true" end)
 
-    Jobs.create_job(params["job"], profile_slugs)
+    Jobs.create_job(params["job"], assoc_profiles)
     |> IO.inspect(label: "JOB CHANGESET")
 
     {:noreply, socket}
