@@ -13,9 +13,8 @@ RUN apt-get update && \
 
 COPY . /app
 
-ENV APP_HOME /app
-WORKDIR $APP_HOME
+WORKDIR /app
 
-RUN mix deps.get
+RUN mix setup
 
-ENTRYPOINT ./entrypoint.sh
+CMD mix phx.server
