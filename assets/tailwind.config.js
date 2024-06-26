@@ -10,7 +10,7 @@ module.exports = {
     "./js/**/*.js",
     "../lib/skillstackr_web.ex",
     "../lib/skillstackr_web/**/*.*ex",
-    "node_modules/preline/dist/*.js"
+    "./vendor/preline/*.js"
   ],
 
   // enable dark mode via class strategy
@@ -28,7 +28,7 @@ module.exports = {
   },
 
   plugins: [
-    require("preline/plugin"),
+    require("./vendor/preline/plugin"),
     require("@tailwindcss/forms"),
     // Allows prefixing tailwind classes with LiveView classes to add rules
     // only when LiveView classes are applied, for example:
