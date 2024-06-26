@@ -35,24 +35,40 @@
   <h2 class="text-xl">Technologies</h2>
 
   <section id="skills" class="grid grid-cols-2 gap-3">
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 h-12">
       <span class="w-20 font-light">Front-end</span>
-      <TechnologyComponents.tech_badge :for={tech <- @technologies["frontend"]} tech={tech} />
+      <TechnologyComponents.tech_badge
+        :for={tech <- @technologies["frontend"]}
+        tech={tech}
+        class="pointer-events-none"
+      />
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 h-12">
       <span class="w-20 font-light">Back-end</span>
-      <TechnologyComponents.tech_badge :for={tech <- @technologies["backend"]} tech={tech} />
+      <TechnologyComponents.tech_badge
+        :for={tech <- @technologies["backend"]}
+        tech={tech}
+        class="pointer-events-none"
+      />
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 h-12">
       <span class="w-20 font-light">DevOps</span>
-      <TechnologyComponents.tech_badge :for={tech <- @technologies["devops"]} tech={tech} />
+      <TechnologyComponents.tech_badge
+        :for={tech <- @technologies["devops"]}
+        tech={tech}
+        class="pointer-events-none"
+      />
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 h-12">
       <span class="w-20 font-light">Dev tools</span>
-      <TechnologyComponents.tech_badge :for={tech <- @technologies["devtools"]} tech={tech} />
+      <TechnologyComponents.tech_badge
+        :for={tech <- @technologies["devtools"]}
+        tech={tech}
+        class="pointer-events-none"
+      />
     </div>
   </section>
 

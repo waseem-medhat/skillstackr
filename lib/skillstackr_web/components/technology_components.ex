@@ -78,13 +78,14 @@ defmodule TechnologyComponents do
 
   attr :tech, :string
   attr :size, :integer, default: 25
+  attr :class, :string, default: ""
 
   def tech_badge(assigns) do
     ~H"""
     <div class="hs-tooltip inline-block">
       <button type="button" class="hs-tooltip-toggle cursor-default">
         <img
-          class="hover:brightness-[125%] transition"
+          class={["hover:brightness-[125%] transition", @class]}
           src={"https://cdn.simpleicons.org/#{name_to_slug(@tech)}"}
           width={@size}
           alt={"#{@tech}"}
