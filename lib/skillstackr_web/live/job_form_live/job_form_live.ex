@@ -46,4 +46,30 @@ defmodule SkillstackrWeb.JobFormLive do
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
+
+  def render(assigns) do
+    ~H"""
+    <.simple_form for={@form} phx-change="validate" phx-submit="save">
+      <.page_heading page_title={@page_title} />
+      <section class="grid grid-cols-2 gap-8">
+        <.input field={@form[:title]} type="text" label="Title" />
+        <.input field={@form[:company]} type="text" label="Company" />
+        <.input field={@form[:experience_years]} type="number" label="Years of Experience" />
+        <div class="col-span-2">
+          <.input field={@form[:description]} type="textarea" label="Description" />
+        </div>
+      </section>
+      <section>
+        <.label>Add to Profiles</.label>
+        <ul class="my-2 space-y-1">
+          <.input :for={p <- @profiles} type="checkbox" label={p.slug} name={p.slug} />
+        </ul>
+      </section>
+
+      <:actions>
+        <.button type="submit">Save Profile</.button>
+      </:actions>
+    </.simple_form>
+    """
+  end
 end

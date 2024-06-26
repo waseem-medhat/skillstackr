@@ -148,4 +148,138 @@ defmodule SkillstackrWeb.ProfileFormLive do
       Enum.map(tech_list, &%{"name" => &1, "category" => category})
     end)
   end
+
+  def render(assigns) do
+    ~H"""
+    <.simple_form for={@form} phx-change="validate" phx-submit="save">
+      <.page_heading page_title={@page_title} />
+      <section class="grid grid-cols-2 gap-8">
+        <.input field={@form[:full_name]} type="text" label="Full Name" />
+        <.input field={@form[:slug]} type="text" label="Profile Slug" />
+        <.input field={@form[:headline]} type="text" label="Headline" />
+        <.input field={@form[:email]} type="email" label="Email" />
+        <div class="col-span-2">
+          <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
+        </div>
+      </section>
+
+      <h2 class="text-xl">Profile Links</h2>
+      <section class="grid grid-cols-2 gap-8">
+        <.input field={@form[:link_github]} type="text" label="GitHub" icon="simple-github" />
+        <.input field={@form[:link_linkedin]} type="text" label="LinkedIn" icon="simple-linkedin" />
+        <.input
+          field={@form[:link_website]}
+          type="text"
+          label="Website/Blog"
+          icon="hero-globe-alt-micro"
+        />
+        <div>
+          <.label icon="simple-adobeacrobatreader">Resume</.label>
+          <.live_file_input
+            upload={@uploads.resume}
+            required={@live_action == :new}
+            class="mt-2 block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-indigo-700 focus:ring-indigo-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400"
+          />
+        </div>
+      </section>
+
+      <hr class="dark:border-gray-800" />
+
+      <h2 class="text-xl">Technologies</h2>
+
+      <section id="skills" class="grid grid-cols-2 gap-3">
+        <div class="flex items-center gap-2 h-12">
+          <span class="w-20 font-light">Front-end</span>
+          <TechnologyComponents.tech_badge
+            :for={tech <- @technologies["frontend"]}
+            tech={tech}
+            class="pointer-events-none"
+          />
+        </div>
+
+        <div class="flex items-center gap-2 h-12">
+          <span class="w-20 font-light">Back-end</span>
+          <TechnologyComponents.tech_badge
+            :for={tech <- @technologies["backend"]}
+            tech={tech}
+            class="pointer-events-none"
+          />
+        </div>
+
+        <div class="flex items-center gap-2 h-12">
+          <span class="w-20 font-light">DevOps</span>
+          <TechnologyComponents.tech_badge
+            :for={tech <- @technologies["devops"]}
+            tech={tech}
+            class="pointer-events-none"
+          />
+        </div>
+
+        <div class="flex items-center gap-2 h-12">
+          <span class="w-20 font-light">Dev tools</span>
+          <TechnologyComponents.tech_badge
+            :for={tech <- @technologies["devtools"]}
+            tech={tech}
+            class="pointer-events-none"
+          />
+        </div>
+      </section>
+
+      <section>
+        <.input
+          type="search"
+          name="search-technologies"
+          id="search-technologies"
+          placeholder="Start searching"
+          phx-change="search-technologies"
+          phx-debounce="300"
+          value=""
+        />
+
+        <div class="h-36 overflow-y-auto my-2 p-2 border dark:border-neutral-700 border-gray-200 rounded-lg">
+          <div class="flex items-center justify-center gap-1 flex-wrap">
+            <TechnologyComponents.choice_button :for={tech <- @tech_search_results} tech={tech} />
+          </div>
+        </div>
+      </section>
+
+      <:actions>
+        <.button type="submit">Save Profile</.button>
+      </:actions>
+    </.simple_form>
+
+    <section :if={@live_action == :edit} class="pb-36">
+      <hr class="dark:border-gray-800 my-8" />
+
+      <.button
+        id="delete-button"
+        style="outline-red"
+        phx-click={
+          JS.remove_class("hidden", to: "#confirm-prompt")
+          |> JS.add_class("hidden", to: "#delete-button")
+        }
+      >
+        Delete Profile
+      </.button>
+
+      <div id="confirm-prompt" class="hidden">
+        <p class="my-6">
+          This will permanently delete the profile but <i>not</i> associated projects. Proceed?
+        </p>
+
+        <.button
+          style="outline"
+          phx-click={
+            JS.add_class("hidden", to: "#confirm-prompt")
+            |> JS.remove_class("hidden", to: "#delete-button")
+          }
+        >
+          Cancel
+        </.button>
+
+        <.button phx-click="delete" style="outline-red">Confirm and Delete</.button>
+      </div>
+    </section>
+    """
+  end
 end
