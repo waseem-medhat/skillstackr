@@ -81,7 +81,22 @@ defmodule TechnologyComponents do
 
   def tech_badge(assigns) do
     ~H"""
-    <img src={"https://cdn.simpleicons.org/#{name_to_slug(@tech)}"} width={@size} alt={"#{@tech}"} />
+    <div class="hs-tooltip inline-block">
+      <button class="hs-tooltip-toggle cursor-default">
+        <img
+          class="hover:brightness-[125%] transition"
+          src={"https://cdn.simpleicons.org/#{name_to_slug(@tech)}"}
+          width={@size}
+          alt={"#{@tech}"}
+        />
+        <span
+          class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+          role="tooltip"
+        >
+          <%= @tech %>
+        </span>
+      </button>
+    </div>
     """
   end
 end
