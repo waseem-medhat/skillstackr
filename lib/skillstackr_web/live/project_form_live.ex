@@ -55,7 +55,6 @@ defmodule SkillstackrWeb.ProjectFormLive do
     assoc_profiles =
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
-      |> IO.inspect(label: "ASSOC PROFILES")
 
     case Projects.create_project(params["project"], assoc_profiles) do
       {:ok, _} ->

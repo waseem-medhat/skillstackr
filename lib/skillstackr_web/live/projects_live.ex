@@ -1,10 +1,12 @@
 defmodule SkillstackrWeb.ProjectsLive do
+  alias Skillstackr.Projects
   use SkillstackrWeb, :live_view
 
   def mount(_params, _session, socket) do
     socket =
       socket
       |> assign(:page_title, "Projects")
+      |> assign(:projects, Projects.list_projects())
 
     {:ok, socket}
   end
@@ -18,7 +20,17 @@ defmodule SkillstackrWeb.ProjectsLive do
       body="Any project can be added to one or more profiles."
     />
 
-    <p class="mt-5 italic opacity-60">No projects yet.</p>
+    <p :if={length(@projects) == 0} class="mt-5 italic opacity-60">No projects yet.</p>
+
+    <section>
+      <div
+        :for={p <- @projects}
+        class="relative bg-white dark:bg-slate-950/70 rounded-lg my-5 shadow-lg p-5 transition"
+      >
+        <h1 class="text-xl font-bold"><%= p.title %></h1>
+        <p><%= p.description %></p>
+      </div>
+    </section>
 
     <.link navigate={~p"/projects/new"}>
       <.button class="mt-5">
