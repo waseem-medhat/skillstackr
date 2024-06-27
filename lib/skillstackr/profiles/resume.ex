@@ -1,5 +1,5 @@
 defmodule Skillstackr.Profiles.Resume do
-  alias Skillstackr.Profiles
+  alias Skillstackr.Profiles.Profile
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,7 +8,7 @@ defmodule Skillstackr.Profiles.Resume do
   schema "resumes" do
     field :blob, :binary
 
-    belongs_to :profile, Profiles.Profile
+    belongs_to :profile, Profile
     timestamps(type: :utc_datetime)
   end
 
