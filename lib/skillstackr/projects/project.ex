@@ -18,7 +18,7 @@ defmodule Skillstackr.Projects.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:title, :description, :link_repo, :link_website])
+    |> validate_required([:title])
   end
 end
