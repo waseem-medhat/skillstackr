@@ -37,11 +37,6 @@ defmodule Mix.Tasks.Simpleicons do
     name = parse_name(file)
     slug = String.replace(file_name, ~r/\.svg$/, "")
 
-    # icon_map
-    # |> put_in([:translation_map, slug], %{translation: name, common_key: name})
-    # |> put_in([:translation_map, name], %{translation: slug, common_key: name})
-    # |> put_in([:svg_map, name], file)
-
     Map.put(icon_map, name, %{slug: slug, svg: file})
   end
 

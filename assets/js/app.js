@@ -55,34 +55,3 @@ if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dar
 else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
 else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
 else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
-
-
-// technology search in 'new' form
-// const searchTechnologiesInput = document.querySelector("#search-technologies")
-const techButtons = document.querySelectorAll(".form-tech-button")
-
-// if (searchTechnologiesInput) {
-//     searchTechnologiesInput.addEventListener("keyup", (e) => {
-//         const searchQuery = e.target.value.toLowerCase()
-//         techButtons.forEach((button) => {
-//             if (searchQuery && button.innerHTML.toLowerCase().includes(searchQuery)) {
-//                 button.classList.remove("hidden")
-//             } else {
-//                 button.classList.add("hidden")
-//             }
-//         })
-//     })
-// }
-
-if (techButtons.length > 0) {
-    [...techButtons].forEach((button) => {
-        button.addEventListener("click", (e) => {
-            const techsString = document.querySelector("#technologies").value
-            const techs = techsString === "" ? [] : techsString.split(", ")
-            const newTech = e.target.querySelector(".tech-text").innerText
-            const newTechs = techs.includes(newTech) ? techs.filter(t => t !== newTech) : [...techs, newTech]
-            document.querySelector("#technologies").value = newTechs.join(", ")
-            
-        })
-    })
-}

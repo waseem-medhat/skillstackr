@@ -11,7 +11,11 @@ defmodule SkillstackrWeb.ProfileHTML do
   def project_card(assigns) do
     ~H"""
     <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70">
-      <img class="w-full h-auto rounded-t-xl" src={@project.cover_url} alt={@project.title} />
+      <img
+        class="w-full h-auto rounded-t-xl"
+        src={~p"/images/project-placeholder.png"}
+        alt={@project.title}
+      />
       <div class="p-4 md:p-5">
         <h3 class="text-lg font-bold text-gray-800 dark:text-white">
           <%= @project.title %>
@@ -106,23 +110,6 @@ defmodule SkillstackrWeb.ProfileHTML do
   end
 
   def profile_link(assigns) do
-    # slug =
-    #   case site do
-    #     :github ->
-    #       url |> String.split("/") |> List.last()
-    #
-    #     :linkedin ->
-    #       url |> String.trim_leading("https://linkedin.com/")
-    #
-    #     :website ->
-    #       url
-    #
-    #     :resume ->
-    #       "PDF Resume"
-    #   end
-    #
-    # assigns = assign(assigns, :slug, slug)
-
     ~H"""
     <a
       href={@url}
