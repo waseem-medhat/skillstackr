@@ -1,4 +1,5 @@
 defmodule Skillstackr.Projects.Project do
+  alias Skillstackr.ProfilesProjects.ProfileProject
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,7 +11,7 @@ defmodule Skillstackr.Projects.Project do
     field :link_repo, :string
     field :link_website, :string
 
-    many_to_many :profiles, Profiles.Profile, join_through: "profiles_projects"
+    has_many :profiles_projects, ProfileProject, on_delete: :delete_all
     timestamps(type: :utc_datetime)
   end
 

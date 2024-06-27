@@ -1,5 +1,5 @@
 defmodule SkillstackrWeb.ProjectFormLive do
-  alias Skillstackr.Projects
+  alias Skillstackr.{Projects, Profiles}
   alias Skillstackr.Projects.Project
   use SkillstackrWeb, :live_view
 
@@ -10,11 +10,13 @@ defmodule SkillstackrWeb.ProjectFormLive do
       end
 
     technologies = %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []}
+    profiles = Profiles.list_profiles()
 
     socket =
       socket
       |> assign(:page_title, "Add Project")
       |> assign(:form, to_form(Projects.change_project(project)))
+      |> assign(:profiles, profiles)
       |> assign(:technologies, technologies)
       |> assign(:tech_search_results, [])
 
@@ -49,9 +51,27 @@ defmodule SkillstackrWeb.ProjectFormLive do
      )}
   end
 
+  def handle_event("save", params, socket) do
+    assoc_profiles =
+      socket.assigns.profiles
+      |> Enum.filter(fn p -> params[p.slug] === "true" end)
+      |> IO.inspect(label: "ASSOC PROFILES")
+
+    case Projects.create_project(params["project"], assoc_profiles) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Project added")
+         |> redirect(to: ~p"/projects")}
+
+      {:error, :new_project, changeset, _} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
+  end
+
   def render(assigns) do
     ~H"""
-    <.simple_form for={@form} phx-change="validate" phx-submit="save">
+    <.simple_form for={@form} phx-submit="save">
       <.page_heading page_title={@page_title} />
       <section class="grid grid-cols-2 gap-8">
         <.input field={@form[:title]} type="text" label="Title" />
@@ -116,6 +136,13 @@ defmodule SkillstackrWeb.ProjectFormLive do
             <TechnologyComponents.choice_button :for={tech <- @tech_search_results} tech={tech} />
           </div>
         </div>
+      </section>
+
+      <section>
+        <.label>Add to Profiles</.label>
+        <ul class="my-2 space-y-1">
+          <.input :for={p <- @profiles} type="checkbox" label={p.slug} name={p.slug} />
+        </ul>
       </section>
 
       <:actions>
