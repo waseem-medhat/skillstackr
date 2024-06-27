@@ -1,6 +1,7 @@
 defmodule Skillstackr.Profiles.Profile do
-  alias Skillstackr.{Accounts, Projects, Technologies, Profiles}
+  alias Skillstackr.{Accounts, Technologies, Profiles}
   alias Skillstackr.ProfilesJobs.ProfileJob
+  alias Skillstackr.ProfilesProjects.ProfileProject
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -18,7 +19,7 @@ defmodule Skillstackr.Profiles.Profile do
     timestamps(type: :utc_datetime)
     belongs_to :account, Accounts.Account
     has_one :resume, Profiles.Resume, on_delete: :delete_all
-    many_to_many :projects, Projects.Project, join_through: "profiles_projects"
+    has_many :profiles_projects, ProfileProject, on_delete: :delete_all
     has_many :profiles_jobs, ProfileJob, on_delete: :delete_all
 
     many_to_many :technologies, Technologies.Technology,
