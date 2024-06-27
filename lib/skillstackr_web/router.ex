@@ -65,7 +65,7 @@ defmodule SkillstackrWeb.Router do
       live "/profiles/:id/edit", ProfileFormLive, :edit
 
       live "/projects", ProjectsLive
-      live "/projects/new", ProjectFormLive
+      live "/projects/new", ProjectFormLive, :new
 
       live "/jobs", JobsLive
       live "/jobs/new", JobFormLive, :new
