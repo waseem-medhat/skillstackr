@@ -35,7 +35,11 @@ defmodule SkillstackrWeb.JobFormLive do
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
 
-    case Jobs.create_job(params["job"], assoc_profiles) do
+    job_params =
+      params["job"]
+      |> Map.put("account_id", socket.assigns.current_account.id)
+
+    case Jobs.create_job(job_params, assoc_profiles) do
       {:ok, _} ->
         {:noreply,
          socket

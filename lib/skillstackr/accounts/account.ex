@@ -1,5 +1,6 @@
 defmodule Skillstackr.Accounts.Account do
-  alias Skillstackr.Profiles
+  alias Skillstackr.Jobs.Job
+  alias Skillstackr.Profiles.Profile
   use Ecto.Schema
   import Ecto.Changeset
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -11,7 +12,8 @@ defmodule Skillstackr.Accounts.Account do
     field :confirmed_at, :naive_datetime
 
     timestamps(type: :utc_datetime)
-    has_many :profiles, Profiles.Profile
+    has_many :profiles, Profile
+    has_many :jobs, Job
   end
 
   @doc """

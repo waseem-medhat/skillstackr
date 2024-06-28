@@ -79,6 +79,15 @@ defmodule Skillstackr.Accounts do
     |> Map.get(:profiles)
   end
 
+  @doc """
+  Gets all profiles associated with the given account.
+  """
+  def get_account_jobs(account) do
+    account
+    |> Repo.preload(:jobs)
+    |> Map.get(:jobs)
+  end
+
   ## Account registration
 
   @doc """

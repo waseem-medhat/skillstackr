@@ -1,11 +1,11 @@
 defmodule SkillstackrWeb.JobsLive do
-  alias Skillstackr.Jobs
+  alias Skillstackr.Accounts
   use SkillstackrWeb, :live_view
 
   def mount(_params, _session, socket) do
     socket =
       socket
-      |> assign(:jobs, Jobs.list_jobs())
+      |> assign(:jobs, Accounts.get_account_jobs(socket.assigns.current_account))
       |> assign(:page_title, "Job Experience")
 
     {:ok, socket}
