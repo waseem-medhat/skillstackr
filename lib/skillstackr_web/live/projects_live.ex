@@ -1,12 +1,12 @@
 defmodule SkillstackrWeb.ProjectsLive do
-  alias Skillstackr.Projects
+  alias Skillstackr.Accounts
   use SkillstackrWeb, :live_view
 
   def mount(_params, _session, socket) do
     socket =
       socket
       |> assign(:page_title, "Projects")
-      |> assign(:projects, Projects.list_projects())
+      |> assign(:projects, Accounts.get_account_projects(socket.assigns.current_account))
 
     {:ok, socket}
   end

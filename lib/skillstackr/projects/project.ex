@@ -1,4 +1,5 @@
 defmodule Skillstackr.Projects.Project do
+  alias Skillstackr.Accounts.Account
   alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.ProfilesProjects.ProfileProject
   use Ecto.Schema
@@ -12,6 +13,7 @@ defmodule Skillstackr.Projects.Project do
     field :link_repo, :string
     field :link_website, :string
 
+    belongs_to :account, Account
     has_many :profiles_projects, ProfileProject, on_delete: :delete_all
     has_many :projects_technologies, ProjectTechnology, on_delete: :delete_all
     timestamps(type: :utc_datetime)
@@ -20,7 +22,7 @@ defmodule Skillstackr.Projects.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:title, :description, :link_repo, :link_website])
+    |> cast(attrs, [:title, :description, :link_repo, :link_website, :account_id])
     |> validate_required([:title])
   end
 end

@@ -1,4 +1,5 @@
 defmodule Skillstackr.Accounts.Account do
+  alias Skillstackr.Projects.Project
   alias Skillstackr.Jobs.Job
   alias Skillstackr.Profiles.Profile
   use Ecto.Schema
@@ -14,6 +15,7 @@ defmodule Skillstackr.Accounts.Account do
     timestamps(type: :utc_datetime)
     has_many :profiles, Profile
     has_many :jobs, Job
+    has_many :projects, Project
   end
 
   @doc """

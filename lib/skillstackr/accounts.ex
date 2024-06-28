@@ -80,12 +80,21 @@ defmodule Skillstackr.Accounts do
   end
 
   @doc """
-  Gets all profiles associated with the given account.
+  Gets all job experience associated with the given account.
   """
   def get_account_jobs(account) do
     account
     |> Repo.preload(:jobs)
     |> Map.get(:jobs)
+  end
+
+  @doc """
+  Gets all projects associated with the given account.
+  """
+  def get_account_projects(account) do
+    account
+    |> Repo.preload(:projects)
+    |> Map.get(:projects)
   end
 
   ## Account registration

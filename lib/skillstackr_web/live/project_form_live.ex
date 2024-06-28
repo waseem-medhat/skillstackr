@@ -56,7 +56,11 @@ defmodule SkillstackrWeb.ProjectFormLive do
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
 
-    case Projects.create_project(params["project"], assoc_profiles) do
+    project_params =
+      params["project"]
+      |> Map.put("account_id", socket.assigns.current_account.id)
+
+    case Projects.create_project(project_params, assoc_profiles) do
       {:ok, _} ->
         {:noreply,
          socket
