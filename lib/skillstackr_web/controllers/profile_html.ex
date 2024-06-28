@@ -14,21 +14,21 @@ defmodule SkillstackrWeb.ProfileHTML do
       <img
         class="w-full h-auto rounded-t-xl"
         src={~p"/images/project-placeholder.png"}
-        alt={@project.title}
+        alt={@project.project.title}
       />
       <div class="p-4 md:p-5">
         <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-          <%= @project.title %>
+          <%= @project.project.title %>
         </h3>
         <div class="flex gap-2 mt-1 mb-2">
           <TechnologyComponents.tech_badge :for={tech <- @project.technologies} tech={tech} size={18} />
         </div>
         <p class="mt-1 text-gray-500 dark:text-neutral-400">
-          <%= @project.description %>
+          <%= @project.project.description %>
         </p>
         <a
           class="text-blue-600 hover:underline hover:decoration-blue-600"
-          href={@project.code_url}
+          href={@project.project.link_repo}
           target="_blank"
         >
           Code
@@ -36,7 +36,7 @@ defmodule SkillstackrWeb.ProfileHTML do
         <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
         <a
           class="text-blue-600 hover:underline hover:decoration-blue-600"
-          href={@project.code_url}
+          href={@project.project.link_website}
           target="_blank"
         >
           Website

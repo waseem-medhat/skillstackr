@@ -5,7 +5,7 @@ defmodule SkillstackrWeb.ProfileController do
   def show(conn, %{"slug" => slug}) do
     user = mock_user()
 
-    %{profile: profile, technologies: technologies, jobs: jobs} =
+    %{profile: profile, technologies: technologies, jobs: jobs, projects: projects} =
       Profiles.get_profile_by_slug!(slug)
 
     editable =
@@ -29,6 +29,7 @@ defmodule SkillstackrWeb.ProfileController do
     |> assign(:devops, Enum.filter(technologies, &(&1.category == "devops")))
     |> assign(:devtools, Enum.filter(technologies, &(&1.category == "devtools")))
     |> assign(:jobs, jobs)
+    |> assign(:projects, projects)
     |> render(:show)
   end
 
