@@ -1,9 +1,9 @@
 defmodule Skillstackr.Profiles.Profile do
+  alias Skillstackr.ProfilesTechnologies.ProfileTechnology
   alias Skillstackr.Accounts.Account
   alias Skillstackr.Profiles.Resume
   alias Skillstackr.ProfilesJobs.ProfileJob
   alias Skillstackr.ProfilesProjects.ProfileProject
-  alias Skillstackr.Technologies.Technology
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -23,11 +23,7 @@ defmodule Skillstackr.Profiles.Profile do
     has_one :resume, Resume, on_delete: :delete_all
     has_many :profiles_projects, ProfileProject, on_delete: :delete_all
     has_many :profiles_jobs, ProfileJob, on_delete: :delete_all
-
-    many_to_many :technologies, Technology,
-      join_through: "profiles_technologies",
-      on_replace: :delete,
-      on_delete: :delete_all
+    has_many :profiles_technologies, ProfileTechnology, on_delete: :delete_all
   end
 
   @doc false
@@ -43,7 +39,6 @@ defmodule Skillstackr.Profiles.Profile do
       :link_website,
       :account_id
     ])
-    |> cast_assoc(:technologies, with: &Technology.changeset/2)
     |> cast_assoc(:resume, with: &Resume.changeset/2)
     |> unique_constraint(:slug)
     |> validate_required([:full_name, :slug, :account_id])

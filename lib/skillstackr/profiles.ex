@@ -4,6 +4,10 @@ defmodule Skillstackr.Profiles do
   """
 
   import Ecto.Query, warn: false
+  alias Skillstackr.ProfilesTechnologies.ProfileTechnology
+  alias Skillstackr.Technologies.Technology
+  alias Ecto.Multi
+  alias Skillstackr.Technologies
   alias Skillstackr.Repo
 
   alias Skillstackr.Profiles.Profile
@@ -52,7 +56,15 @@ defmodule Skillstackr.Profiles do
 
   """
   def get_profile_by_slug!(slug) do
-    Repo.one!(from p in Profile, preload: :technologies, where: p.slug == ^slug)
+    profile =
+      Repo.one!(from p in Profile, preload: :profiles_technologies, where: p.slug == ^slug)
+
+    technology_ids = Enum.map(profile.profiles_technologies, & &1.technology_id)
+
+    technologies =
+      Repo.all(from t in Technology, where: t.id in ^technology_ids)
+
+    %{profile: profile, technologies: technologies}
   end
 
   @doc """
@@ -67,10 +79,37 @@ defmodule Skillstackr.Profiles do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_profile(attrs \\ %{}) do
-    %Profile{}
-    |> Profile.changeset(attrs)
-    |> Repo.insert()
+  def create_profile(attrs \\ %{}, assoc_technologies \\ []) do
+    Multi.new()
+    |> Multi.insert(:profile, Profile.changeset(%Profile{}, attrs))
+    |> Multi.run(:technologies, fn _repo, _changes ->
+      {:ok, Enum.map(assoc_technologies, &get_or_create_technology/1)}
+    end)
+    |> Multi.insert_all(
+      :profiles_technologies,
+      ProfileTechnology,
+      fn %{profile: profile, technologies: technologies} ->
+        Enum.map(technologies, fn t -> %{profile_id: profile.id, technology_id: t.id} end)
+      end
+    )
+    |> Repo.transaction()
+  end
+
+  defp get_or_create_technology(%{"name" => name, "category" => category} = tech_attrs) do
+    query =
+      from t in Technology,
+        where: t.name == ^name and t.category == ^category
+
+    case Repo.one(query) do
+      nil ->
+        case Technologies.create_technology(tech_attrs) do
+          {:ok, tech} -> tech
+          {:error, _} -> nil
+        end
+
+      tech ->
+        tech
+    end
   end
 
   @doc """

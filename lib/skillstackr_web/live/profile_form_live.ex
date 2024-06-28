@@ -7,12 +7,14 @@ defmodule SkillstackrWeb.ProfileFormLive do
     profile =
       case socket.assigns.live_action do
         :edit -> Profiles.get_profile_by_slug!(params["id"])
-        :new -> %Profile{technologies: []}
+        :new -> %Profile{}
       end
+
+    tech_list = []
 
     technologies =
       Enum.reduce(
-        profile.technologies,
+        tech_list,
         %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []},
         fn %{name: name, category: category}, acc_map ->
           Map.put(acc_map, category, [name | acc_map[category]])
@@ -73,10 +75,11 @@ defmodule SkillstackrWeb.ProfileFormLive do
       params
       |> Map.get("profile")
       |> Map.put("resume", get_resume_blob(socket))
-      |> Map.put("technologies", get_technologies(socket))
       |> Map.put("account_id", socket.assigns.current_account.id)
 
-    case Profiles.create_profile(profile_params) do
+    assoc_technologies = get_technologies(socket)
+
+    case Profiles.create_profile(profile_params, assoc_technologies) do
       {:ok, _} ->
         {:noreply,
          socket
