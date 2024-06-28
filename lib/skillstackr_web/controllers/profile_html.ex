@@ -50,7 +50,7 @@ defmodule SkillstackrWeb.ProfileHTML do
     ~H"""
     <div class="hs-accordion-group">
       <div
-        :for={job <- @experience}
+        :for={job <- @jobs}
         class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-slate-950/90 dark:border-neutral-700"
         id={"hs-bordered-heading-#{job.id}"}
       >
@@ -90,7 +90,7 @@ defmodule SkillstackrWeb.ProfileHTML do
             <h3><%= job.title %></h3>
           </div>
           <p class="text-sm font-medium text-right">
-            <%= job.years %> years @ <%= job.company %>
+            <%= job.experience_years %> years @ <%= job.company %>
           </p>
         </button>
         <div

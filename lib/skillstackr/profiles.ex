@@ -4,6 +4,7 @@ defmodule Skillstackr.Profiles do
   """
 
   import Ecto.Query, warn: false
+  alias Skillstackr.Jobs.Job
   alias Skillstackr.ProfilesTechnologies.ProfileTechnology
   alias Skillstackr.Technologies.Technology
   alias Ecto.Multi
@@ -57,14 +58,19 @@ defmodule Skillstackr.Profiles do
   """
   def get_profile_by_slug!(slug) do
     profile =
-      Repo.one!(from p in Profile, preload: :profiles_technologies, where: p.slug == ^slug)
+      Repo.one!(
+        from p in Profile,
+          preload: [:profiles_technologies, :profiles_jobs],
+          where: p.slug == ^slug
+      )
 
     technology_ids = Enum.map(profile.profiles_technologies, & &1.technology_id)
+    technologies = Repo.all(from t in Technology, where: t.id in ^technology_ids)
 
-    technologies =
-      Repo.all(from t in Technology, where: t.id in ^technology_ids)
+    job_ids = Enum.map(profile.profiles_jobs, & &1.job_id)
+    jobs = Repo.all(from j in Job, where: j.id in ^job_ids)
 
-    %{profile: profile, technologies: technologies}
+    %{profile: profile, technologies: technologies, jobs: jobs}
   end
 
   @doc """
