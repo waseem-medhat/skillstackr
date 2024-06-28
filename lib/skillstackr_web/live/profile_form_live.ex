@@ -6,7 +6,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
   def mount(params, _session, socket) do
     profile =
       case socket.assigns.live_action do
-        :edit -> Profiles.get_profile_by_slug!(params["id"])
+        :edit -> Profiles.get_profile_by_slug!(params["id"]).profile
         :new -> %Profile{}
       end
 
