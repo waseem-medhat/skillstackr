@@ -3,15 +3,15 @@ defmodule TechnologyComponents do
   Components and data needed for rendering technologies icons.
 
   The module uses a JSON file generated from parsing "Simple Icons" data
-  ("https://simpleicons.org/"). If the JSON file doesn't exist, generate it
-  by running `mix run simpleicons`.
+  ("https://simpleicons.org/"). If the JSON file doesn't exist, it will
+  be generated.
   """
   use Phoenix.Component
   import Phoenix.HTML
 
-  @technology_map Path.join(["priv", "static", "assets", "simpleicons_map.json"])
-                  |> File.read!()
-                  |> Jason.decode!()
+  @map_path Path.join(["priv", "static", "assets", "simpleicons_map.json"])
+  unless File.exists?(@map_path), do: Mix.Task.run("simpleicons")
+  @technology_map @map_path |> File.read!() |> Jason.decode!()
 
   def name_to_svg(tech_name), do: get_in(@technology_map, [tech_name, "svg"])
   def name_to_slug(tech_name), do: get_in(@technology_map, [tech_name, "slug"])

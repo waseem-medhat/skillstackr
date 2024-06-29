@@ -9,7 +9,7 @@ defmodule Mix.Tasks.Simpleicons do
     if not File.exists?(download_dir) do
       IO.puts("Icon repo clone not found, cloning...")
 
-      case System.cmd("git", ["clone", repo_url, download_dir]) do
+      case System.cmd("git", ["clone", "-b", "master", repo_url, download_dir]) do
         {_, 0} -> :ok
         _ -> raise("error cloning")
       end
@@ -42,11 +42,11 @@ defmodule Mix.Tasks.Simpleicons do
 
   defp parse_files(), do: Enum.reduce(File.ls!(), %{}, &build_map_entry/2)
 
-  def run([]) do
+  def run(_) do
     assets_path = Path.join(["priv", "static", "assets"])
 
     json =
-      Path.join(assets_path, "simple-icons")
+      Path.join("/tmp", "simple-icons")
       |> download_icons!("https://github.com/simple-icons/simple-icons.git")
       |> File.cd!(&parse_files/0)
       |> Jason.encode!()
