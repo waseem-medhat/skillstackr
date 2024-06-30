@@ -41,19 +41,15 @@ defmodule SkillstackrWeb.Simpleicons do
     json_path = Path.join(assets_path, "simpleicons_map.json")
 
     unless File.exists?(json_path) do
-      json =
-        Path.join("/tmp", "simple-icons")
+      dir = Path.join(["priv", "static", "simple-icons"])
+
+      simpleicons_map =
+        dir
         |> download_icons!("https://github.com/simple-icons/simple-icons.git")
         |> File.cd!(&parse_files/0)
-        |> Jason.encode!()
 
-      unless File.exists?(assets_path), do: File.mkdir_p!(assets_path)
-
-      File.write!(json_path, json)
+      File.rm_rf!(dir)
+      simpleicons_map
     end
-
-    json_path
-    |> File.read!()
-    |> Jason.encode!()
   end
 end
