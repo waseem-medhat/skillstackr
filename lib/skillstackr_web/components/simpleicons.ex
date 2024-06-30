@@ -1,6 +1,6 @@
 defmodule SkillstackrWeb.Simpleicons do
   defp download_icons!(download_dir, repo_url) do
-    if not File.exists?(download_dir) do
+    unless File.exists?(download_dir) do
       IO.puts("Icon repo clone not found, cloning...")
 
       case System.cmd("git", ["clone", "-b", "master", repo_url, download_dir]) do
@@ -29,27 +29,28 @@ defmodule SkillstackrWeb.Simpleicons do
   defp build_map_entry(file_name, icon_map) do
     file = File.read!(file_name)
     name = parse_name(file)
-    slug = String.replace(file_name, ~r/\.svg$/, "")
+
+    slug =
+      file_name
+      |> Path.basename()
+      |> String.replace(~r/\.svg$/, "")
 
     Map.put(icon_map, name, %{slug: slug, svg: file})
   end
 
-  defp parse_files(), do: Enum.reduce(File.ls!(), %{}, &build_map_entry/2)
+  defp parse_files(path) do
+    path
+    |> File.ls!()
+    |> Enum.map(fn file_name -> Path.absname(file_name, path) end)
+    |> Enum.reduce(%{}, &build_map_entry/2)
+  end
 
   def load_simpleicons_map() do
     assets_path = Path.join(["priv", "static", "assets"])
-    json_path = Path.join(assets_path, "simpleicons_map.json")
+    unless File.exists?(assets_path), do: File.mkdir_p!(assets_path)
 
-    unless File.exists?(json_path) do
-      dir = Path.join(["priv", "static", "simple-icons"])
-
-      simpleicons_map =
-        dir
-        |> download_icons!("https://github.com/simple-icons/simple-icons.git")
-        |> File.cd!(&parse_files/0)
-
-      File.rm_rf!(dir)
-      simpleicons_map
-    end
+    Path.join([assets_path, "simple-icons"])
+    |> download_icons!("https://github.com/simple-icons/simple-icons.git")
+    |> parse_files()
   end
 end

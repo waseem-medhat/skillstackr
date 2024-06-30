@@ -12,8 +12,8 @@ defmodule TechnologyComponents do
 
   @technology_map Simpleicons.load_simpleicons_map()
 
-  def name_to_svg(tech_name), do: get_in(@technology_map, [tech_name, "svg"])
-  def name_to_slug(tech_name), do: get_in(@technology_map, [tech_name, "slug"])
+  def name_to_svg(tech_name), do: get_in(@technology_map, [tech_name, :svg])
+  def name_to_slug(tech_name), do: get_in(@technology_map, [tech_name, :slug])
 
   def get_names(search_str \\ "") do
     search_str = String.downcase(search_str)
