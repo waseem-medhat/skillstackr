@@ -1,10 +1,4 @@
-defmodule Mix.Tasks.Simpleicons do
-  @moduledoc """
-  Pulls and parses the data from the SimpleIcons repository in order to create
-  a JSON file with the icon data and SVGs.
-  """
-  use Mix.Task
-
+defmodule SkillstackrWeb.Simpleicons do
   defp download_icons!(download_dir, repo_url) do
     if not File.exists?(download_dir) do
       IO.puts("Icon repo clone not found, cloning...")
@@ -42,18 +36,22 @@ defmodule Mix.Tasks.Simpleicons do
 
   defp parse_files(), do: Enum.reduce(File.ls!(), %{}, &build_map_entry/2)
 
-  def run(_) do
+  def load_simpleicons_map() do
     assets_path = Path.join(["priv", "static", "assets"])
+    json_path = Path.join(assets_path, "simpleicons_map.json")
 
-    json =
-      Path.join("/tmp", "simple-icons")
-      |> download_icons!("https://github.com/simple-icons/simple-icons.git")
-      |> File.cd!(&parse_files/0)
-      |> Jason.encode!()
+    unless File.exists?(json_path) do
+      json =
+        Path.join("/tmp", "simple-icons")
+        |> download_icons!("https://github.com/simple-icons/simple-icons.git")
+        |> File.cd!(&parse_files/0)
+        |> Jason.encode!()
 
-    Path.join(assets_path, "simpleicons_map.json")
-    |> File.write!(json)
+      File.write!(json_path, json)
+    end
 
-    IO.puts("Done!")
+    json_path
+    |> File.read!()
+    |> Jason.encode!()
   end
 end
