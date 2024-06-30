@@ -4,7 +4,7 @@ import Config
 config :skillstackr, Skillstackr.Repo,
   username: "root",
   password: "",
-  hostname: "database",
+  hostname: "localhost",
   database: "skillstackr_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
