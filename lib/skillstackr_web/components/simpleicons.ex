@@ -47,6 +47,8 @@ defmodule SkillstackrWeb.Simpleicons do
         |> File.cd!(&parse_files/0)
         |> Jason.encode!()
 
+      unless File.exists?(assets_path), do: File.mkdir_p!(assets_path)
+
       File.write!(json_path, json)
     end
 
