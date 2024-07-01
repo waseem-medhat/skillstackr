@@ -61,20 +61,19 @@ defmodule Skillstackr.Profiles do
     profile =
       Repo.one!(
         from p in Profile,
-          preload: [:profiles_technologies, :profiles_jobs, :profiles_projects],
+          preload: [
+            profiles_technologies: :technology,
+            profiles_jobs: :job,
+            profiles_projects: [
+              project: [projects_technologies: :technology]
+            ]
+          ],
           where: p.slug == ^slug
       )
 
-    technology_ids = Enum.map(profile.profiles_technologies, & &1.technology_id)
-    technologies = Repo.all(from t in Technology, where: t.id in ^technology_ids)
-
-    job_ids = Enum.map(profile.profiles_jobs, & &1.job_id)
-    jobs = Repo.all(from j in Job, where: j.id in ^job_ids)
-
-    project_ids = Enum.map(profile.profiles_projects, & &1.project_id)
-
-    projects =
-      Repo.all(from p in Project, preload: :projects_technologies, where: p.id in ^project_ids)
+    technologies = Enum.map(profile.profiles_technologies, & &1.technology)
+    jobs = Enum.map(profile.profiles_jobs, & &1.job)
+    projects = Enum.map(profile.profiles_projects, & &1.project)
 
     project_technologies =
       projects
