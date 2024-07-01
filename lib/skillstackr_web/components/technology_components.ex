@@ -1,4 +1,4 @@
-defmodule SkillstackrWeb.TechnologyComponents do
+defmodule TechnologyComponents do
   @moduledoc """
   Components and data needed for rendering technologies icons.
 

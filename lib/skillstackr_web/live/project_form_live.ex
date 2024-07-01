@@ -1,7 +1,6 @@
 defmodule SkillstackrWeb.ProjectFormLive do
   alias Skillstackr.{Projects, Profiles}
   alias Skillstackr.Projects.Project
-  alias SkillstackrWeb.TechnologyComponents
   use SkillstackrWeb, :live_view
 
   def mount(_params, _session, socket) do
