@@ -1,6 +1,7 @@
 defmodule SkillstackrWeb.ProjectFormLive do
   alias Skillstackr.{Projects, Profiles}
   alias Skillstackr.Projects.Project
+  alias SkillstackrWeb.TechnologyComponents
   use SkillstackrWeb, :live_view
 
   def mount(_params, _session, socket) do
@@ -123,23 +124,8 @@ defmodule SkillstackrWeb.ProjectFormLive do
           />
         </div>
       </section>
-      <section>
-        <.input
-          type="search"
-          name="search-technologies"
-          id="search-technologies"
-          placeholder="Start searching"
-          phx-change="search-technologies"
-          phx-debounce="300"
-          value=""
-        />
 
-        <div class="h-36 overflow-y-auto my-2 p-2 border dark:border-neutral-700 border-gray-200 rounded-lg">
-          <div class="flex items-center justify-center gap-1 flex-wrap">
-            <TechnologyComponents.choice_button :for={tech <- @tech_search_results} tech={tech} />
-          </div>
-        </div>
-      </section>
+      <TechnologyComponents.search_box tech_search_results={@tech_search_results} />
 
       <section>
         <.label>Add to Profiles</.label>
