@@ -6,20 +6,27 @@ defmodule SkillstackrWeb.ProfileFormLive do
   def mount(params, _session, socket) do
     profile =
       case socket.assigns.live_action do
-        :edit -> Profiles.get_profile_by_slug!(params["id"]).profile
         :new -> %Profile{}
+        :edit -> Profiles.get_profile_by_slug!(params["id"]).profile
       end
 
-    tech_list = []
+    tech_map = %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []}
 
     technologies =
-      Enum.reduce(
-        tech_list,
-        %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []},
-        fn %{name: name, category: category}, acc_map ->
-          Map.put(acc_map, category, [name | acc_map[category]])
-        end
-      )
+      case socket.assigns.live_action do
+        :new ->
+          tech_map
+
+        :edit ->
+          profile.profiles_technologies
+          |> Enum.map(fn pt -> pt.technology end)
+          |> Enum.reduce(
+            tech_map,
+            fn %{name: name, category: category}, acc_map ->
+              Map.put(acc_map, category, [name | acc_map[category]])
+            end
+          )
+      end
 
     socket =
       socket
