@@ -1,11 +1,11 @@
-<div id="profile-header" class="flex items-center gap-5 mb-8">
+<div id="profile-header" class="flex flex-col md:flex-row items-center gap-5 mb-8">
   <img
     class="inline-block size-20 aspect-square rounded-full contrast-0"
     src={~p"/images/profile-icon.png"}
     alt="Image Description"
   />
 
-  <hgroup class="flex-grow">
+  <hgroup class="flex-grow class flex flex-col items-center md:items-start">
     <h1 class="text-4xl font-bold mb-1"><%= @profile.full_name %></h1>
     <h2 class="text-xl font-semibold"><%= @profile.headline %></h2>
   </hgroup>
@@ -47,7 +47,7 @@
   </p>
 </section>
 
-<section id="skills" class="grid grid-cols-2 gap-3">
+<section id="skills" class="grid grid-cols-1 md:grid-cols-2 gap-3">
   <div :if={length(@frontend) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Front-end</span>
     <TechnologyComponents.tech_badge :for={tech <- @frontend} tech={tech.name} />
@@ -71,7 +71,7 @@
 
 <section id="professional-experience" class="my-5">
   <h2 class="text-xl font-bold mb-3">Projects</h2>
-  <div class="grid grid-cols-2 gap-2">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
     <.project_card :for={project <- @projects} project={project} />
   </div>
 </section>
