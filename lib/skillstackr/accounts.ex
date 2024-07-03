@@ -75,7 +75,7 @@ defmodule Skillstackr.Accounts do
   """
   def get_account_profiles!(account) do
     account
-    |> Repo.preload(:profiles)
+    |> Repo.preload([profiles: [profiles_technologies: :technology]])
     |> Map.get(:profiles)
   end
 

@@ -48,6 +48,16 @@ defmodule SkillstackrWeb.ProfilesLive do
 
       <p><%= p.summary || "No summary" %></p>
 
+      <section class="mt-5">
+        <div class="flex gap-2">
+          <TechnologyComponents.tech_badge
+            :for={t <- p.profiles_technologies}
+            tech={t.technology.name}
+            size={18}
+          />
+        </div>
+      </section>
+
       <div class="absolute top-5 right-5 flex gap-2 items-center">
         <.link
           navigate={~p"/profiles/#{p.slug}"}
