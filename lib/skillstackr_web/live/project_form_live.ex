@@ -1,5 +1,6 @@
 defmodule SkillstackrWeb.ProjectFormLive do
-  alias Skillstackr.{Projects, Profiles}
+  alias Skillstackr.Accounts
+  alias Skillstackr.Projects
   alias Skillstackr.Projects.Project
   use SkillstackrWeb, :live_view
 
@@ -10,13 +11,12 @@ defmodule SkillstackrWeb.ProjectFormLive do
       end
 
     technologies = %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []}
-    profiles = Profiles.list_profiles()
 
     socket =
       socket
       |> assign(:page_title, "Add Project")
       |> assign(:form, to_form(Projects.change_project(project)))
-      |> assign(:profiles, profiles)
+      |> assign(:profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
       |> assign(:technologies, technologies)
       |> assign(:tech_search_results, [])
 

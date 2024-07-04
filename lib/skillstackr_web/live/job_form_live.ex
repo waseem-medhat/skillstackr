@@ -1,5 +1,5 @@
 defmodule SkillstackrWeb.JobFormLive do
-  alias Skillstackr.Profiles
+  alias Skillstackr.Accounts
   alias Skillstackr.Jobs.Job
   alias Skillstackr.Jobs
   use SkillstackrWeb, :live_view
@@ -10,12 +10,10 @@ defmodule SkillstackrWeb.JobFormLive do
         :new -> %Job{}
       end
 
-    profiles = Profiles.list_profiles()
-
     socket =
       socket
       |> assign(:page_title, "Add Job Experience")
-      |> assign(:profiles, profiles)
+      |> assign(:profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
       |> assign(:form, to_form(Jobs.change_job(job)))
 
     {:ok, socket}
