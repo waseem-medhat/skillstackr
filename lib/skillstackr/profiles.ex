@@ -14,19 +14,6 @@ defmodule Skillstackr.Profiles do
   alias Skillstackr.Profiles.Profile
 
   @doc """
-  Returns the list of profiles.
-
-  ## Examples
-
-      iex> list_profiles()
-      [%Profile{}, ...]
-
-  """
-  def list_profiles do
-    Repo.all(Profile)
-  end
-
-  @doc """
   Gets a single profile.
 
   Raises `Ecto.NoResultsError` if the Profile does not exist.
@@ -184,19 +171,6 @@ defmodule Skillstackr.Profiles do
   alias Skillstackr.Projects.Project
 
   @doc """
-  Returns the list of projects.
-
-  ## Examples
-
-      iex> list_projects()
-      [%Project{}, ...]
-
-  """
-  def list_projects do
-    Repo.all(Project)
-  end
-
-  @doc """
   Gets a single project.
 
   Raises `Ecto.NoResultsError` if the Project does not exist.
@@ -278,19 +252,6 @@ defmodule Skillstackr.Profiles do
   end
 
   alias Skillstackr.Profiles.Resume
-
-  @doc """
-  Returns the list of resumes.
-
-  ## Examples
-
-      iex> list_resumes()
-      [%Resume{}, ...]
-
-  """
-  def list_resumes do
-    Repo.all(Resume)
-  end
 
   @doc """
   Gets a single resume.

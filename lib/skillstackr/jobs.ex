@@ -11,19 +11,6 @@ defmodule Skillstackr.Jobs do
   alias Skillstackr.Jobs.Job
 
   @doc """
-  Returns the list of jobs.
-
-  ## Examples
-
-      iex> list_jobs()
-      [%Job{}, ...]
-
-  """
-  def list_jobs do
-    Repo.all(Job)
-  end
-
-  @doc """
   Gets a single job.
 
   Raises `Ecto.NoResultsError` if the Job does not exist.

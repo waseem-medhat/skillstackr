@@ -10,19 +10,6 @@ defmodule Skillstackr.Projects do
   alias Skillstackr.Projects.Project
 
   @doc """
-  Returns the list of projects.
-
-  ## Examples
-
-      iex> list_projects()
-      [%Project{}, ...]
-
-  """
-  def list_projects do
-    Repo.all(Project)
-  end
-
-  @doc """
   Gets a single project.
 
   Raises `Ecto.NoResultsError` if the Project does not exist.

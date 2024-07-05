@@ -9,19 +9,6 @@ defmodule Skillstackr.Technologies do
   alias Skillstackr.Technologies.Technology
 
   @doc """
-  Returns the list of technologies.
-
-  ## Examples
-
-      iex> list_technologies()
-      [%Technology{}, ...]
-
-  """
-  def list_technologies do
-    Repo.all(Technology)
-  end
-
-  @doc """
   Gets a single technology.
 
   Raises `Ecto.NoResultsError` if the Technology does not exist.
