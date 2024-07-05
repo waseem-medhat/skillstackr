@@ -20,10 +20,10 @@ defmodule Skillstackr.Profiles.Profile do
 
     timestamps(type: :utc_datetime)
     belongs_to :account, Account
-    has_one :resume, Resume, on_delete: :delete_all
-    has_many :profiles_projects, ProfileProject, on_delete: :delete_all
-    has_many :profiles_jobs, ProfileJob, on_delete: :delete_all
-    has_many :profiles_technologies, ProfileTechnology, on_delete: :delete_all
+    has_one :resume, Resume
+    has_many :profiles_projects, ProfileProject
+    has_many :profiles_jobs, ProfileJob
+    has_many :profiles_technologies, ProfileTechnology
   end
 
   @doc false

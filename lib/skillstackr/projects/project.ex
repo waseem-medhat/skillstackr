@@ -14,8 +14,8 @@ defmodule Skillstackr.Projects.Project do
     field :link_website, :string
 
     belongs_to :account, Account
-    has_many :profiles_projects, ProfileProject, on_delete: :delete_all
-    has_many :projects_technologies, ProjectTechnology, on_delete: :delete_all
+    has_many :profiles_projects, ProfileProject
+    has_many :projects_technologies, ProjectTechnology
     timestamps(type: :utc_datetime)
   end
 

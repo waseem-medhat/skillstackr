@@ -9,7 +9,7 @@ defmodule Skillstackr.Technologies.Technology do
     field :name, :string
     field :category, :string
 
-    has_many :profiles_technologies, ProfileTechnology, on_delete: :delete_all
+    has_many :profiles_technologies, ProfileTechnology
   end
 
   @doc false

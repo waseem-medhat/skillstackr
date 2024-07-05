@@ -14,7 +14,7 @@ defmodule Skillstackr.Jobs.Job do
 
     timestamps(type: :utc_datetime)
     belongs_to :account, Account
-    has_many :profiles_jobs, ProfileJob, on_delete: :delete_all
+    has_many :profiles_jobs, ProfileJob
   end
 
   @doc false
