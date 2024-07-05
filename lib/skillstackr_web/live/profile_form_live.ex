@@ -47,21 +47,17 @@ defmodule SkillstackrWeb.ProfileFormLive do
   end
 
   def handle_event("toggle-technology-" <> category, params, socket) do
-    current_technologies = Map.get(socket.assigns.technologies, category)
     selected = params["value"]
+    category_technologies = Map.get(socket.assigns.tech_map, category)
 
-    new_technologies =
-      case Enum.find(current_technologies, &(&1 == selected)) do
-        nil -> [selected | current_technologies]
-        ^selected -> Enum.filter(current_technologies, &(&1 != selected))
+    new_category_technologies =
+      case selected in category_technologies do
+        false -> [selected | category_technologies]
+        true -> List.delete(category_technologies, selected)
       end
 
-    {:noreply,
-     assign(
-       socket,
-       :technologies,
-       Map.put(socket.assigns.technologies, category, new_technologies)
-     )}
+    new_tech_map = Map.put(socket.assigns.tech_map, category, new_category_technologies)
+    {:noreply, assign(socket, :tech_map, new_tech_map)}
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
@@ -140,7 +136,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
   end
 
   defp get_technologies(socket) do
-    socket.assigns.technologies
+    socket.assigns.tech_map
     |> Enum.flat_map(fn {category, tech_list} ->
       Enum.map(tech_list, &%{"name" => &1, "category" => category})
     end)
