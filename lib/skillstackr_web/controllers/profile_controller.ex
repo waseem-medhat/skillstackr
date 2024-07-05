@@ -1,4 +1,5 @@
 defmodule SkillstackrWeb.ProfileController do
+  alias Skillstackr.Technologies
   alias Skillstackr.{Accounts, Profiles}
   use SkillstackrWeb, :controller
 
@@ -24,10 +25,7 @@ defmodule SkillstackrWeb.ProfileController do
     |> assign(:page_title, profile.full_name)
     |> assign(:profile, profile)
     |> assign(:editable, editable)
-    |> assign(:frontend, Enum.filter(technologies, &(&1.category == "frontend")))
-    |> assign(:backend, Enum.filter(technologies, &(&1.category == "backend")))
-    |> assign(:devops, Enum.filter(technologies, &(&1.category == "devops")))
-    |> assign(:devtools, Enum.filter(technologies, &(&1.category == "devtools")))
+    |> assign(:tech_map, Technologies.list_to_map(technologies))
     |> assign(:jobs, jobs)
     |> assign(:projects, projects)
     |> render(:show)

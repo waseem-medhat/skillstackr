@@ -48,24 +48,24 @@
 </section>
 
 <section id="skills" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-  <div :if={length(@frontend) > 0} class="flex items-center gap-2">
+  <div :if={length(@tech_map["frontend"]) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Front-end</span>
-    <TechnologyComponents.tech_badge :for={tech <- @frontend} tech={tech.name} />
+    <TechnologyComponents.tech_badge :for={tech <- @tech_map["frontend"]} tech={tech} />
   </div>
 
-  <div :if={length(@backend) > 0} class="flex items-center gap-2">
+  <div :if={length(@tech_map["backend"]) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Back-end</span>
-    <TechnologyComponents.tech_badge :for={tech <- @backend} tech={tech.name} />
+    <TechnologyComponents.tech_badge :for={tech <- @tech_map["backend"]} tech={tech} />
   </div>
 
-  <div :if={length(@devops) > 0} class="flex items-center gap-2">
+  <div :if={length(@tech_map["devops"]) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">DevOps</span>
-    <TechnologyComponents.tech_badge :for={tech <- @devops} tech={tech.name} />
+    <TechnologyComponents.tech_badge :for={tech <- @tech_map["devops"]} tech={tech} />
   </div>
 
-  <div :if={length(@devtools) > 0} class="flex items-center gap-2">
+  <div :if={length(@tech_map["devtools"]) > 0} class="flex items-center gap-2">
     <span class="w-20 font-light">Dev tools</span>
-    <TechnologyComponents.tech_badge :for={tech <- @devtools} tech={tech.name} />
+    <TechnologyComponents.tech_badge :for={tech <- @tech_map["devtools"]} tech={tech} />
   </div>
 </section>
 

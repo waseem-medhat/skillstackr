@@ -101,4 +101,27 @@ defmodule Skillstackr.Technologies do
   def change_technology(%Technology{} = technology, attrs \\ %{}) do
     Technology.changeset(technology, attrs)
   end
+
+  @doc """
+  Converts a list of `Technology` structs to a map that categorizes
+  technologies as "frontend", "backend", etc.
+
+  ## Examples
+
+      iex> list_to_map([])
+      %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []}
+
+      iex> list_to_map([%Technology{name: "Elixir", category: "backend"}])
+      %{"backend" => ["Elixir"], "devops" => [], "devtools" => [], "frontend" => []}
+
+  """
+  def list_to_map(tech_list) when is_list(tech_list) do
+    Enum.reduce(
+      tech_list,
+      %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []},
+      fn %{name: name, category: category}, acc_map ->
+        Map.put(acc_map, category, [name | acc_map[category]])
+      end
+    )
+  end
 end

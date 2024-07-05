@@ -1,31 +1,18 @@
 defmodule SkillstackrWeb.ProfileFormLive do
+  alias Skillstackr.Technologies
   alias Skillstackr.Profiles
   alias Skillstackr.Profiles.Profile
   use SkillstackrWeb, :live_view
 
   def mount(params, _session, socket) do
-    profile =
-      case socket.assigns.live_action do
-        :new -> %Profile{}
-        :edit -> Profiles.get_profile_by_slug!(params["id"]).profile
-      end
-
-    tech_map = %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []}
-
-    technologies =
+    {profile, tech_map} =
       case socket.assigns.live_action do
         :new ->
-          tech_map
+          {%Profile{}, Technologies.list_to_map([])}
 
         :edit ->
-          profile.profiles_technologies
-          |> Enum.map(fn pt -> pt.technology end)
-          |> Enum.reduce(
-            tech_map,
-            fn %{name: name, category: category}, acc_map ->
-              Map.put(acc_map, category, [name | acc_map[category]])
-            end
-          )
+          profile_data = Profiles.get_profile_by_slug!(params["id"])
+          {profile_data.profile, Technologies.list_to_map(profile_data.technologies)}
       end
 
     socket =
@@ -33,7 +20,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
       |> assign(:page_title, "Create Profile")
       |> assign(:profile, profile)
       |> assign(:form, to_form(Profiles.change_profile(profile)))
-      |> assign(:technologies, technologies)
+      |> assign(:tech_map, tech_map)
       |> assign(:tech_search_results, [])
       |> allow_upload(:resume, accept: ~w(.pdf))
 
@@ -201,7 +188,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Front-end</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["frontend"]}
+            :for={tech <- @tech_map["frontend"]}
             tech={tech}
             class="pointer-events-none"
           />
@@ -210,7 +197,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Back-end</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["backend"]}
+            :for={tech <- @tech_map["backend"]}
             tech={tech}
             class="pointer-events-none"
           />
@@ -219,7 +206,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">DevOps</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["devops"]}
+            :for={tech <- @tech_map["devops"]}
             tech={tech}
             class="pointer-events-none"
           />
@@ -228,7 +215,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Dev tools</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["devtools"]}
+            :for={tech <- @tech_map["devtools"]}
             tech={tech}
             class="pointer-events-none"
           />
