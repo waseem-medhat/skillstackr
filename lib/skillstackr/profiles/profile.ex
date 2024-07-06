@@ -14,6 +14,7 @@ defmodule Skillstackr.Profiles.Profile do
     field :headline, :string
     field :summary, :string
     field :slug, :string
+    field :email, :string
     field :link_github, :string
     field :link_linkedin, :string
     field :link_website, :string
@@ -34,6 +35,7 @@ defmodule Skillstackr.Profiles.Profile do
       :headline,
       :summary,
       :slug,
+      :email,
       :link_github,
       :link_linkedin,
       :link_website,

@@ -7,6 +7,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProfiles do
       add :full_name, :string
       add :headline, :string
       add :slug, :string, null: false
+      add :email, :string
       add :summary, :string
       add :link_github, :string
       add :link_linkedin, :string
