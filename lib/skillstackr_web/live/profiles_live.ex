@@ -30,9 +30,7 @@ defmodule SkillstackrWeb.ProfilesLive do
       </.button>
     </.link>
 
-    <div :if={length(@profiles) == 0} class="my-5">
-      <i>No profiles</i>
-    </div>
+    <i :if={length(@profiles) == 0} class="block opacity-50 my-5">No profiles</i>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
       <div
@@ -47,9 +45,15 @@ defmodule SkillstackrWeb.ProfilesLive do
           <h3 class="text-lg font-semibold"><%= p.headline %></h3>
         </hgroup>
 
-        <p class="text-sm text-gray-500 dark:text-neutral-400 flex-grow">
-          <%= p.summary || "No summary" %>
-        </p>
+        <%= if p.summary do %>
+          <p class="text-sm text-gray-500 dark:text-neutral-400 flex-grow">
+            <%= p.summary %>
+          </p>
+        <% else %>
+          <i class="text-sm text-gray-400 dark:text-neutral-700 flex-grow">
+            No summary
+          </i>
+        <% end %>
 
         <section class="mt-5">
           <div class="flex gap-2">

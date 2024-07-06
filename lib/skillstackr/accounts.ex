@@ -93,7 +93,7 @@ defmodule Skillstackr.Accounts do
   """
   def get_account_projects(account) do
     account
-    |> Repo.preload(:projects)
+    |> Repo.preload(projects: [projects_technologies: :technology])
     |> Map.get(:projects)
   end
 

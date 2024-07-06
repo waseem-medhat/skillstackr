@@ -83,15 +83,9 @@ defmodule SkillstackrWeb.ProfileFormLive do
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
     profile_params =
-      params
-      |> Map.get("profile")
-      |> Map.put("technologies", get_technologies(socket))
-      |> Map.put("account_id", socket.assigns.current_account.id)
-
-    profile_params =
       case get_resume_blob(socket) do
-        nil -> profile_params
-        blob -> Map.put(profile_params, "resume", blob)
+        nil -> params["profile"]
+        blob -> Map.put(params["profile"], "resume", blob)
       end
 
     case Profiles.update_profile(socket.assigns.profile, profile_params) do
