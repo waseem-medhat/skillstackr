@@ -61,6 +61,7 @@ defmodule SkillstackrWeb.Router do
     live_session :require_authenticated_account,
       on_mount: [{SkillstackrWeb.AccountAuth, :ensure_authenticated}] do
       live "/profiles", ProfilesLive
+      live "/profiles/:slug", ProfileShowLive
       live "/profiles/new", ProfileFormLive, :new
       live "/profiles/:id/edit", ProfileFormLive, :edit
 
@@ -91,8 +92,6 @@ defmodule SkillstackrWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    # resources "/profiles", ProfileController, except: [:index, :new]
-    get "/profiles/:slug", ProfileController, :show
     get "/profiles/:slug/resume.pdf", ProfileController, :get_resume
   end
 end
