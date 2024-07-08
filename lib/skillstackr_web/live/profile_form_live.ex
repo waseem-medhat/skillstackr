@@ -100,13 +100,19 @@ defmodule SkillstackrWeb.ProfileFormLive do
       |> Technologies.map_to_list()
       |> Enum.filter(fn map -> map not in existing_tech_list end)
 
-    removed_technologies =
+    removed_profile_technology_ids =
       socket.assigns.profile.profiles_technologies
       |> Enum.filter(fn %{technology: %{name: name, category: category}} ->
         name not in socket.assigns.tech_map[category]
       end)
+      |> Enum.map(& &1.id)
 
-    case Profiles.update_profile(socket.assigns.profile, profile_params) do
+    Profiles.update_profile(
+      socket.assigns.profile,
+      profile_params,
+      removed_profile_technology_ids
+    )
+    |> case do
       {:ok, _} ->
         {:noreply,
          socket
