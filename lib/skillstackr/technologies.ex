@@ -111,4 +111,27 @@ defmodule Skillstackr.Technologies do
       end
     )
   end
+
+  @doc """
+  Converts a tech map to a list of "flat" maps which can be used as parameters
+  for insertion/updates.
+
+  ## Examples
+
+      iex> map_to_list(%{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []})
+      []
+
+      iex> map_to_list(%{"backend" => ["Elixir"], "devops" => [], "devtools" => [], "frontend" => []})
+      [%{"name" => "Elixir", "category" => "backend"}]
+      
+
+  """
+  def map_to_list(tech_map) when is_map(tech_map) do
+    Enum.flat_map(
+      tech_map,
+      fn {category, tech_list} ->
+        Enum.map(tech_list, fn tech_name -> %{"name" => tech_name, "category" => category} end)
+      end
+    )
+  end
 end

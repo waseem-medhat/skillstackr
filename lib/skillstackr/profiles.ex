@@ -133,10 +133,15 @@ defmodule Skillstackr.Profiles do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_profile(%Profile{} = profile, attrs) do
-    profile
-    |> Profile.changeset(attrs)
-    |> Repo.update()
+  def update_profile(%Profile{} = profile, attrs, assoc_technologies \\ []) do
+    IO.inspect(assoc_technologies, label: "ASSOC TECHNOLOGIES")
+
+    Multi.new()
+    |> Multi.update(:profile, Profile.changeset(profile, attrs))
+    |> Multi.run(:technologies, fn _repo, _changes ->
+      {:ok, Enum.map(assoc_technologies, &get_or_create_technology/1)}
+    end)
+    |> Repo.transaction()
   end
 
   @doc """

@@ -1,4 +1,5 @@
 defmodule SkillstackrWeb.ProfileFormLive do
+  alias Skillstackr.Technologies.Technology
   alias Skillstackr.Technologies
   alias Skillstackr.Profiles
   alias Skillstackr.Profiles.Profile
@@ -67,7 +68,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
       |> Map.put("resume", get_resume_blob(socket))
       |> Map.put("account_id", socket.assigns.current_account.id)
 
-    assoc_technologies = get_technologies(socket)
+    assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
 
     case Profiles.create_profile(profile_params, assoc_technologies) do
       {:ok, _} ->
@@ -87,6 +88,23 @@ defmodule SkillstackrWeb.ProfileFormLive do
         nil -> params["profile"]
         blob -> Map.put(params["profile"], "resume", blob)
       end
+
+    existing_tech_list =
+      socket.assigns.profile.profiles_technologies
+      |> Enum.map(fn %{technology: %{name: name, category: category}} ->
+        %{"name" => name, "category" => category}
+      end)
+
+    new_tech_list =
+      socket.assigns.tech_map
+      |> Technologies.map_to_list()
+      |> Enum.filter(fn map -> map not in existing_tech_list end)
+
+    removed_technologies =
+      socket.assigns.profile.profiles_technologies
+      |> Enum.filter(fn %{technology: %{name: name, category: category}} ->
+        name not in socket.assigns.tech_map[category]
+      end)
 
     case Profiles.update_profile(socket.assigns.profile, profile_params) do
       {:ok, _} ->
@@ -127,13 +145,6 @@ defmodule SkillstackrWeb.ProfileFormLive do
 
         %{"blob" => resume_blob}
     end
-  end
-
-  defp get_technologies(socket) do
-    socket.assigns.tech_map
-    |> Enum.flat_map(fn {category, tech_list} ->
-      Enum.map(tech_list, &%{"name" => &1, "category" => category})
-    end)
   end
 
   def render(assigns) do
