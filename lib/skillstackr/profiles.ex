@@ -92,7 +92,7 @@ defmodule Skillstackr.Profiles do
     Multi.new()
     |> Multi.insert(:profile, Profile.changeset(%Profile{}, attrs))
     |> Multi.run(:technologies, fn _repo, _changes ->
-      {:ok, Enum.map(assoc_technologies, &get_or_create_technology/1)}
+      {:ok, Enum.map(assoc_technologies, &Technologies.get_or_create_technology/1)}
     end)
     |> Multi.insert_all(
       :profiles_technologies,
@@ -102,23 +102,6 @@ defmodule Skillstackr.Profiles do
       end
     )
     |> Repo.transaction()
-  end
-
-  defp get_or_create_technology(%{"name" => name, "category" => category} = tech_attrs) do
-    query =
-      from t in Technology,
-        where: t.name == ^name and t.category == ^category
-
-    case Repo.one(query) do
-      nil ->
-        case Technologies.create_technology(tech_attrs) do
-          {:ok, tech} -> tech
-          {:error, _} -> nil
-        end
-
-      tech ->
-        tech
-    end
   end
 
   @doc """
@@ -146,7 +129,7 @@ defmodule Skillstackr.Profiles do
       from(pt in ProfileTechnology, where: pt.id in ^removed_profile_technology_ids)
     )
     |> Multi.run(:new_technologies, fn _repo, _changes ->
-      {:ok, Enum.map(new_tech_list, &get_or_create_technology/1)}
+      {:ok, Enum.map(new_tech_list, &Technologies.get_or_create_technology/1)}
     end)
     |> Multi.insert_all(
       :profiles_technologies,

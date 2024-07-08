@@ -42,6 +42,23 @@ defmodule Skillstackr.Technologies do
     |> Repo.insert()
   end
 
+  def get_or_create_technology(%{"name" => name, "category" => category} = tech_attrs) do
+    query =
+      from t in Technology,
+        where: t.name == ^name and t.category == ^category
+
+    case Repo.one(query) do
+      nil ->
+        case create_technology(tech_attrs) do
+          {:ok, tech} -> tech
+          {:error, _} -> nil
+        end
+
+      tech ->
+        tech
+    end
+  end
+
   @doc """
   Updates a technology.
 

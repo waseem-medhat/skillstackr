@@ -4,6 +4,8 @@ defmodule Skillstackr.Projects do
   """
 
   import Ecto.Query, warn: false
+  alias Skillstackr.Technologies
+  alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.ProfilesProjects.ProfileProject
   alias Ecto.Multi
   alias Skillstackr.Repo
@@ -37,12 +39,23 @@ defmodule Skillstackr.Projects do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(attrs \\ %{}, assoc_profiles \\ []) do
+  def create_project(attrs \\ %{}, assoc_profiles \\ [], assoc_technologies \\ []) do
     Multi.new()
     |> Multi.insert(:new_project, Project.changeset(%Project{}, attrs))
     |> Multi.insert_all(:profiles_projects, ProfileProject, fn %{new_project: new_project} ->
       Enum.map(assoc_profiles, fn p -> %{project_id: new_project.id, profile_id: p.id} end)
     end)
+    |> Multi.run(:technologies, fn _repo, _changes ->
+      {:ok, Enum.map(assoc_technologies, &Technologies.get_or_create_technology/1)}
+    end)
+    |> Multi.insert_all(
+      :projects_technologies,
+      ProjectTechnology,
+      fn %{new_project: new_project, technologies: technologies} ->
+        IO.inspect(technologies, label: "TECHNOLOGIES")
+        Enum.map(technologies, fn t -> %{project_id: new_project.id, technology_id: t.id} end)
+      end
+    )
     |> Repo.transaction()
   end
 

@@ -1,4 +1,5 @@
 defmodule SkillstackrWeb.ProjectFormLive do
+  alias Skillstackr.Technologies
   alias Skillstackr.Accounts
   alias Skillstackr.Projects
   alias Skillstackr.Projects.Project
@@ -10,14 +11,14 @@ defmodule SkillstackrWeb.ProjectFormLive do
         :new -> %Project{}
       end
 
-    technologies = %{"frontend" => [], "backend" => [], "devops" => [], "devtools" => []}
+    tech_map = Technologies.list_to_map([])
 
     socket =
       socket
       |> assign(:page_title, "Add Project")
       |> assign(:form, to_form(Projects.change_project(project)))
       |> assign(:profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
-      |> assign(:technologies, technologies)
+      |> assign(:tech_map, tech_map)
       |> assign(:tech_search_results, [])
 
     {:ok, socket}
@@ -34,21 +35,17 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("toggle-technology-" <> category, params, socket) do
-    current_technologies = Map.get(socket.assigns.technologies, category)
     selected = params["value"]
+    category_technologies = Map.get(socket.assigns.tech_map, category)
 
-    new_technologies =
-      case Enum.find(current_technologies, &(&1 == selected)) do
-        nil -> [selected | current_technologies]
-        ^selected -> Enum.filter(current_technologies, &(&1 != selected))
+    new_category_technologies =
+      case selected in category_technologies do
+        false -> [selected | category_technologies]
+        true -> List.delete(category_technologies, selected)
       end
 
-    {:noreply,
-     assign(
-       socket,
-       :technologies,
-       Map.put(socket.assigns.technologies, category, new_technologies)
-     )}
+    new_tech_map = Map.put(socket.assigns.tech_map, category, new_category_technologies)
+    {:noreply, assign(socket, :tech_map, new_tech_map)}
   end
 
   def handle_event("save", params, socket) do
@@ -60,7 +57,9 @@ defmodule SkillstackrWeb.ProjectFormLive do
       params["project"]
       |> Map.put("account_id", socket.assigns.current_account.id)
 
-    case Projects.create_project(project_params, assoc_profiles) do
+    assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
+
+    case Projects.create_project(project_params, assoc_profiles, assoc_technologies) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -90,7 +89,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Front-end</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["frontend"]}
+            :for={tech <- @tech_map["frontend"]}
             tech={tech}
             class="pointer-events-none"
           />
@@ -99,7 +98,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Back-end</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["backend"]}
+            :for={tech <- @tech_map["backend"]}
             tech={tech}
             class="pointer-events-none"
           />
@@ -108,7 +107,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">DevOps</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["devops"]}
+            :for={tech <- @tech_map["devops"]}
             tech={tech}
             class="pointer-events-none"
           />
@@ -117,7 +116,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Dev tools</span>
           <TechnologyComponents.tech_badge
-            :for={tech <- @technologies["devtools"]}
+            :for={tech <- @tech_map["devtools"]}
             tech={tech}
             class="pointer-events-none"
           />
