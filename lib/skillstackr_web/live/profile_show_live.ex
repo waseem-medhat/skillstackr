@@ -40,31 +40,31 @@ defmodule SkillstackrWeb.ProfileShowLive do
         src={~p"/images/project-placeholder.png"}
         alt={@project.project.title}
       />
-      <div class="p-4 md:p-5">
-        <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-          <%= @project.project.title %>
-        </h3>
-        <div class="flex gap-2 mt-1 mb-2">
-          <TechnologyComponents.tech_badge :for={tech <- @project.technologies} tech={tech} size={18} />
-        </div>
-        <p class="mt-1 text-gray-500 dark:text-neutral-400">
+      <div class="p-4 md:p-5 space-y-4">
+        <header>
+          <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+            <%= @project.project.title %>
+          </h3>
+          <div class="flex gap-2 mt-1 mb-2">
+            <TechnologyComponents.tech_badge
+              :for={tech <- @project.technologies}
+              tech={tech.name}
+              size={16}
+            />
+          </div>
+        </header>
+        <p class="text-gray-500 dark:text-neutral-400">
           <%= @project.project.description %>
         </p>
-        <a
-          class="text-blue-600 hover:underline hover:decoration-blue-600"
-          href={@project.project.link_repo}
-          target="_blank"
-        >
-          Code
-        </a>
-        <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
-        <a
-          class="text-blue-600 hover:underline hover:decoration-blue-600"
-          href={@project.project.link_website}
-          target="_blank"
-        >
-          Website
-        </a>
+        <footer class="text-indigo-700">
+          <.link navigate={@project.project.link_repo} class="hover:text-indigo-500">
+            Code
+          </.link>
+          <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
+          <.link navigate={@project.project.link_website} class="hover:text-indigo-500">
+            Website
+          </.link>
+        </footer>
       </div>
     </div>
     """
