@@ -3,6 +3,8 @@ defmodule Skillstackr.Repo.Migrations.CreateProfilesTechnologies do
 
   def change do
     create table(:profiles_technologies, primary_key: false) do
+      add :id, :binary_id, primary_key: true
+
       add :profile_id,
           references(:profiles, type: :binary_id, on_delete: :delete_all),
           primary_key: true
