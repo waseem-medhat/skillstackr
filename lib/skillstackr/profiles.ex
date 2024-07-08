@@ -133,15 +133,27 @@ defmodule Skillstackr.Profiles do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_profile(%Profile{} = profile, attrs, removed_profile_technology_ids \\ []) do
+  def update_profile(
+        %Profile{} = profile,
+        attrs,
+        removed_profile_technology_ids \\ [],
+        new_tech_list \\ []
+      ) do
     Multi.new()
     |> Multi.update(:profile, Profile.changeset(profile, attrs))
-    # |> Multi.run(:technologies, fn _repo, _changes ->
-    #   {:ok, Enum.map(assoc_technologies, &get_or_create_technology/1)}
-    # end)
     |> Multi.delete_all(
       :removed_technologies,
       from(pt in ProfileTechnology, where: pt.id in ^removed_profile_technology_ids)
+    )
+    |> Multi.run(:new_technologies, fn _repo, _changes ->
+      {:ok, Enum.map(new_tech_list, &get_or_create_technology/1)}
+    end)
+    |> Multi.insert_all(
+      :profiles_technologies,
+      ProfileTechnology,
+      fn %{profile: profile, new_technologies: new_technologies} ->
+        Enum.map(new_technologies, fn t -> %{profile_id: profile.id, technology_id: t.id} end)
+      end
     )
     |> Repo.transaction()
   end

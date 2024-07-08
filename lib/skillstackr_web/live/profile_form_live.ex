@@ -1,5 +1,4 @@
 defmodule SkillstackrWeb.ProfileFormLive do
-  alias Skillstackr.Technologies.Technology
   alias Skillstackr.Technologies
   alias Skillstackr.Profiles
   alias Skillstackr.Profiles.Profile
@@ -110,7 +109,8 @@ defmodule SkillstackrWeb.ProfileFormLive do
     Profiles.update_profile(
       socket.assigns.profile,
       profile_params,
-      removed_profile_technology_ids
+      removed_profile_technology_ids,
+      new_tech_list
     )
     |> case do
       {:ok, _} ->
