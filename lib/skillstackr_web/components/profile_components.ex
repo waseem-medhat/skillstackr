@@ -14,26 +14,30 @@ defmodule SkillstackrWeb.ProfileComponents do
       <img
         class="w-full h-auto rounded-t-xl"
         src={~p"/images/project-placeholder.png"}
-        alt={@project.project.title}
+        alt={@project.title}
       />
       <div class="p-4 md:p-5 space-y-4">
         <header>
           <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-            <%= @project.project.title %>
+            <%= @project.title %>
           </h3>
           <div class="flex gap-2 mt-1 mb-2">
-            <.tech_badge :for={tech <- @project.technologies} tech={tech.name} size={16} />
+            <.tech_badge
+              :for={tech <- Enum.map(@project.projects_technologies, & &1.technology)}
+              tech={tech.name}
+              size={16}
+            />
           </div>
         </header>
         <p class="text-gray-500 dark:text-neutral-400">
-          <%= @project.project.description %>
+          <%= @project.description %>
         </p>
         <footer class="text-indigo-700">
-          <.link navigate={@project.project.link_repo} class="hover:text-indigo-500">
+          <.link navigate={@project.link_repo} class="hover:text-indigo-500">
             Code
           </.link>
           <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
-          <.link navigate={@project.project.link_website} class="hover:text-indigo-500">
+          <.link navigate={@project.link_website} class="hover:text-indigo-500">
             Website
           </.link>
         </footer>

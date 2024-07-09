@@ -44,36 +44,17 @@ defmodule Skillstackr.Profiles do
 
   """
   def get_profile_by_slug!(slug) do
-    profile =
-      Repo.one!(
-        from p in Profile,
-          preload: [
-            profiles_technologies: :technology,
-            profiles_jobs: :job,
-            profiles_projects: [
-              project: [projects_technologies: :technology]
-            ]
-          ],
-          where: p.slug == ^slug
-      )
-
-    technologies = Enum.map(profile.profiles_technologies, & &1.technology)
-    jobs = Enum.map(profile.profiles_jobs, & &1.job)
-    projects = Enum.map(profile.profiles_projects, & &1.project)
-
-    project_technologies =
-      projects
-      |> Enum.map(fn project ->
-        proj_tech_ids = Enum.map(project.projects_technologies, & &1.technology_id)
-        Repo.all(from t in Technology, where: t.id in ^proj_tech_ids)
-      end)
-
-    projects =
-      Enum.zip_with(projects, project_technologies, fn p, pt ->
-        %{project: p, technologies: pt}
-      end)
-
-    %{profile: profile, technologies: technologies, jobs: jobs, projects: projects}
+    Repo.one!(
+      from p in Profile,
+        preload: [
+          profiles_technologies: :technology,
+          profiles_jobs: :job,
+          profiles_projects: [
+            project: [projects_technologies: :technology]
+          ]
+        ],
+        where: p.slug == ^slug
+    )
   end
 
   @doc """

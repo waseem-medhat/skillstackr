@@ -7,8 +7,7 @@ defmodule SkillstackrWeb.ProfileShowLive do
   import SkillstackrWeb.TechnologyComponents
 
   def mount(%{"slug" => slug} = _params, _session, socket) do
-    %{profile: profile, technologies: technologies, jobs: jobs, projects: projects} =
-      Profiles.get_profile_by_slug!(slug)
+    profile = Profiles.get_profile_by_slug!(slug)
 
     editable =
       case socket.assigns.current_account do
@@ -26,10 +25,12 @@ defmodule SkillstackrWeb.ProfileShowLive do
       |> assign(:page_title, profile.full_name)
       |> assign(:profile, profile)
       |> assign(:editable, editable)
-      |> assign(:tech_map, Technologies.list_to_map(technologies))
-      |> assign(:jobs, jobs)
-      |> assign(:total_exp_years, jobs |> Enum.map(& &1.years_of_experience) |> Enum.sum())
-      |> assign(:projects, projects)
+      |> assign(
+        :tech_map,
+        profile.profiles_technologies
+        |> Enum.map(& &1.technology)
+        |> Technologies.list_to_map()
+      )
 
     {:ok, socket}
   end
@@ -110,18 +111,19 @@ defmodule SkillstackrWeb.ProfileShowLive do
     <section id="professional-experience" class="my-5">
       <h2 class="text-xl font-bold mb-3">Projects</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <.project_card :for={project <- @projects} project={project} />
+        <.project_card
+          :for={project <- Enum.map(@profile.profiles_projects, & &1.project)}
+          project={project}
+        />
       </div>
     </section>
 
     <section id="professional-experience" class="my-5">
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-bold mb-3">Professional Experience</h2>
-        <p>
-          <%= @total_exp_years %> Years
-        </p>
+        <p>N Years</p>
       </div>
-      <.job_accordion jobs={@jobs} />
+      <.job_accordion jobs={Enum.map(@profile.profiles_jobs, & &1.job)} />
     </section>
     """
   end
