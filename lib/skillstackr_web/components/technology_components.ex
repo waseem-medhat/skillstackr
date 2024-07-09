@@ -46,16 +46,19 @@ defmodule SkillstackrWeb.TechnologyComponents do
 
   def tech_badge(assigns) do
     ~H"""
-    <div class="group relative flex flex-col items-center">
+    <div class="hs-tooltip inline-block">
       <button type="button" class="hs-tooltip-toggle cursor-default">
         <img
-          class={["hover:brightness-[125%]", @class]}
+          class={["hover:brightness-[125%] transition", @class]}
           src={"https://cdn.simpleicons.org/#{name_to_slug(@tech)}"}
           width={@size}
           alt={"#{@tech}"}
         />
       </button>
-      <span class="absolute top-[-35px] text-center text-sm z-10 bg-slate-200 dark:bg-slate-950/70 px-2 py-1 rounded-lg group-hover:block hidden">
+      <span
+        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+        role="tooltip"
+      >
         <%= @tech %>
       </span>
     </div>

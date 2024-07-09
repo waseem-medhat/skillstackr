@@ -29,9 +29,7 @@ defmodule SkillstackrWeb.ProjectsLive do
 
     <i :if={length(@projects) == 0} class="block opacity-50 my-5">No projects</i>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
-      <.project_card :for={p <- @projects} project={p} editable={true} />
-    </div>
+    <.project_grid projects={@projects} editable={true} />
     """
   end
 end

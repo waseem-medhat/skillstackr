@@ -110,12 +110,7 @@ defmodule SkillstackrWeb.ProfileShowLive do
 
     <section id="professional-experience" class="my-5">
       <h2 class="text-xl font-bold mb-3">Projects</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <.project_card
-          :for={project <- Enum.map(@profile.profiles_projects, & &1.project)}
-          project={project}
-        />
-      </div>
+      <.project_grid projects={Enum.map(@profile.profiles_projects, & &1.project)} />
     </section>
 
     <section id="professional-experience" class="my-5">

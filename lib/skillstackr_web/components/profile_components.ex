@@ -3,59 +3,63 @@ defmodule SkillstackrWeb.ProfileComponents do
   Profile-related components. They are used both in the profile "show" page and
   in the listing pages ("/projects", "/jobs").
   """
-  alias Skillstackr.Projects.Project
   use SkillstackrWeb, :verified_routes
   use Phoenix.Component
   import SkillstackrWeb.CoreComponents
   import SkillstackrWeb.TechnologyComponents
 
-  attr :project, Project, required: true
+  attr :projects, :any, required: true
   attr :editable, :boolean, default: false
 
-  def project_card(assigns) do
+  def project_grid(assigns) do
     ~H"""
-    <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70">
-      <img
-        class="w-full h-auto rounded-t-xl"
-        src={~p"/images/project-placeholder.png"}
-        alt={@project.title}
-      />
-      <div class="p-4 md:p-5 relative">
-        <div :if={@editable} class="absolute top-6 right-6 flex gap-2 items-center">
-          <.link
-            navigate={~p"/projects/#{@project.id}/edit"}
-            class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
-          >
-            <.icon name="hero-pencil-square-micro" />
-          </.link>
-        </div>
-
-        <header>
-          <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-            <%= @project.title %>
-          </h3>
-          <div class="flex gap-2 mt-1 mb-2">
-            <.tech_badge
-              :for={tech <- Enum.map(@project.projects_technologies, & &1.technology)}
-              tech={tech.name}
-              size={16}
-            />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
+      <div
+        :for={p <- @projects}
+        class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70"
+      >
+        <img
+          class="w-full h-auto rounded-t-xl"
+          src={~p"/images/project-placeholder.png"}
+          alt={p.title}
+        />
+        <div class="p-4 md:p-5 relative">
+          <div :if={@editable} class="absolute top-6 right-6 flex gap-2 items-center">
+            <.link
+              navigate={~p"/projects/#{p.id}/edit"}
+              class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+            >
+              <.icon name="hero-pencil-square-micro" />
+            </.link>
           </div>
-        </header>
 
-        <p class="text-gray-500 dark:text-neutral-400 my-4">
-          <%= @project.description %>
-        </p>
+          <header>
+            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+              <%= p.title %>
+            </h3>
+            <div class="flex gap-2 mt-1 mb-2">
+              <.tech_badge
+                :for={tech <- Enum.map(p.projects_technologies, & &1.technology)}
+                tech={tech.name}
+                size={16}
+              />
+            </div>
+          </header>
 
-        <footer class="text-indigo-700">
-          <.link navigate={@project.link_repo} class="hover:text-indigo-500">
-            Code
-          </.link>
-          <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
-          <.link navigate={@project.link_website} class="hover:text-indigo-500">
-            Website
-          </.link>
-        </footer>
+          <p class="text-gray-500 dark:text-neutral-400 my-4">
+            <%= p.description %>
+          </p>
+
+          <footer class="text-indigo-700">
+            <.link navigate={p.link_repo} class="hover:text-indigo-500">
+              Code
+            </.link>
+            <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
+            <.link navigate={p.link_website} class="hover:text-indigo-500">
+              Website
+            </.link>
+          </footer>
+        </div>
       </div>
     </div>
     """
