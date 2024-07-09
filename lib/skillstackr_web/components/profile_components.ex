@@ -3,10 +3,14 @@ defmodule SkillstackrWeb.ProfileComponents do
   Profile-related components. They are used both in the profile "show" page and
   in the listing pages ("/projects", "/jobs").
   """
+  alias Skillstackr.Projects.Project
   use SkillstackrWeb, :verified_routes
   use Phoenix.Component
   import SkillstackrWeb.CoreComponents
   import SkillstackrWeb.TechnologyComponents
+
+  attr :project, Project, required: true
+  attr :editable, :boolean, default: false
 
   def project_card(assigns) do
     ~H"""
@@ -16,7 +20,16 @@ defmodule SkillstackrWeb.ProfileComponents do
         src={~p"/images/project-placeholder.png"}
         alt={@project.title}
       />
-      <div class="p-4 md:p-5 space-y-4">
+      <div class="p-4 md:p-5 relative">
+        <div :if={@editable} class="absolute top-6 right-6 flex gap-2 items-center">
+          <.link
+            navigate={~p"/projects/#{@project.id}/edit"}
+            class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+          >
+            <.icon name="hero-pencil-square-micro" />
+          </.link>
+        </div>
+
         <header>
           <h3 class="text-lg font-bold text-gray-800 dark:text-white">
             <%= @project.title %>
@@ -29,9 +42,11 @@ defmodule SkillstackrWeb.ProfileComponents do
             />
           </div>
         </header>
-        <p class="text-gray-500 dark:text-neutral-400">
+
+        <p class="text-gray-500 dark:text-neutral-400 my-4">
           <%= @project.description %>
         </p>
+
         <footer class="text-indigo-700">
           <.link navigate={@project.link_repo} class="hover:text-indigo-500">
             Code
