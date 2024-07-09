@@ -1,6 +1,7 @@
 defmodule SkillstackrWeb.ProjectsLive do
   alias Skillstackr.Accounts
   use SkillstackrWeb, :live_view
+  import SkillstackrWeb.TechnologyComponents
 
   def mount(_params, _session, socket) do
     socket =
@@ -35,20 +36,16 @@ defmodule SkillstackrWeb.ProjectsLive do
       >
         <h1 class="text-xl font-bold"><%= p.title %></h1>
 
-      <div class="text-sm text-gray-500 dark:text-neutral-400 flex-grow mt-2 mb-5">
-        <%= if p.description do %>
-          <p><%= p.description %></p>
-        <% else %>
-          <i>No description</i>
-        <% end %>
-      </div>
+        <div class="text-sm text-gray-500 dark:text-neutral-400 flex-grow mt-2 mb-5">
+          <%= if p.description do %>
+            <p><%= p.description %></p>
+          <% else %>
+            <i>No description</i>
+          <% end %>
+        </div>
 
         <div class="flex gap-2">
-          <TechnologyComponents.tech_badge
-            :for={t <- p.projects_technologies}
-            tech={t.technology.name}
-            size={18}
-          />
+          <.tech_badge :for={t <- p.projects_technologies} tech={t.technology.name} size={18} />
         </div>
 
         <div class="absolute top-6 right-6 flex gap-2 items-center">

@@ -1,4 +1,4 @@
-defmodule TechnologyComponents do
+defmodule SkillstackrWeb.TechnologyComponents do
   @moduledoc """
   Components and data needed for rendering technologies icons.
 
@@ -16,7 +16,7 @@ defmodule TechnologyComponents do
   def name_to_svg(tech_name), do: get_in(@technology_map, [tech_name, :svg])
   def name_to_slug(tech_name), do: get_in(@technology_map, [tech_name, :slug])
 
-  def get_names(search_str \\ "") do
+  def get_tech_names(search_str \\ "") do
     search_str = String.downcase(search_str)
 
     @technology_map

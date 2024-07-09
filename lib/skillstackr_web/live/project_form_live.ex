@@ -1,9 +1,8 @@
 defmodule SkillstackrWeb.ProjectFormLive do
-  alias Skillstackr.Technologies
-  alias Skillstackr.Accounts
-  alias Skillstackr.Projects
+  alias Skillstackr.{Accounts, Projects, Technologies}
   alias Skillstackr.Projects.Project
   use SkillstackrWeb, :live_view
+  import SkillstackrWeb.TechnologyComponents
 
   def mount(params, _session, socket) do
     {project, tech_map} =
@@ -37,7 +36,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
     results =
       case params["search-technologies"] do
         "" -> []
-        str -> TechnologyComponents.get_names(str)
+        str -> get_tech_names(str)
       end
 
     {:noreply, assign(socket, :tech_search_results, results)}
@@ -102,42 +101,26 @@ defmodule SkillstackrWeb.ProjectFormLive do
       <section id="skills" class="grid grid-cols-2 gap-3">
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Front-end</span>
-          <TechnologyComponents.tech_badge
-            :for={tech <- @tech_map["frontend"]}
-            tech={tech}
-            class="pointer-events-none"
-          />
+          <.tech_badge :for={tech <- @tech_map["frontend"]} tech={tech} class="pointer-events-none" />
         </div>
 
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Back-end</span>
-          <TechnologyComponents.tech_badge
-            :for={tech <- @tech_map["backend"]}
-            tech={tech}
-            class="pointer-events-none"
-          />
+          <.tech_badge :for={tech <- @tech_map["backend"]} tech={tech} class="pointer-events-none" />
         </div>
 
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">DevOps</span>
-          <TechnologyComponents.tech_badge
-            :for={tech <- @tech_map["devops"]}
-            tech={tech}
-            class="pointer-events-none"
-          />
+          <.tech_badge :for={tech <- @tech_map["devops"]} tech={tech} class="pointer-events-none" />
         </div>
 
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Dev tools</span>
-          <TechnologyComponents.tech_badge
-            :for={tech <- @tech_map["devtools"]}
-            tech={tech}
-            class="pointer-events-none"
-          />
+          <.tech_badge :for={tech <- @tech_map["devtools"]} tech={tech} class="pointer-events-none" />
         </div>
       </section>
 
-      <TechnologyComponents.search_box tech_search_results={@tech_search_results} />
+      <.search_box tech_search_results={@tech_search_results} />
 
       <section>
         <.label>Add to Profiles</.label>

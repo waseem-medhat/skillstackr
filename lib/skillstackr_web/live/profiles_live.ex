@@ -1,6 +1,7 @@
 defmodule SkillstackrWeb.ProfilesLive do
   alias Skillstackr.Accounts
   use SkillstackrWeb, :live_view
+  import SkillstackrWeb.TechnologyComponents
 
   def mount(_params, _session, socket) do
     profiles =
@@ -57,11 +58,7 @@ defmodule SkillstackrWeb.ProfilesLive do
 
         <section class="mt-5">
           <div class="flex gap-2">
-            <TechnologyComponents.tech_badge
-              :for={t <- p.profiles_technologies}
-              tech={t.technology.name}
-              size={18}
-            />
+            <.tech_badge :for={t <- p.profiles_technologies} tech={t.technology.name} size={18} />
           </div>
         </section>
 
