@@ -66,7 +66,7 @@ defmodule SkillstackrWeb.ProfileComponents do
 
   def job_accordion(assigns) do
     ~H"""
-    <div class="hs-accordion-group">
+    <div class="hs-accordion-group" id="accordion" phx-hook="ReloadPreline">
       <div
         :for={job <- @jobs}
         class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-slate-950/90 dark:border-neutral-700"
