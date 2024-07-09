@@ -12,8 +12,14 @@ defmodule SkillstackrWeb.ProfileFormLive do
           {%Profile{}, Technologies.list_to_map([])}
 
         :edit ->
-          profile_data = Profiles.get_profile_by_slug!(params["id"])
-          {profile_data.profile, Technologies.list_to_map(profile_data.technologies)}
+          profile = Profiles.get_profile_by_slug!(params["id"])
+
+          tech_map =
+            profile.profiles_technologies
+            |> Enum.map(& &1.technology)
+            |> Technologies.list_to_map()
+
+          {profile, tech_map}
       end
 
     socket =
