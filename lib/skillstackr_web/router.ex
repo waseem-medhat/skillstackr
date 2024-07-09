@@ -56,13 +56,12 @@ defmodule SkillstackrWeb.Router do
   end
 
   scope "/", SkillstackrWeb do
-    pipe_through [:browser, :require_authenticated_account]
+    pipe_through [:browser]
 
     live_session :require_authenticated_account,
       on_mount: [{SkillstackrWeb.AccountAuth, :ensure_authenticated}] do
       live "/profiles", ProfilesLive
       live "/profiles/new", ProfileFormLive, :new
-      live "/profiles/:slug", ProfileShowLive
       live "/profiles/:id/edit", ProfileFormLive, :edit
 
       live "/projects", ProjectsLive
@@ -74,6 +73,11 @@ defmodule SkillstackrWeb.Router do
 
       live "/accounts/settings", AccountSettingsLive, :edit
       live "/accounts/settings/confirm_email/:token", AccountSettingsLive, :confirm_email
+    end
+
+    live_session :publc_profile_page,
+      on_mount: [{SkillstackrWeb.AccountAuth, :mount_current_account}] do
+      live "/profiles/:slug", ProfileShowLive
     end
   end
 
