@@ -13,7 +13,11 @@ defmodule SkillstackrWeb.ProfileComponents do
 
   def project_grid(assigns) do
     ~H"""
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-5 my-5"
+      id="project-grid"
+      phx-hook="ReloadPrelineTooltip"
+    >
       <div
         :for={p <- @projects}
         class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70"
@@ -70,7 +74,7 @@ defmodule SkillstackrWeb.ProfileComponents do
 
   def job_accordion(assigns) do
     ~H"""
-    <div class="hs-accordion-group" id="accordion" phx-hook="ReloadPreline">
+    <div class="hs-accordion-group" id="accordion" phx-hook="ReloadPrelineAccordion">
       <div
         :for={job <- @jobs}
         class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-slate-950/90 dark:border-neutral-700"

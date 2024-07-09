@@ -24,9 +24,14 @@ import topbar from "../vendor/topbar"
 import "../vendor/preline/preline"
 
 let Hooks = {
-    ReloadPreline: {
+    ReloadPrelineAccordion: {
         mounted() {
-            window.HSStaticMethods.autoInit();
+            window.HSStaticMethods.autoInit(['accordion']);
+        }
+    },
+    ReloadPrelineTooltip: {
+        mounted() {
+            window.HSStaticMethods.autoInit(['tooltip']);
         }
     }
 }
