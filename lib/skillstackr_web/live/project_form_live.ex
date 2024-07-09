@@ -5,13 +5,22 @@ defmodule SkillstackrWeb.ProjectFormLive do
   alias Skillstackr.Projects.Project
   use SkillstackrWeb, :live_view
 
-  def mount(_params, _session, socket) do
-    project =
+  def mount(params, _session, socket) do
+    {project, tech_map} =
       case socket.assigns.live_action do
-        :new -> %Project{}
-      end
+        :new ->
+          {%Project{}, Technologies.list_to_map([])}
 
-    tech_map = Technologies.list_to_map([])
+        :edit ->
+          project = Projects.get_project!(params["id"])
+
+          tech_map =
+            project.projects_technologies
+            |> Enum.map(& &1.technology)
+            |> Technologies.list_to_map()
+
+          {project, tech_map}
+      end
 
     socket =
       socket
@@ -48,7 +57,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
     {:noreply, assign(socket, :tech_map, new_tech_map)}
   end
 
-  def handle_event("save", params, socket) do
+  def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
     assoc_profiles =
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
@@ -69,6 +78,11 @@ defmodule SkillstackrWeb.ProjectFormLive do
       {:error, :new_project, changeset, _} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
+  end
+
+  def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
+    IO.inspect(params["project"])
+    {:noreply, socket}
   end
 
   def render(assigns) do

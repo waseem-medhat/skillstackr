@@ -25,7 +25,11 @@ defmodule Skillstackr.Projects do
       ** (Ecto.NoResultsError)
 
   """
-  def get_project!(id), do: Repo.get!(Project, id)
+  def get_project!(id) do
+    Repo.one!(
+      from p in Project, preload: [projects_technologies: :technology], where: p.id == ^id
+    )
+  end
 
   @doc """
   Creates a project.

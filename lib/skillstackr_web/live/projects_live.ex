@@ -35,25 +35,30 @@ defmodule SkillstackrWeb.ProjectsLive do
       >
         <h1 class="text-xl font-bold"><%= p.title %></h1>
 
+      <div class="text-sm text-gray-500 dark:text-neutral-400 flex-grow mt-2 mb-5">
         <%= if p.description do %>
-          <p class="text-sm text-gray-500 dark:text-neutral-400 flex-grow">
-            <%= p.description %>
-          </p>
+          <p><%= p.description %></p>
         <% else %>
-          <i class="text-sm text-gray-400 dark:text-neutral-700 flex-grow">
-            No description
-          </i>
+          <i>No description</i>
         <% end %>
+      </div>
 
-        <section class="mt-5">
-          <div class="flex gap-2">
-            <TechnologyComponents.tech_badge
-              :for={t <- p.projects_technologies}
-              tech={t.technology.name}
-              size={18}
-            />
-          </div>
-        </section>
+        <div class="flex gap-2">
+          <TechnologyComponents.tech_badge
+            :for={t <- p.projects_technologies}
+            tech={t.technology.name}
+            size={18}
+          />
+        </div>
+
+        <div class="absolute top-6 right-6 flex gap-2 items-center">
+          <.link
+            navigate={~p"/projects/#{p.id}/edit"}
+            class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+          >
+            <.icon name="hero-pencil-square-micro" />
+          </.link>
+        </div>
       </div>
     </div>
     """
