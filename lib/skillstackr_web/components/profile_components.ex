@@ -61,6 +61,9 @@ defmodule SkillstackrWeb.ProfileComponents do
     """
   end
 
+  attr :jobs, :any, required: true
+  attr :editable, :boolean, default: false
+
   def job_accordion(assigns) do
     ~H"""
     <div class="hs-accordion-group">
@@ -104,8 +107,15 @@ defmodule SkillstackrWeb.ProfileComponents do
             </svg>
             <h3><%= job.title %></h3>
           </div>
-          <p class="text-sm font-medium text-right">
+          <p class="text-sm font-medium flex items-center gap-2">
             <%= job.experience_years %> years @ <%= job.company %>
+            <.link
+              :if={@editable}
+              navigate={~p"/jobs/#{job.id}/edit"}
+              class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+            >
+              <.icon name="hero-pencil-square-micro" />
+            </.link>
           </p>
         </button>
         <div
@@ -114,9 +124,15 @@ defmodule SkillstackrWeb.ProfileComponents do
           aria-labelledby={"hs-bordered-heading-#{job.id}"}
         >
           <div class="pb-4 px-5">
-            <p class="text-gray-800 dark:text-neutral-200">
-              <%= job.description %>
-            </p>
+            <%= if job.description do %>
+              <p class="text-sm text-gray-500 dark:text-neutral-400 flex-grow">
+                <%= job.description %>
+              </p>
+            <% else %>
+              <i class="text-gray-400 dark:text-neutral-700 flex-grow">
+                No description
+              </i>
+            <% end %>
           </div>
         </div>
       </div>
