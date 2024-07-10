@@ -22,5 +22,6 @@ defmodule Skillstackr.Jobs.Job do
     job
     |> cast(attrs, [:title, :company, :experience_years, :description, :account_id])
     |> validate_required([:title, :company, :experience_years])
+    |> validate_number(:experience_years, greater_than: 0)
   end
 end
