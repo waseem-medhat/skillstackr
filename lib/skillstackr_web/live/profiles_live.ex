@@ -36,7 +36,7 @@ defmodule SkillstackrWeb.ProfilesLive do
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
       <div
         :for={p <- @profiles}
-        class="relative bg-white dark:bg-slate-950/70 rounded-lg shadow-lg p-6 transition flex flex-col"
+        class="relative bg-white dark:bg-slate-950/70 rounded-lg shadow p-6 transition flex flex-col"
       >
         <hgroup class="mb-2">
           <h2 class="text-2xl font-bold">

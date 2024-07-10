@@ -20,7 +20,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     >
       <div
         :for={p <- @projects}
-        class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70"
+        class="flex flex-col bg-white border shadow rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70"
       >
         <img
           class="w-full h-auto rounded-t-xl"
@@ -77,7 +77,7 @@ defmodule SkillstackrWeb.ProfileComponents do
     <div class="hs-accordion-group" id="accordion" phx-hook="ReloadPrelineAccordion">
       <div
         :for={job <- @jobs}
-        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-slate-950/90 dark:border-neutral-700"
+        class="hs-accordion bg-white border -mt-px first:rounded-t-lg last:rounded-b-lg dark:bg-slate-950/90 dark:border-neutral-700 shadow"
         id={"hs-bordered-heading-#{job.id}"}
       >
         <button
