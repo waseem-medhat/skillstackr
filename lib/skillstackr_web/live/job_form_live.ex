@@ -4,16 +4,18 @@ defmodule SkillstackrWeb.JobFormLive do
   alias Skillstackr.Jobs
   use SkillstackrWeb, :live_view
 
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     job =
       case socket.assigns.live_action do
         :new -> %Job{}
+        :edit -> Jobs.get_job!(params["id"])
       end
 
     socket =
       socket
       |> assign(:page_title, "Add Job Experience")
       |> assign(:profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
+      |> assign(:job, job)
       |> assign(:form, to_form(Jobs.change_job(job)))
 
     {:ok, socket}
@@ -28,7 +30,7 @@ defmodule SkillstackrWeb.JobFormLive do
     {:noreply, assign(socket, :form, new_form)}
   end
 
-  def handle_event("save", params, socket) do
+  def handle_event("save", params, %{assings: %{live_action: :new}} = socket) do
     assoc_profiles =
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
@@ -45,6 +47,23 @@ defmodule SkillstackrWeb.JobFormLive do
          |> redirect(to: ~p"/jobs")}
 
       {:error, :new_job, changeset, _} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
+  end
+
+  def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
+    Jobs.update_job(
+      socket.assigns.job,
+      params["job"]
+    )
+    |> case do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Job experience saved!")
+         |> redirect(to: ~p"/jobs")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end

@@ -70,6 +70,7 @@ defmodule SkillstackrWeb.Router do
 
       live "/jobs", JobsLive
       live "/jobs/new", JobFormLive, :new
+      live "/jobs/:id/edit", JobFormLive, :edit
 
       live "/accounts/settings", AccountSettingsLive, :edit
       live "/accounts/settings/confirm_email/:token", AccountSettingsLive, :confirm_email
