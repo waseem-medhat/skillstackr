@@ -24,6 +24,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
     socket =
       socket
       |> assign(:page_title, "Add Project")
+      |> assign(:project, project)
       |> assign(:form, to_form(Projects.change_project(project)))
       |> assign(:profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
       |> assign(:tech_map, tech_map)
@@ -80,8 +81,43 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
-    IO.inspect(params["project"])
-    {:noreply, socket}
+    existing_tech_list =
+      socket.assigns.project.projects_technologies
+      |> Enum.map(fn %{technology: %{name: name, category: category}} ->
+        %{"name" => name, "category" => category}
+      end)
+      |> IO.inspect(label: "existing")
+
+    new_tech_list =
+      socket.assigns.tech_map
+      |> Technologies.map_to_list()
+      |> Enum.filter(fn map -> map not in existing_tech_list end)
+      |> IO.inspect(label: "new")
+
+    removed_project_technology_ids =
+      socket.assigns.project.projects_technologies
+      |> Enum.filter(fn %{technology: %{name: name, category: category}} ->
+        name not in socket.assigns.tech_map[category]
+      end)
+      |> Enum.map(& &1.id)
+      |> IO.inspect(label: "removed")
+
+    Projects.update_project(
+      socket.assigns.project,
+      params["project"],
+      removed_project_technology_ids,
+      new_tech_list
+    )
+    |> case do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "project saved!")
+         |> redirect(to: ~p"/projects")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :form, to_form(changeset))}
+    end
   end
 
   def render(assigns) do

@@ -75,10 +75,29 @@ defmodule Skillstackr.Projects do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_project(%Project{} = project, attrs) do
-    project
-    |> Project.changeset(attrs)
-    |> Repo.update()
+  def update_project(
+        %Project{} = project,
+        attrs,
+        removed_project_technology_ids \\ [],
+        new_tech_list \\ []
+      ) do
+    Multi.new()
+    |> Multi.update(:project, Project.changeset(project, attrs))
+    |> Multi.delete_all(
+      :removed_technologies,
+      from(pt in ProjectTechnology, where: pt.id in ^removed_project_technology_ids)
+    )
+    |> Multi.run(:new_technologies, fn _repo, _changes ->
+      {:ok, Enum.map(new_tech_list, &Technologies.get_or_create_technology/1)}
+    end)
+    |> Multi.insert_all(
+      :projects_technologies,
+      ProjectTechnology,
+      fn %{project: project, new_technologies: new_technologies} ->
+        Enum.map(new_technologies, fn t -> %{project_id: project.id, technology_id: t.id} end)
+      end
+    )
+    |> Repo.transaction()
   end
 
   @doc """

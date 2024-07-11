@@ -6,7 +6,6 @@ defmodule Skillstackr.Profiles do
   import Ecto.Query, warn: false
   alias Skillstackr.Projects.Project
   alias Skillstackr.ProfilesTechnologies.ProfileTechnology
-  alias Skillstackr.Technologies.Technology
   alias Ecto.Multi
   alias Skillstackr.Technologies
   alias Skillstackr.Repo
