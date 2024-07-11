@@ -3,6 +3,8 @@ defmodule Skillstackr.Repo.Migrations.CreateProjectsTechnologies do
 
   def change do
     create table(:projects_technologies, primary_key: false) do
+      add :id, :binary_id, primary_key: true
+
       add :project_id,
           references(:projects, type: :binary_id, on_delete: :delete_all),
           primary_key: true

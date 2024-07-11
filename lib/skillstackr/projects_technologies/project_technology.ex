@@ -4,7 +4,7 @@ defmodule Skillstackr.ProjectsTechnologies.ProjectTechnology do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key false
+  @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "projects_technologies" do
     timestamps(type: :utc_datetime)
