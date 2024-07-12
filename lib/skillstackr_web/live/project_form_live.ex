@@ -8,7 +8,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
     {project, tech_map} =
       case socket.assigns.live_action do
         :new ->
-          {%Project{}, Technologies.list_to_map([])}
+          {%Project{profiles_projects: []}, Technologies.list_to_map([])}
 
         :edit ->
           project = Projects.get_project!(params["id"])
@@ -26,7 +26,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
       |> assign(:page_title, "Add Project")
       |> assign(:project, project)
       |> assign(:form, to_form(Projects.change_project(project)))
-      |> assign(:profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
+      |> assign(:account_profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
       |> assign(:tech_map, tech_map)
       |> assign(:tech_search_results, [])
 
@@ -59,8 +59,8 @@ defmodule SkillstackrWeb.ProjectFormLive do
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
     assoc_profiles =
-      socket.assigns.profiles
-      |> Enum.filter(fn p -> params[p.slug] === "true" end)
+      socket.assigns.account_profiles
+      |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
 
     project_params =
       params["project"]
@@ -159,11 +159,11 @@ defmodule SkillstackrWeb.ProjectFormLive do
         <.label>Add to Profiles</.label>
         <ul class="my-2 space-y-1">
           <.input
-            :for={p <- @profiles}
+            :for={acc_p <- @account_profiles}
             type="checkbox"
-            label={p.slug}
-            name={p.slug}
-            checked={p.slug in Enum.map(@project.profiles_projects, & &1.profile.slug)}
+            label={acc_p.slug}
+            name={acc_p.slug}
+            checked={acc_p.slug in Enum.map(@project.profiles_projects, & &1.profile.slug)}
           />
         </ul>
       </section>

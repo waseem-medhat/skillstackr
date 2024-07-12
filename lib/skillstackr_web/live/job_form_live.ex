@@ -14,7 +14,7 @@ defmodule SkillstackrWeb.JobFormLive do
     socket =
       socket
       |> assign(:page_title, "Add Job Experience")
-      |> assign(:profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
+      |> assign(:account_profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
       |> assign(:job, job)
       |> assign(:form, to_form(Jobs.change_job(job)))
 
@@ -30,10 +30,10 @@ defmodule SkillstackrWeb.JobFormLive do
     {:noreply, assign(socket, :form, new_form)}
   end
 
-  def handle_event("save", params, %{assings: %{live_action: :new}} = socket) do
+  def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
     assoc_profiles =
-      socket.assigns.profiles
-      |> Enum.filter(fn p -> params[p.slug] === "true" end)
+      socket.assigns.account_profiles
+      |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
 
     job_params =
       params["job"]
@@ -83,7 +83,12 @@ defmodule SkillstackrWeb.JobFormLive do
       <section>
         <.label>Add to Profiles</.label>
         <ul class="my-2 space-y-1">
-          <.input :for={p <- @profiles} type="checkbox" label={p.slug} name={p.slug} />
+          <.input
+            :for={acc_p <- @account_profiles}
+            type="checkbox"
+            label={acc_p.slug}
+            name={acc_p.slug}
+          />
         </ul>
       </section>
 
