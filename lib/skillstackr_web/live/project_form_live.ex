@@ -58,7 +58,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
-    assoc_profiles =
+    assoc_profile_slugs =
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
 
@@ -68,7 +68,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
 
     assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
 
-    case Projects.create_project(project_params, assoc_profiles, assoc_technologies) do
+    case Projects.create_project(project_params, assoc_profile_slugs, assoc_technologies) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -86,13 +86,11 @@ defmodule SkillstackrWeb.ProjectFormLive do
       |> Enum.map(fn %{technology: %{name: name, category: category}} ->
         %{"name" => name, "category" => category}
       end)
-      |> IO.inspect(label: "existing")
 
     new_tech_list =
       socket.assigns.tech_map
       |> Technologies.map_to_list()
       |> Enum.filter(fn map -> map not in existing_tech_list end)
-      |> IO.inspect(label: "new")
 
     removed_project_technology_ids =
       socket.assigns.project.projects_technologies
@@ -100,7 +98,6 @@ defmodule SkillstackrWeb.ProjectFormLive do
         name not in socket.assigns.tech_map[category]
       end)
       |> Enum.map(& &1.id)
-      |> IO.inspect(label: "removed")
 
     Projects.update_project(
       socket.assigns.project,
@@ -161,7 +158,13 @@ defmodule SkillstackrWeb.ProjectFormLive do
       <section>
         <.label>Add to Profiles</.label>
         <ul class="my-2 space-y-1">
-          <.input :for={p <- @profiles} type="checkbox" label={p.slug} name={p.slug} />
+          <.input
+            :for={p <- @profiles}
+            type="checkbox"
+            label={p.slug}
+            name={p.slug}
+            checked={p.slug in Enum.map(@project.profiles_projects, & &1.profile.slug)}
+          />
         </ul>
       </section>
 
