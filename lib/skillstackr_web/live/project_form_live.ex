@@ -1,7 +1,6 @@
 defmodule SkillstackrWeb.ProjectFormLive do
   alias Skillstackr.{Accounts, Projects, Technologies}
   alias Skillstackr.Projects.Project
-  alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.Technologies.Technology
   use SkillstackrWeb, :live_view
   import SkillstackrWeb.TechnologyComponents
@@ -83,16 +82,32 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
-    current_projects_technologies = socket.assigns.project.projects_technologies
+    %{
+      tech_map: new_tech_map,
+      account_profiles: account_profiles,
+      project: %{
+        projects_technologies: current_projects_technologies,
+        profiles_projects: current_profiles_projects
+      }
+    } = socket.assigns
+
+    new_profiles =
+      account_profiles
+      |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
 
     {proj_tech_id_deletions, tech_insertion_param_list} =
-      diff_technologies(current_projects_technologies, socket.assigns.tech_map)
+      diff_technologies(current_projects_technologies, new_tech_map)
+
+    {prof_proj_id_deletions, prof_insertions} =
+      diff_profiles(current_profiles_projects, new_profiles)
 
     Projects.update_project(
       socket.assigns.project,
       params["project"],
       proj_tech_id_deletions,
-      tech_insertion_param_list
+      tech_insertion_param_list,
+      prof_proj_id_deletions,
+      prof_insertions
     )
     |> case do
       {:ok, _} ->
@@ -126,6 +141,23 @@ defmodule SkillstackrWeb.ProjectFormLive do
       |> Enum.filter(fn map -> map not in current_tech_list end)
 
     {proj_tech_id_deletions, tech_insertion_param_list}
+  end
+
+  defp diff_profiles(current_profiles_projects, new_profiles) do
+    prof_proj_id_deletions =
+      current_profiles_projects
+      |> Enum.filter(fn %{profile: profile} ->
+        profile.id not in Enum.map(new_profiles, & &1.id)
+      end)
+      |> Enum.map(& &1.id)
+
+    prof_insertions =
+      new_profiles
+      |> Enum.filter(fn profile ->
+        profile.id not in Enum.map(current_profiles_projects, & &1.profile.id)
+      end)
+
+    {prof_proj_id_deletions, prof_insertions}
   end
 
   def render(assigns) do
