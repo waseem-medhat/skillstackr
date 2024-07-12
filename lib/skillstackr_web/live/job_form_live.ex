@@ -31,7 +31,7 @@ defmodule SkillstackrWeb.JobFormLive do
   end
 
   def handle_event("save", params, %{assings: %{live_action: :new}} = socket) do
-    assoc_profile_slugs =
+    assoc_profiles =
       socket.assigns.profiles
       |> Enum.filter(fn p -> params[p.slug] === "true" end)
 
@@ -39,7 +39,7 @@ defmodule SkillstackrWeb.JobFormLive do
       params["job"]
       |> Map.put("account_id", socket.assigns.current_account.id)
 
-    case Jobs.create_job(job_params, assoc_profile_slugs) do
+    case Jobs.create_job(job_params, assoc_profiles) do
       {:ok, _} ->
         {:noreply,
          socket

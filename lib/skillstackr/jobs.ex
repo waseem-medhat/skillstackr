@@ -38,11 +38,11 @@ defmodule Skillstackr.Jobs do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_job(attrs \\ %{}, assoc_profile_slugs \\ []) do
+  def create_job(attrs \\ %{}, assoc_profiles \\ []) do
     Multi.new()
     |> Multi.insert(:new_job, Job.changeset(%Job{}, attrs))
     |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{new_job: new_job} ->
-      Enum.map(assoc_profile_slugs, fn p -> %{job_id: new_job.id, profile_id: p.id} end)
+      Enum.map(assoc_profiles, fn p -> %{job_id: new_job.id, profile_id: p.id} end)
     end)
     |> Repo.transaction()
   end

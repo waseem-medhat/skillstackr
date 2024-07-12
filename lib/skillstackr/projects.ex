@@ -48,11 +48,11 @@ defmodule Skillstackr.Projects do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_project(attrs \\ %{}, assoc_profile_slugs \\ [], assoc_technologies \\ []) do
+  def create_project(attrs \\ %{}, assoc_profiles \\ [], assoc_technologies \\ []) do
     Multi.new()
     |> Multi.insert(:new_project, Project.changeset(%Project{}, attrs))
     |> Multi.insert_all(:profiles_projects, ProfileProject, fn %{new_project: new_project} ->
-      Enum.map(assoc_profile_slugs, fn p -> %{project_id: new_project.id, profile_id: p.id} end)
+      Enum.map(assoc_profiles, fn p -> %{project_id: new_project.id, profile_id: p.id} end)
     end)
     |> Multi.run(:technologies, fn _repo, _changes ->
       {:ok, Enum.map(assoc_technologies, &Technologies.get_or_create_technology/1)}
