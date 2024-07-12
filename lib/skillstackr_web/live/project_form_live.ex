@@ -1,6 +1,8 @@
 defmodule SkillstackrWeb.ProjectFormLive do
   alias Skillstackr.{Accounts, Projects, Technologies}
   alias Skillstackr.Projects.Project
+  alias Skillstackr.ProjectsTechnologies.ProjectTechnology
+  alias Skillstackr.Technologies.Technology
   use SkillstackrWeb, :live_view
   import SkillstackrWeb.TechnologyComponents
 
@@ -81,29 +83,16 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
-    existing_tech_list =
-      socket.assigns.project.projects_technologies
-      |> Enum.map(fn %{technology: %{name: name, category: category}} ->
-        %{"name" => name, "category" => category}
-      end)
+    current_projects_technologies = socket.assigns.project.projects_technologies
 
-    new_tech_list =
-      socket.assigns.tech_map
-      |> Technologies.map_to_list()
-      |> Enum.filter(fn map -> map not in existing_tech_list end)
-
-    removed_project_technology_ids =
-      socket.assigns.project.projects_technologies
-      |> Enum.filter(fn %{technology: %{name: name, category: category}} ->
-        name not in socket.assigns.tech_map[category]
-      end)
-      |> Enum.map(& &1.id)
+    {proj_tech_id_deletions, tech_insertion_param_list} =
+      diff_technologies(current_projects_technologies, socket.assigns.tech_map)
 
     Projects.update_project(
       socket.assigns.project,
       params["project"],
-      removed_project_technology_ids,
-      new_tech_list
+      proj_tech_id_deletions,
+      tech_insertion_param_list
     )
     |> case do
       {:ok, _} ->
@@ -115,6 +104,28 @@ defmodule SkillstackrWeb.ProjectFormLive do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
+  end
+
+  defp diff_technologies(current_projects_technologies, new_tech_map) do
+    proj_tech_id_deletions =
+      current_projects_technologies
+      |> Enum.filter(fn %{technology: %Technology{name: tech_name, category: category}} ->
+        tech_name not in new_tech_map[category]
+      end)
+      |> Enum.map(& &1.id)
+
+    current_tech_list =
+      current_projects_technologies
+      |> Enum.map(fn %{technology: %{name: name, category: category}} ->
+        %{"name" => name, "category" => category}
+      end)
+
+    tech_insertion_param_list =
+      new_tech_map
+      |> Technologies.map_to_list()
+      |> Enum.filter(fn map -> map not in current_tech_list end)
+
+    {proj_tech_id_deletions, tech_insertion_param_list}
   end
 
   def render(assigns) do

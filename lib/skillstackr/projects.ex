@@ -61,7 +61,6 @@ defmodule Skillstackr.Projects do
       :projects_technologies,
       ProjectTechnology,
       fn %{new_project: new_project, technologies: technologies} ->
-        IO.inspect(technologies, label: "TECHNOLOGIES")
         Enum.map(technologies, fn t -> %{project_id: new_project.id, technology_id: t.id} end)
       end
     )
@@ -83,19 +82,19 @@ defmodule Skillstackr.Projects do
   def update_project(
         %Project{} = project,
         attrs,
-        removed_project_technology_ids \\ [],
-        new_tech_list \\ []
+        proj_tech_id_deletions,
+        tech_insertion_param_list
       ) do
     Multi.new()
     |> Multi.update(:project, Project.changeset(project, attrs))
     |> Multi.delete_all(
       :removed_technologies,
-      from(pt in ProjectTechnology, where: pt.id in ^removed_project_technology_ids)
+      from(pt in ProjectTechnology, where: pt.id in ^proj_tech_id_deletions)
     )
     |> Multi.run(
       :new_technologies,
       fn _repo, _changes ->
-        {:ok, Enum.map(new_tech_list, &Technologies.get_or_create_technology/1)}
+        {:ok, Enum.map(tech_insertion_param_list, &Technologies.get_or_create_technology/1)}
       end
     )
     |> Multi.insert_all(
