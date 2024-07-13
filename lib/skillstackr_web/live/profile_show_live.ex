@@ -7,8 +7,16 @@ defmodule SkillstackrWeb.ProfileShowLive do
   import SkillstackrWeb.TechnologyComponents
 
   def mount(%{"slug" => slug} = _params, _session, socket) do
-    profile = Profiles.get_profile_by_slug!(slug)
+    case Profiles.get_profile_by_slug(slug) do
+      nil ->
+        {:ok, socket |> put_flash(:error, "Profile doesn't exist") |> redirect(to: ~p"/")}
 
+      profile ->
+        {:ok, assign_with_data(socket, profile)}
+    end
+  end
+
+  defp assign_with_data(socket, profile) do
     editable =
       case socket.assigns.current_account do
         nil ->
@@ -17,22 +25,19 @@ defmodule SkillstackrWeb.ProfileShowLive do
         acc ->
           acc
           |> Accounts.get_account_slugs!()
-          |> Enum.find_value(&(&1 == slug))
+          |> Enum.find_value(&(&1 == profile.slug))
       end
 
-    socket =
-      socket
-      |> assign(:page_title, profile.full_name)
-      |> assign(:profile, profile)
-      |> assign(:editable, editable)
-      |> assign(
-        :tech_map,
-        profile.profiles_technologies
-        |> Enum.map(& &1.technology)
-        |> Technologies.list_to_map()
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(:page_title, profile.full_name)
+    |> assign(:profile, profile)
+    |> assign(:editable, editable)
+    |> assign(
+      :tech_map,
+      profile.profiles_technologies
+      |> Enum.map(& &1.technology)
+      |> Technologies.list_to_map()
+    )
   end
 
   def render(assigns) do

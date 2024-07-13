@@ -42,8 +42,8 @@ defmodule Skillstackr.Profiles do
       ** (Ecto.NoResultsError)
 
   """
-  def get_profile_by_slug!(slug) do
-    Repo.one!(
+  def get_profile_by_slug(slug) do
+    Repo.one(
       from p in Profile,
         preload: [
           profiles_technologies: :technology,

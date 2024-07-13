@@ -5,33 +5,33 @@ defmodule SkillstackrWeb.ProfileFormLive do
   use SkillstackrWeb, :live_view
   import SkillstackrWeb.TechnologyComponents
 
-  def mount(params, _session, socket) do
-    {profile, tech_map} =
-      case socket.assigns.live_action do
-        :new ->
-          {%Profile{}, Technologies.list_to_map([])}
+  def mount(_params, _session, %{assigns: %{live_action: :new}} = socket) do
+    {:ok, assign_with_data(socket, %Profile{}, Technologies.list_to_map([]))}
+  end
 
-        :edit ->
-          profile = Profiles.get_profile_by_slug!(params["id"])
+  def mount(%{"slug" => slug} = _params, _session, %{assigns: %{live_action: :edit}} = socket) do
+    case Profiles.get_profile_by_slug(slug) do
+      nil ->
+        {:ok, socket |> put_flash(:error, "Profile doesn't exist") |> redirect(to: ~p"/")}
 
-          tech_map =
-            profile.profiles_technologies
-            |> Enum.map(& &1.technology)
-            |> Technologies.list_to_map()
+      profile ->
+        tech_map =
+          profile.profiles_technologies
+          |> Enum.map(& &1.technology)
+          |> Technologies.list_to_map()
 
-          {profile, tech_map}
-      end
+        {:ok, assign_with_data(socket, profile, tech_map)}
+    end
+  end
 
-    socket =
-      socket
-      |> assign(:page_title, "Create Profile")
-      |> assign(:profile, profile)
-      |> assign(:form, to_form(Profiles.change_profile(profile)))
-      |> assign(:tech_map, tech_map)
-      |> assign(:tech_search_results, [])
-      |> allow_upload(:resume, accept: ~w(.pdf))
-
-    {:ok, socket}
+  defp assign_with_data(socket, profile, tech_map) do
+    socket
+    |> assign(:page_title, "Create Profile")
+    |> assign(:profile, profile)
+    |> assign(:form, to_form(Profiles.change_profile(profile)))
+    |> assign(:tech_map, tech_map)
+    |> assign(:tech_search_results, [])
+    |> allow_upload(:resume, accept: ~w(.pdf))
   end
 
   def handle_event("search-technologies", params, socket) do
