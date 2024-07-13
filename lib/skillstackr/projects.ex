@@ -18,15 +18,15 @@ defmodule Skillstackr.Projects do
 
   ## Examples
 
-      iex> get_project!(123)
+      iex> get_project(123)
       %Project{}
 
-      iex> get_project!(456)
+      iex> get_project(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_project!(id) do
-    Repo.one!(
+  def get_project(id) do
+    Repo.one(
       from p in Project,
         preload: [
           projects_technologies: :technology,

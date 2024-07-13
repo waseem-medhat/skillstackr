@@ -5,33 +5,33 @@ defmodule SkillstackrWeb.ProjectFormLive do
   use SkillstackrWeb, :live_view
   import SkillstackrWeb.TechnologyComponents
 
-  def mount(params, _session, socket) do
-    {project, tech_map} =
-      case socket.assigns.live_action do
-        :new ->
-          {%Project{profiles_projects: []}, Technologies.list_to_map([])}
+  def mount(_params, _session, %{assigns: %{live_action: :new}} = socket) do
+    {:ok, assign_with_data(socket, %Project{profiles_projects: []}, Technologies.list_to_map([]))}
+  end
 
-        :edit ->
-          project = Projects.get_project!(params["id"])
+  def mount(%{"id" => id}, _session, %{assigns: %{live_action: :edit}} = socket) do
+    case Projects.get_project(id) do
+      nil ->
+        {:ok, socket |> put_flash(:error, "Project doesn't exist") |> redirect(to: ~p"/projects")}
 
-          tech_map =
-            project.projects_technologies
-            |> Enum.map(& &1.technology)
-            |> Technologies.list_to_map()
+      project ->
+        tech_map =
+          project.projects_technologies
+          |> Enum.map(& &1.technology)
+          |> Technologies.list_to_map()
 
-          {project, tech_map}
-      end
+        {:ok, assign_with_data(socket, project, tech_map)}
+    end
+  end
 
-    socket =
-      socket
-      |> assign(:page_title, "Add Project")
-      |> assign(:project, project)
-      |> assign(:form, to_form(Projects.change_project(project)))
-      |> assign(:account_profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
-      |> assign(:tech_map, tech_map)
-      |> assign(:tech_search_results, [])
-
-    {:ok, socket}
+  defp assign_with_data(socket, project, tech_map) do
+    socket
+    |> assign(:page_title, "Add Project")
+    |> assign(:project, project)
+    |> assign(:form, to_form(Projects.change_project(project)))
+    |> assign(:account_profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
+    |> assign(:tech_map, tech_map)
+    |> assign(:tech_search_results, [])
   end
 
   def handle_event("search-technologies", params, socket) do
