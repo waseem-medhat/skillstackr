@@ -17,14 +17,14 @@ defmodule Skillstackr.Jobs do
 
   ## Examples
 
-      iex> get_job!(123)
+      iex> get_job(123)
       %Job{}
 
-      iex> get_job!(456)
+      iex> get_job(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_job!(id), do: Repo.get!(Job, id)
+  def get_job(id), do: Repo.get(Job, id)
 
   @doc """
   Creates a job.

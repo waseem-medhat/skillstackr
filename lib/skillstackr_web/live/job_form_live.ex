@@ -4,21 +4,26 @@ defmodule SkillstackrWeb.JobFormLive do
   alias Skillstackr.Jobs
   use SkillstackrWeb, :live_view
 
-  def mount(params, _session, socket) do
-    job =
-      case socket.assigns.live_action do
-        :new -> %Job{}
-        :edit -> Jobs.get_job!(params["id"])
-      end
+  def mount(_params, _session, %{assigns: %{live_action: :new}} = socket) do
+    {:ok, assign_with_data(socket, %Job{})}
+  end
 
-    socket =
-      socket
-      |> assign(:page_title, "Add Job Experience")
-      |> assign(:account_profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
-      |> assign(:job, job)
-      |> assign(:form, to_form(Jobs.change_job(job)))
+  def mount(%{"id" => id}, _session, %{assigns: %{live_action: :edit}} = socket) do
+    case Jobs.get_job(id) do
+      nil ->
+        {:ok, socket |> put_flash(:error, "Job doesn't exist") |> redirect(to: ~p"/jobs")}
 
-    {:ok, socket}
+      job ->
+        {:ok, assign_with_data(socket, job)}
+    end
+  end
+
+  defp assign_with_data(socket, job) do
+    socket
+    |> assign(:page_title, "Add Job Experience")
+    |> assign(:account_profiles, Accounts.get_account_profiles!(socket.assigns.current_account))
+    |> assign(:job, job)
+    |> assign(:form, to_form(Jobs.change_job(job)))
   end
 
   def handle_event("validate", params, socket) do
