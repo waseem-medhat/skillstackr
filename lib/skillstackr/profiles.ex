@@ -194,40 +194,6 @@ defmodule Skillstackr.Profiles do
   end
 
   @doc """
-  Updates a resume.
-
-  ## Examples
-
-      iex> update_resume(resume, %{field: new_value})
-      {:ok, %Resume{}}
-
-      iex> update_resume(resume, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_resume(%Resume{} = resume, attrs) do
-    resume
-    |> Resume.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a resume.
-
-  ## Examples
-
-      iex> delete_resume(resume)
-      {:ok, %Resume{}}
-
-      iex> delete_resume(resume)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_resume(%Resume{} = resume) do
-    Repo.delete(resume)
-  end
-
-  @doc """
   Returns an `%Ecto.Changeset{}` for tracking resume changes.
 
   ## Examples

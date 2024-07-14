@@ -8,28 +8,13 @@ defmodule Skillstackr.ProfilesFixtures do
   Generate a profile.
   """
   def profile_fixture(attrs \\ %{}) do
-    {:ok, profile} =
+    {:ok, %{profile: profile}} =
       attrs
       |> Enum.into(%{
-
       })
       |> Skillstackr.Profiles.create_profile()
 
     profile
-  end
-
-  @doc """
-  Generate a project.
-  """
-  def project_fixture(attrs \\ %{}) do
-    {:ok, project} =
-      attrs
-      |> Enum.into(%{
-
-      })
-      |> Skillstackr.Profiles.create_project()
-
-    project
   end
 
   @doc """

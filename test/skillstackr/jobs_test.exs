@@ -10,14 +10,9 @@ defmodule Skillstackr.JobsTest do
 
     @invalid_attrs %{}
 
-    test "list_jobs/0 returns all jobs" do
+    test "get_job/1 returns the job with given id" do
       job = job_fixture()
-      assert Jobs.list_jobs() == [job]
-    end
-
-    test "get_job!/1 returns the job with given id" do
-      job = job_fixture()
-      assert Jobs.get_job!(job.id) == job
+      assert Jobs.get_job(job.id) == job
     end
 
     test "create_job/1 with valid data creates a job" do
