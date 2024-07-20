@@ -24,14 +24,20 @@ defmodule Skillstackr.Jobs do
       ** (Ecto.NoResultsError)
 
   """
-  def get_job(id), do: Repo.get(Job, id)
+  def get_job(id) do
+    Repo.one(
+      from j in Job,
+        preload: [profiles_jobs: :profile],
+        where: j.id == ^id
+    )
+  end
 
   @doc """
   Creates a job.
 
   ## Examples
 
-      iex> create_job(%{field: value})
+      iex> create_job(%field: value)
       {:ok, %Job{}}
 
       iex> create_job(%{field: bad_value})

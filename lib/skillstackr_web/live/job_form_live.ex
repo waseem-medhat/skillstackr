@@ -93,6 +93,7 @@ defmodule SkillstackrWeb.JobFormLive do
             type="checkbox"
             label={acc_p.slug}
             name={acc_p.slug}
+            checked={acc_p.slug in Enum.map(@job.profiles_jobs, & &1.profile.slug)}
           />
         </ul>
       </section>
