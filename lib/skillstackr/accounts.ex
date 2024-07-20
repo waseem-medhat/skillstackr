@@ -75,8 +75,9 @@ defmodule Skillstackr.Accounts do
   """
   def get_account_profiles!(account) do
     account
-    |> Repo.preload([profiles: [profiles_technologies: :technology]])
+    |> Repo.preload(profiles: [profiles_technologies: :technology])
     |> Map.get(:profiles)
+    |> Enum.sort(&(&1.inserted_at >= &2.inserted_at))
   end
 
   @doc """
@@ -86,6 +87,7 @@ defmodule Skillstackr.Accounts do
     account
     |> Repo.preload(:jobs)
     |> Map.get(:jobs)
+    |> Enum.sort(&(&1.inserted_at >= &2.inserted_at))
   end
 
   @doc """
@@ -95,6 +97,7 @@ defmodule Skillstackr.Accounts do
     account
     |> Repo.preload(projects: [projects_technologies: :technology])
     |> Map.get(:projects)
+    |> Enum.sort(&(&1.inserted_at >= &2.inserted_at))
   end
 
   ## Account registration

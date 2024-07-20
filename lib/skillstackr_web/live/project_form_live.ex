@@ -113,7 +113,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "project saved!")
+         |> put_flash(:info, "Project saved.")
          |> redirect(to: ~p"/projects")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
