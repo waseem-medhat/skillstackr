@@ -121,7 +121,9 @@ defmodule SkillstackrWeb.ProfileShowLive do
     <section id="professional-experience" class="my-5">
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-bold mb-3">Professional Experience</h2>
-        <p>N Years</p>
+        <p>
+          <%= @profile.profiles_jobs |> Enum.map(& &1.job.experience_years) |> Enum.sum() %> Years
+        </p>
       </div>
       <.job_accordion jobs={Enum.map(@profile.profiles_jobs, & &1.job)} />
     </section>
