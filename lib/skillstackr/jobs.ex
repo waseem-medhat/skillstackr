@@ -11,9 +11,7 @@ defmodule Skillstackr.Jobs do
   alias Skillstackr.Jobs.Job
 
   @doc """
-  Gets a single job.
-
-  Raises `Ecto.NoResultsError` if the Job does not exist.
+  Gets a single job with the given ID. Returns `nil` if it doesn't exist.
 
   ## Examples
 
@@ -21,7 +19,7 @@ defmodule Skillstackr.Jobs do
       %Job{}
 
       iex> get_job(456)
-      ** (Ecto.NoResultsError)
+      nil
 
   """
   def get_job(id) do
@@ -33,15 +31,15 @@ defmodule Skillstackr.Jobs do
   end
 
   @doc """
-  Creates a job.
+  Creates a job and adds its associations with profiles.
 
   ## Examples
 
       iex> create_job(%field: value)
-      {:ok, %Job{}}
+      {:ok, %{new_job: %Job{}, profiles_jobs: []}}
 
       iex> create_job(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, :new_job, %Ecto.Changeset{}}
 
   """
   def create_job(attrs \\ %{}, assoc_profiles \\ []) do
@@ -54,18 +52,19 @@ defmodule Skillstackr.Jobs do
   end
 
   @doc """
-  Updates a job.
+  Updates a job. Associations with profiles are also added or deleted as
+  necessary.
 
   ## Examples
 
       iex> update_job(job, %{field: new_value})
-      {:ok, %Job{}}
+      {:ok, %{job: %Job{}}}
 
       iex> update_job(job, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_job(%Job{} = job, attrs, prof_job_id_deletions, prof_insertions) do
+  def update_job(%Job{} = job, attrs, prof_job_id_deletions \\ [], prof_insertions \\ []) do
     Multi.new()
     |> Multi.update(:job, Job.changeset(job, attrs))
     |> Multi.delete_all(

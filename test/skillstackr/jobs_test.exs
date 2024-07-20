@@ -5,47 +5,62 @@ defmodule Skillstackr.JobsTest do
 
   describe "jobs" do
     alias Skillstackr.Jobs.Job
+    import Skillstackr.{JobsFixtures, AccountsFixtures}
 
-    import Skillstackr.JobsFixtures
+    @invalid_attrs %{experience_years: -1}
 
-    @invalid_attrs %{}
+    @valid_attrs %{
+      title: "Senior Bikeshedder",
+      company: "The Bikeshedding Company",
+      experience_years: 4
+    }
 
     test "get_job/1 returns the job with given id" do
-      job = job_fixture()
+      account = account_fixture()
+      job = @valid_attrs |> Map.put(:account_id, account.id) |> job_fixture()
+
       assert Jobs.get_job(job.id) == job
     end
 
     test "create_job/1 with valid data creates a job" do
-      valid_attrs = %{}
+      account = account_fixture()
+      attrs = Map.put(@valid_attrs, :account_id, account.id)
 
-      assert {:ok, %Job{} = job} = Jobs.create_job(valid_attrs)
+      assert {:ok, %{new_job: %Job{}}} = Jobs.create_job(attrs)
     end
 
     test "create_job/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Jobs.create_job(@invalid_attrs)
+      assert {:error, :new_job, %Ecto.Changeset{}, %{}} = Jobs.create_job(@invalid_attrs)
     end
 
-    test "update_job/2 with valid data updates the job" do
-      job = job_fixture()
+    test "update_job/4 with valid data updates the job" do
+      account = account_fixture()
+      job = @valid_attrs |> Map.put(:account_id, account.id) |> job_fixture()
       update_attrs = %{}
 
-      assert {:ok, %Job{} = job} = Jobs.update_job(job, update_attrs)
+      assert {:ok, %{job: %Job{}}} = Jobs.update_job(job, update_attrs)
     end
 
-    test "update_job/2 with invalid data returns error changeset" do
-      job = job_fixture()
-      assert {:error, %Ecto.Changeset{}} = Jobs.update_job(job, @invalid_attrs)
-      assert job == Jobs.get_job!(job.id)
+    test "update_job/4 with invalid data returns error changeset" do
+      account = account_fixture()
+      job = @valid_attrs |> Map.put(:account_id, account.id) |> job_fixture()
+
+      assert {:error, :job, %Ecto.Changeset{}, %{}} = Jobs.update_job(job, @invalid_attrs)
+      assert job == Jobs.get_job(job.id)
     end
 
     test "delete_job/1 deletes the job" do
-      job = job_fixture()
+      account = account_fixture()
+      job = @valid_attrs |> Map.put(:account_id, account.id) |> job_fixture()
+
       assert {:ok, %Job{}} = Jobs.delete_job(job)
-      assert_raise Ecto.NoResultsError, fn -> Jobs.get_job!(job.id) end
+      assert is_nil(Jobs.get_job(job.id))
     end
 
     test "change_job/1 returns a job changeset" do
-      job = job_fixture()
+      account = account_fixture()
+      job = @valid_attrs |> Map.put(:account_id, account.id) |> job_fixture()
+
       assert %Ecto.Changeset{} = Jobs.change_job(job)
     end
   end
