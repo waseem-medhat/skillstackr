@@ -5,7 +5,7 @@ defmodule SkillstackrWeb.JobFormLive do
   use SkillstackrWeb, :live_view
 
   def mount(_params, _session, %{assigns: %{live_action: :new}} = socket) do
-    {:ok, assign_with_data(socket, %Job{})}
+    {:ok, assign_with_data(socket, %Job{profiles_jobs: []})}
   end
 
   def mount(%{"id" => id}, _session, %{assigns: %{live_action: :edit}} = socket) do
@@ -57,9 +57,26 @@ defmodule SkillstackrWeb.JobFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
+    %{
+      account_profiles: account_profiles,
+      job: %{
+        profiles_jobs: current_profiles_jobs
+      }
+    } =
+      socket.assigns
+
+    new_profiles =
+      account_profiles
+      |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
+
+    {prof_job_id_deletions, prof_insertions} =
+      diff_profiles(current_profiles_jobs, new_profiles)
+
     Jobs.update_job(
       socket.assigns.job,
-      params["job"]
+      params["job"],
+      prof_job_id_deletions,
+      prof_insertions
     )
     |> case do
       {:ok, _} ->
@@ -71,6 +88,24 @@ defmodule SkillstackrWeb.JobFormLive do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
+  end
+
+  defp diff_profiles(current_profiles_jobs, new_profiles) do
+    prof_job_id_deletions =
+      current_profiles_jobs
+      |> Enum.filter(fn %{profile: profile} ->
+        profile.id not in Enum.map(new_profiles, & &1.id)
+      end)
+      |> IO.inspect()
+      |> Enum.map(& &1.id)
+
+    prof_insertions =
+      new_profiles
+      |> Enum.filter(fn profile ->
+        profile.id not in Enum.map(current_profiles_jobs, & &1.profile.id)
+      end)
+
+    {prof_job_id_deletions, prof_insertions}
   end
 
   def render(assigns) do

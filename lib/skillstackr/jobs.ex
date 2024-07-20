@@ -65,10 +65,21 @@ defmodule Skillstackr.Jobs do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_job(%Job{} = job, attrs) do
-    job
-    |> Job.changeset(attrs)
-    |> Repo.update()
+  def update_job(%Job{} = job, attrs, prof_job_id_deletions, prof_insertions) do
+    Multi.new()
+    |> Multi.update(:job, Job.changeset(job, attrs))
+    |> Multi.delete_all(
+      :removed_profiles_jobs,
+      from(pj in ProfileJob, where: pj.id in ^prof_job_id_deletions)
+    )
+    |> Multi.insert_all(
+      :profiles_jobs,
+      ProfileJob,
+      fn %{job: job} ->
+        Enum.map(prof_insertions, fn p -> %{job_id: job.id, profile_id: p.id} end)
+      end
+    )
+    |> Repo.transaction()
   end
 
   @doc """
