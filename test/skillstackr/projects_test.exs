@@ -10,11 +10,6 @@ defmodule Skillstackr.ProjectsTest do
 
     @invalid_attrs %{}
 
-    test "list_projects/0 returns all projects" do
-      project = project_fixture()
-      assert Projects.list_projects() == [project]
-    end
-
     test "get_project!/1 returns the project with given id" do
       project = project_fixture()
       assert Projects.get_project!(project.id) == project

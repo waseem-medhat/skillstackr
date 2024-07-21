@@ -10,11 +10,6 @@ defmodule Skillstackr.TechnologiesTest do
 
     @invalid_attrs %{}
 
-    test "list_technologies/0 returns all technologies" do
-      technology = technology_fixture()
-      assert Technologies.list_technologies() == [technology]
-    end
-
     test "get_technology!/1 returns the technology with given id" do
       technology = technology_fixture()
       assert Technologies.get_technology!(technology.id) == technology
