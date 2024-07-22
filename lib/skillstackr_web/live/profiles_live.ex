@@ -65,14 +65,14 @@ defmodule SkillstackrWeb.ProfilesLive do
         <div class="absolute top-6 right-6 flex gap-2 items-center">
           <.link
             navigate={~p"/profiles/#{p.slug}"}
-            class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+            class="bg-primary text-white rounded-lg p-1.5 inline-flex items-center hover:bg-primary-lt z-10 text-sm gap-1"
           >
             <.icon name="hero-eye-micro" />
           </.link>
 
           <.link
             navigate={~p"/profiles/#{p.slug}/edit"}
-            class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+            class="bg-primary text-white rounded-lg p-1.5 inline-flex items-center hover:bg-primary-lt z-10 text-sm gap-1"
           >
             <.icon name="hero-pencil-square-micro" />
           </.link>

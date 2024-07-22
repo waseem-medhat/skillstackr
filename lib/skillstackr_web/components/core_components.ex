@@ -231,13 +231,13 @@ defmodule SkillstackrWeb.CoreComponents do
     style_classes =
       case assigns.style do
         "outline" ->
-          "border-indigo-700 text-indigo-700 hover:border-indigo-500 hover:text-indigo-500"
+          "border-primary text-primary hover:border-primary-lt hover:text-primary-lt"
 
         "outline-red" ->
           "border-red-500 text-red-500 hover:border-red-400 hover:text-red-400"
 
         _ ->
-          "border-transparent bg-indigo-700 text-white hover:bg-indigo-500"
+          "border-transparent bg-primary text-white hover:bg-primary-lt"
       end
 
     assigns = assign(assigns, :style_classes, style_classes)

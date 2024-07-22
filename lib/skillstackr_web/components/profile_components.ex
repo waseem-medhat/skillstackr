@@ -31,7 +31,7 @@ defmodule SkillstackrWeb.ProfileComponents do
           <div :if={@editable} class="absolute top-6 right-6 flex gap-2 items-center">
             <.link
               navigate={~p"/projects/#{p.id}/edit"}
-              class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+              class="bg-primary text-white rounded-lg p-1.5 inline-flex items-center hover:bg-primary-lt z-10 text-sm gap-1"
             >
               <.icon name="hero-pencil-square-micro" />
             </.link>
@@ -54,12 +54,12 @@ defmodule SkillstackrWeb.ProfileComponents do
             <%= p.description %>
           </p>
 
-          <footer class="text-indigo-700">
-            <.link navigate={p.link_repo} class="hover:text-indigo-500">
+          <footer class="text-primary">
+            <.link navigate={p.link_repo} class="hover:text-primary-lt">
               Code
             </.link>
             <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
-            <.link navigate={p.link_website} class="hover:text-indigo-500">
+            <.link navigate={p.link_website} class="hover:text-primary-lt">
               Website
             </.link>
           </footer>
@@ -81,7 +81,7 @@ defmodule SkillstackrWeb.ProfileComponents do
         id={"hs-bordered-heading-#{job.id}"}
       >
         <button
-          class="hs-accordion-toggle hs-accordion-active:text-indigo-600 inline-flex items-center justify-between gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-indigo-600 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+          class="hs-accordion-toggle hs-accordion-active:text-primary-lt inline-flex items-center justify-between gap-x-3 w-full font-semibold text-start text-gray-800 py-4 px-5 hover:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-primary-lt dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
           aria-controls={"hs-basic-bordered-collapse-#{job.id}"}
         >
           <div class="flex items-center gap-2">
@@ -120,7 +120,7 @@ defmodule SkillstackrWeb.ProfileComponents do
             <.link
               :if={@editable}
               navigate={~p"/jobs/#{job.id}/edit"}
-              class="bg-indigo-700 text-white rounded-lg p-1.5 inline-flex items-center hover:bg-indigo-500 z-10 text-sm gap-1"
+              class="bg-primary text-white rounded-lg p-1.5 inline-flex items-center hover:bg-primary-lt z-10 text-sm gap-1"
             >
               <.icon name="hero-pencil-square-micro" />
             </.link>

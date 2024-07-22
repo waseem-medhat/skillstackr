@@ -19,6 +19,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        primary: "rgb(67 56 202)", // indigo-700
+        "primary-lt": "rgb(79 70 229)" // indigo-600
       },
       fontFamily: {
         cairo: "Cairo, sans-serif",
