@@ -1,5 +1,23 @@
 # Skillstackr
 
+**Build a cool portfolio and share it with the world!**
+
+Skillstackr gives you an easy and effective way to build portfolio pages that
+are elegant and professional.
+
+![Skillstackr profile demo](https://imgur.com/a/cCREjvo.png) 
+
+- **Bring the data and we'll handle the rest**: you only need to enter your
+profile info and add projects job experience to it. A public profile will be
+generated from such data so you don't need to worry about design.
+
+- **Tailor and reuse**: Skillstackr allows (and encourages) you to create as
+many profiles as you need for different roles and companies.
+
+- [COMING SOON] **Guiding you every step of the way**: expert advice will be
+there for you throughout the profile creation process to help you maximize
+the value and effectiveness of your profiles.
+
 ## Getting started
 
 Use the following instructions to set up a local preview of the app. It uses
