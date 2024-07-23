@@ -5,10 +5,10 @@
 Skillstackr gives you an easy and effective way to build portfolio pages that
 are elegant and professional.
 
-![Skillstackr profile demo](https://imgur.com/a/cCREjvo.png) 
+![Skillstackr profile demo](https://i.imgur.com/Ph85Q9O.png) 
 
 - **Bring the data and we'll handle the rest**: you only need to enter your
-profile info and add projects job experience to it. A public profile will be
+profile info and add your projects and job experience. A public profile will be
 generated from such data so you don't need to worry about design.
 
 - **Tailor and reuse**: Skillstackr allows (and encourages) you to create as
