@@ -12,9 +12,8 @@ defmodule Skillstackr.Profiles do
   alias Skillstackr.Profiles.Profile
 
   @doc """
-  Gets a single profile.
-
-  Raises `Ecto.NoResultsError` if the Profile does not exist.
+  Gets a single profile with the given ID. Raises `Ecto.NoResultsError` if the
+  Profile does not exist.
 
   ## Examples
 
@@ -28,9 +27,8 @@ defmodule Skillstackr.Profiles do
   def get_profile!(id), do: Repo.get!(Profile, id)
 
   @doc """
-  Gets a single profile associated with the given slug.
-
-  Raises `Ecto.NoResultsError` if the Profile does not exist.
+  Gets a single profile associated with the given slug. Returns `nil` if the
+  Profile does not exist.
 
   ## Examples
 
@@ -38,7 +36,7 @@ defmodule Skillstackr.Profiles do
       %Profile{}
 
       iex> get_profile!("noone")
-      ** (Ecto.NoResultsError)
+      nil
 
   """
   def get_profile_by_slug(slug) do
@@ -56,7 +54,9 @@ defmodule Skillstackr.Profiles do
   end
 
   @doc """
-  Creates a profile.
+  Creates a profile and adds its technology associations via a database
+  transaction. Technologies that don't already exist in the database will be
+  inserted as well.
 
   ## Examples
 
@@ -84,7 +84,7 @@ defmodule Skillstackr.Profiles do
   end
 
   @doc """
-  Updates a profile.
+  Updates a profile and its technology associations via a database transaction.
 
   ## Examples
 
