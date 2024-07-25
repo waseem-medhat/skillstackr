@@ -11,7 +11,8 @@ defmodule Skillstackr.Jobs do
   alias Skillstackr.Jobs.Job
 
   @doc """
-  Gets a single job with the given ID. Returns `nil` if it doesn't exist.
+  Gets a single job with the given ID, preloading associated profiles. Returns
+  `nil` if it doesn't exist.
 
   ## Examples
 
@@ -31,7 +32,7 @@ defmodule Skillstackr.Jobs do
   end
 
   @doc """
-  Creates a job and adds its associations with profiles.
+  Creates a job and adds its profile associations via a database transaction.
 
   ## Examples
 
@@ -39,7 +40,7 @@ defmodule Skillstackr.Jobs do
       {:ok, %{new_job: %Job{}, profiles_jobs: []}}
 
       iex> create_job(%{field: bad_value})
-      {:error, :new_job, %Ecto.Changeset{}}
+      {:error, :new_job, %Ecto.Changeset{}, []}
 
   """
   def create_job(attrs \\ %{}, assoc_profiles \\ []) do
@@ -52,8 +53,7 @@ defmodule Skillstackr.Jobs do
   end
 
   @doc """
-  Updates a job. Associations with profiles are also added or deleted as
-  necessary.
+  Updates a job and its profile associations via a database transaction.
 
   ## Examples
 
@@ -61,7 +61,7 @@ defmodule Skillstackr.Jobs do
       {:ok, %{job: %Job{}}}
 
       iex> update_job(job, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, :job, %Ecto.Changeset{}}
 
   """
   def update_job(%Job{} = job, attrs, prof_job_id_deletions \\ [], prof_insertions \\ []) do

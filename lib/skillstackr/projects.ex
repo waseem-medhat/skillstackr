@@ -12,9 +12,8 @@ defmodule Skillstackr.Projects do
   alias Skillstackr.Projects.Project
 
   @doc """
-  Gets a single project.
-
-  Raises `Ecto.NoResultsError` if the Project does not exist.
+  Gets a single project with the given ID, preloading associated profiles and
+  technologies. Returns `nil` if it doesn't exist.
 
   ## Examples
 
@@ -22,7 +21,7 @@ defmodule Skillstackr.Projects do
       %Project{}
 
       iex> get_project(456)
-      ** (Ecto.NoResultsError)
+      nil
 
   """
   def get_project(id) do
@@ -37,15 +36,17 @@ defmodule Skillstackr.Projects do
   end
 
   @doc """
-  Creates a project.
+  Creates a project and associated technologies through a database transaction.
+  Creating new technologies if they don't already exist is part of the
+  transaction as well.
 
   ## Examples
 
       iex> create_project(%{field: value})
-      {:ok, %Project{}}
+      {:ok, %{new_project: %Project{}}}
 
       iex> create_project(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, :new_project, %Ecto.Changeset{}, []}
 
   """
   def create_project(attrs \\ %{}, assoc_profiles \\ [], assoc_technologies \\ []) do
