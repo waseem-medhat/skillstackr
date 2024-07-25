@@ -58,6 +58,18 @@ defmodule SkillstackrWeb.ProjectFormLive do
     {:noreply, assign(socket, :tech_map, new_tech_map)}
   end
 
+  def handle_event("remove-technology-" <> category, params, socket) do
+    selected = params["value"]
+
+    new_category_technologies =
+      socket.assigns.tech_map
+      |> Map.get(category)
+      |> List.delete(selected)
+
+    new_tech_map = Map.put(socket.assigns.tech_map, category, new_category_technologies)
+    {:noreply, assign(socket, :tech_map, new_tech_map)}
+  end
+
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
     assoc_profiles =
       socket.assigns.account_profiles
@@ -177,22 +189,62 @@ defmodule SkillstackrWeb.ProjectFormLive do
       <section id="skills" class="grid grid-cols-2 gap-3">
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Front-end</span>
-          <.tech_badge :for={tech <- @tech_map["frontend"]} tech={tech} class="pointer-events-none" />
+          <div :for={tech <- @tech_map["frontend"]} class="relative">
+            <button
+              type="button"
+              phx-click="remove-technology-frontend"
+              value={tech}
+              class="text-red-500 hover:text-red-400 cursor-pointer opacity-70"
+            >
+              <.icon name="hero-x-mark-micro" class="absolute top-[-10px] right-[-10px]" />
+            </button>
+            <.tech_badge tech={tech} class="pointer-events-none" />
+          </div>
         </div>
 
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Back-end</span>
-          <.tech_badge :for={tech <- @tech_map["backend"]} tech={tech} class="pointer-events-none" />
+          <div :for={tech <- @tech_map["backend"]} class="relative">
+            <button
+              type="button"
+              phx-click="remove-technology-backend"
+              value={tech}
+              class="text-red-500 hover:text-red-400 cursor-pointer opacity-70"
+            >
+              <.icon name="hero-x-mark-micro" class="absolute top-[-10px] right-[-10px]" />
+            </button>
+            <.tech_badge tech={tech} class="pointer-events-none" />
+          </div>
         </div>
 
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">DevOps</span>
-          <.tech_badge :for={tech <- @tech_map["devops"]} tech={tech} class="pointer-events-none" />
+          <div :for={tech <- @tech_map["devops"]} class="relative">
+            <button
+              type="button"
+              phx-click="remove-technology-devops"
+              value={tech}
+              class="text-red-500 hover:text-red-400 cursor-pointer opacity-70"
+            >
+              <.icon name="hero-x-mark-micro" class="absolute top-[-10px] right-[-10px]" />
+            </button>
+            <.tech_badge tech={tech} class="pointer-events-none" />
+          </div>
         </div>
 
         <div class="flex items-center gap-2 h-12">
           <span class="w-20 font-light">Dev tools</span>
-          <.tech_badge :for={tech <- @tech_map["devtools"]} tech={tech} class="pointer-events-none" />
+          <div :for={tech <- @tech_map["devtools"]} class="relative">
+            <button
+              type="button"
+              phx-click="remove-technology-devtools"
+              value={tech}
+              class="text-red-500 hover:text-red-400 cursor-pointer opacity-70"
+            >
+              <.icon name="hero-x-mark-micro" class="absolute top-[-10px] right-[-10px]" />
+            </button>
+            <.tech_badge tech={tech} class="pointer-events-none" />
+          </div>
         </div>
       </section>
 
