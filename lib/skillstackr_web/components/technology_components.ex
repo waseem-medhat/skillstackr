@@ -46,10 +46,10 @@ defmodule SkillstackrWeb.TechnologyComponents do
 
   def tech_badge(assigns) do
     ~H"""
-    <div class="hs-tooltip inline-block">
+    <div class={["hs-tooltip inline-block", @class]}>
       <button type="button" class="hs-tooltip-toggle cursor-default">
         <img
-          class={["hover:brightness-[125%] transition", @class]}
+          class="hover:brightness-[125%] transition"
           src={"https://cdn.simpleicons.org/#{name_to_slug(@tech)}"}
           width={@size}
           alt={"#{@tech}"}
