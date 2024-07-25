@@ -67,9 +67,16 @@ defmodule SkillstackrWeb.ProfileFormLive do
     {:noreply, assign(socket, :tech_map, new_tech_map)}
   end
 
-  def handle_event("remove-technology-" <> _category, params, socket) do
-    IO.inspect(params)
-    {:noreply, socket}
+  def handle_event("remove-technology-" <> category, params, socket) do
+    selected = params["value"]
+
+    new_category_technologies =
+      socket.assigns.tech_map
+      |> Map.get(category)
+      |> List.delete(selected)
+
+    new_tech_map = Map.put(socket.assigns.tech_map, category, new_category_technologies)
+    {:noreply, assign(socket, :tech_map, new_tech_map)}
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
