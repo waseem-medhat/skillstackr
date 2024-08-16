@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :skillstackr, Skillstackr.Repo,
-  username: "root",
-  password: "",
+  username: "skillstackradmin",
+  password: "skillstackradmin",
   hostname: "localhost",
   database: "skillstackr_dev",
   stacktrace: true,

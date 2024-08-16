@@ -13,7 +13,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProfilesProjects do
           references(:projects, type: :binary_id, on_delete: :delete_all),
           primary_key: true
 
-      timestamps(type: :utc_datetime, default: fragment("(CURRENT_TIMESTAMP)"))
+      timestamps(type: :utc_datetime, default: fragment("now()"))
     end
   end
 end
