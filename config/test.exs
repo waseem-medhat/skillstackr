@@ -9,8 +9,8 @@ config :bcrypt_elixir, :log_rounds, 1
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :skillstackr, Skillstackr.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "skillstackradmin",
+  password: "skillstackradmin",
   hostname: "localhost",
   database: "skillstackr_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,

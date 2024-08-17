@@ -9,22 +9,6 @@ defmodule Skillstackr.Technologies do
   alias Skillstackr.Technologies.Technology
 
   @doc """
-  Gets a single technology.
-
-  Raises `Ecto.NoResultsError` if the Technology does not exist.
-
-  ## Examples
-
-      iex> get_technology!(123)
-      %Technology{}
-
-      iex> get_technology!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_technology!(id), do: Repo.get!(Technology, id)
-
-  @doc """
   Creates a technology.
 
   ## Examples
