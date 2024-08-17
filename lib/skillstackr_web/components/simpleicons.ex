@@ -41,6 +41,7 @@ defmodule SkillstackrWeb.Simpleicons do
   defp parse_files(path) do
     path
     |> File.ls!()
+    |> Enum.filter(fn file_name -> file_name =~ ~r/.*\.svg$/ and !(file_name =~ "-") end)
     |> Enum.map(fn file_name -> Path.absname(file_name, path) end)
     |> Enum.reduce(%{}, &build_map_entry/2)
   end
