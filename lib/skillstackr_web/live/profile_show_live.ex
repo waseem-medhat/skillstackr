@@ -54,7 +54,7 @@ defmodule SkillstackrWeb.ProfileShowLive do
         <h2 class="text-xl font-semibold"><%= @profile.headline %></h2>
       </hgroup>
 
-      <div id="profile-links" class="flex gap-3">
+      <div id="profile-links" class="flex gap-2">
         <.profile_link
           :if={@profile.link_github}
           url={@profile.link_github}
@@ -73,6 +73,11 @@ defmodule SkillstackrWeb.ProfileShowLive do
         <.profile_link
           url={~p"/profiles/#{@profile.slug}/resume.pdf"}
           icon_name="simple-adobeacrobatreader"
+        />
+        <.profile_link
+          :if={@profile.email}
+          url={"mailto:#{@profile.email}"}
+          icon_name="hero-at-symbol"
         />
       </div>
 
