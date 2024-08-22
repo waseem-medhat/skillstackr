@@ -11,7 +11,7 @@ defmodule Skillstackr.ProfilesTechnologies.ProfileTechnology do
     belongs_to :profile, Profile
     belongs_to :technology, Technology
   end
-  
+
   @doc false
   def changeset(profile_job, attrs) do
     profile_job

@@ -11,7 +11,7 @@ defmodule Skillstackr.ProfilesJobs.ProfileJob do
     belongs_to :profile, Profile
     belongs_to :job, Job
   end
-  
+
   @doc false
   def changeset(profile_job, attrs) do
     profile_job

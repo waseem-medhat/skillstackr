@@ -8,7 +8,10 @@ defmodule SkillstackrWeb.AccountLoginLive do
         Log in to account
         <:subtitle>
           Don't have an account?
-          <.link navigate={~p"/accounts/register"} class="font-semibold text-blue-600 hover:text-blue-500">
+          <.link
+            navigate={~p"/accounts/register"}
+            class="font-semibold text-blue-600 hover:text-blue-500"
+          >
             Sign up
           </.link>
           for an account now.

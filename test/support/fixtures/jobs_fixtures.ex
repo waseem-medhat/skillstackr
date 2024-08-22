@@ -14,6 +14,6 @@ defmodule Skillstackr.JobsFixtures do
       |> Skillstackr.Jobs.create_job()
 
     job
-      |> Skillstackr.Repo.preload([:profiles_jobs])
+    |> Skillstackr.Repo.preload([:profiles_jobs])
   end
 end

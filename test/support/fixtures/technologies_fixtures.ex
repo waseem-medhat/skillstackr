@@ -10,9 +10,7 @@ defmodule Skillstackr.TechnologiesFixtures do
   def technology_fixture(attrs \\ %{}) do
     {:ok, technology} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Skillstackr.Technologies.create_technology()
 
     technology

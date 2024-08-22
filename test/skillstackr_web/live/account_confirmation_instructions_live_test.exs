@@ -32,7 +32,10 @@ defmodule SkillstackrWeb.AccountConfirmationInstructionsLiveTest do
       assert Repo.get_by!(Accounts.AccountToken, account_id: account.id).context == "confirm"
     end
 
-    test "does not send confirmation token if account is confirmed", %{conn: conn, account: account} do
+    test "does not send confirmation token if account is confirmed", %{
+      conn: conn,
+      account: account
+    } do
       Repo.update!(Accounts.Account.confirm_changeset(account))
 
       {:ok, lv, _html} = live(conn, ~p"/accounts/confirm")

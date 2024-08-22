@@ -11,7 +11,7 @@ defmodule Skillstackr.ProjectsTechnologies.ProjectTechnology do
     belongs_to :project, Project
     belongs_to :technology, Technology
   end
-  
+
   @doc false
   def changeset(profile_job, attrs) do
     profile_job
@@ -20,4 +20,3 @@ defmodule Skillstackr.ProjectsTechnologies.ProjectTechnology do
     |> cast_assoc(:technology, with: &Technology.changeset/2)
   end
 end
-
