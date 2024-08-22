@@ -12,21 +12,6 @@ defmodule Skillstackr.Profiles do
   alias Skillstackr.Profiles.Profile
 
   @doc """
-  Gets a single profile with the given ID. Raises `Ecto.NoResultsError` if the
-  Profile does not exist.
-
-  ## Examples
-
-      iex> get_profile!(123)
-      %Profile{}
-
-      iex> get_profile!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_profile!(id), do: Repo.get!(Profile, id)
-
-  @doc """
   Gets a single profile associated with the given slug. Returns `nil` if the
   Profile does not exist.
 
