@@ -62,22 +62,6 @@ defmodule Skillstackr.Technologies do
   end
 
   @doc """
-  Deletes a technology.
-
-  ## Examples
-
-      iex> delete_technology(technology)
-      {:ok, %Technology{}}
-
-      iex> delete_technology(technology)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_technology(%Technology{} = technology) do
-    Repo.delete(technology)
-  end
-
-  @doc """
   Returns an `%Ecto.Changeset{}` for tracking technology changes.
 
   ## Examples

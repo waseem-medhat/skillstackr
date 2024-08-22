@@ -41,12 +41,6 @@ defmodule Skillstackr.TechnologiesTest do
       assert technology == technology_copy
     end
 
-    test "delete_technology/1 deletes the technology" do
-      technology = technology_fixture()
-      assert {:ok, %Technology{}} = Technologies.delete_technology(technology)
-      assert_raise Ecto.NoResultsError, fn -> Technologies.get_technology!(technology.id) end
-    end
-
     test "change_technology/1 returns a technology changeset" do
       technology = technology_fixture(@valid_attrs)
       assert %Ecto.Changeset{} = Technologies.change_technology(technology)
