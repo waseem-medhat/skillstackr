@@ -83,10 +83,10 @@ defmodule Skillstackr.Projects do
   def update_project(
         %Project{} = project,
         attrs,
-        proj_tech_id_deletions,
-        tech_insertion_param_list,
-        prof_proj_id_deletions,
-        prof_insertions
+        proj_tech_id_deletions \\ [],
+        tech_insertion_param_list \\ [],
+        prof_proj_id_deletions \\ [],
+        prof_insertions \\ []
       ) do
     Multi.new()
     |> Multi.update(:project, Project.changeset(project, attrs))
