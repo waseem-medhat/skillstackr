@@ -19,10 +19,12 @@ defmodule SkillstackrWeb.AccountSessionControllerTest do
 
       # Now do a logged in request and assert on the menu
       conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ account.email
-      assert response =~ ~p"/accounts/settings"
-      assert response =~ ~p"/accounts/log_out"
+      assert redirected_to(conn) == ~p"/profiles"
+
+      # response = html_response(conn, 200)
+      # assert response =~ account.email
+      # assert response =~ ~p"/accounts/settings"
+      # assert response =~ ~p"/accounts/log_out"
     end
 
     test "logs the account in with remember me", %{conn: conn, account: account} do

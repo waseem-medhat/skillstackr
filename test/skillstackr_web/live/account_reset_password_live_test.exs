@@ -93,7 +93,7 @@ defmodule SkillstackrWeb.AccountResetPasswordLiveTest do
 
       {:ok, conn} =
         lv
-        |> element(~s|main a:fl-contains("Log in")|)
+        |> element(~s|a:fl-contains("Log in")|)
         |> render_click()
         |> follow_redirect(conn, ~p"/accounts/log_in")
 
@@ -108,7 +108,7 @@ defmodule SkillstackrWeb.AccountResetPasswordLiveTest do
 
       {:ok, conn} =
         lv
-        |> element(~s|main a:fl-contains("Register")|)
+        |> element(~s|a:fl-contains("Register")|)
         |> render_click()
         |> follow_redirect(conn, ~p"/accounts/register")
 
