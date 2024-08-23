@@ -8,15 +8,16 @@ are elegant and professional.
 ![Skillstackr profile demo](https://i.imgur.com/Ph85Q9O.png) 
 
 - **Bring the data and we'll handle the rest**: you only need to enter your
-profile info and add your projects and job experience. A public profile will be
-generated from such data so you don't need to worry about design.
+  profile info and add your projects and job experience. A public profile will
+  be generated from such data so you don't need to worry about design.
 
-- **Tailor and reuse**: Skillstackr allows (and encourages) you to create as
-many profiles as you need for different roles and companies.
+- **Tailor and reuse**: Skillstackr allows (and encourages) you to create a
+  many profiles as you need for different roles and companies. Projects and job
+  experience data that you add can be reused across multiple profiles as well.
 
 - [COMING SOON] **Guiding you every step of the way**: expert advice will be
-there for you throughout the profile creation process to help you maximize
-the value and effectiveness of your profiles.
+  there for you throughout the profile creation process to help you maximize
+  the value and effectiveness of your profiles.
 
 ## Getting started
 
