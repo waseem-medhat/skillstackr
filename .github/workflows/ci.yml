@@ -108,7 +108,7 @@ jobs:
     - name: Check Formatting
       run: mix format --check-formatted
 
-    # Step: Execute the tests.
-    # - name: Run tests
-    #   run: mix test
+    Step: Execute the tests.
+    - name: Run tests
+      run: mix test
 
