@@ -139,7 +139,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
         {:noreply,
          socket
          |> put_flash(:info, "Project deleted successfully!")
-         |> redirect(to: "/profiles")}
+         |> redirect(to: "/projects")}
 
       {:error, _} ->
         {:noreply, put_flash(socket, :error, "An error occurred!")}
