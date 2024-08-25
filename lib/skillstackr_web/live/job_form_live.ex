@@ -90,6 +90,19 @@ defmodule SkillstackrWeb.JobFormLive do
     end
   end
 
+  def handle_event("delete", _params, socket) do
+    case Jobs.delete_job(socket.assigns.job) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Job experience deleted successfully!")
+         |> redirect(to: "/jobs")}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, "An error occurred!")}
+    end
+  end
+
   defp diff_profiles(current_profiles_jobs, new_profiles) do
     prof_job_id_deletions =
       current_profiles_jobs
@@ -137,6 +150,40 @@ defmodule SkillstackrWeb.JobFormLive do
         <.button type="submit">Save Profile</.button>
       </:actions>
     </.simple_form>
+
+    <section :if={@live_action == :edit} class="pb-36">
+      <hr class="dark:border-gray-800 my-8" />
+
+      <.button
+        id="delete-button"
+        style="outline-red"
+        phx-click={
+          JS.remove_class("hidden", to: "#confirm-prompt")
+          |> JS.add_class("hidden", to: "#delete-button")
+        }
+      >
+        Delete Job Experience
+      </.button>
+
+      <div id="confirm-prompt" class="hidden">
+        <p class="my-6">
+          This will permanently delete the job experience and remove its
+          association from all profiles. Proceed?
+        </p>
+
+        <.button
+          style="outline"
+          phx-click={
+            JS.add_class("hidden", to: "#confirm-prompt")
+            |> JS.remove_class("hidden", to: "#delete-button")
+          }
+        >
+          Cancel
+        </.button>
+
+        <.button phx-click="delete" style="outline-red">Confirm and Delete</.button>
+      </div>
+    </section>
     """
   end
 end

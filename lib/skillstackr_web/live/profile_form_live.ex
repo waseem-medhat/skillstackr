@@ -290,12 +290,13 @@ defmodule SkillstackrWeb.ProfileFormLive do
           |> JS.add_class("hidden", to: "#delete-button")
         }
       >
-        Delete Profile
+        Delete Project
       </.button>
 
       <div id="confirm-prompt" class="hidden">
         <p class="my-6">
-          This will permanently delete the profile but <i>not</i> associated projects. Proceed?
+          This will permanently delete the profile but <i>not</i> associated
+          projects and job experience. Proceed?
         </p>
 
         <.button
