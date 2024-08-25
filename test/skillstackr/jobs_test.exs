@@ -5,7 +5,7 @@ defmodule Skillstackr.JobsTest do
 
   describe "jobs" do
     alias Skillstackr.Jobs.Job
-    import Skillstackr.{JobsFixtures, AccountsFixtures}
+    import Skillstackr.{JobsFixtures, AccountsFixtures, ProfilesFixtures}
 
     @invalid_attrs %{experience_years: -1}
 
@@ -14,6 +14,10 @@ defmodule Skillstackr.JobsTest do
       company: "The Bikeshedding Company",
       experience_years: 4
     }
+
+    defp valid_profile_fixture(account_id) do
+      profile_fixture(%{account_id: account_id, full_name: "John Doe", slug: "johndoe"})
+    end
 
     test "get_job/1 returns the job with given id" do
       account = account_fixture()
@@ -27,6 +31,20 @@ defmodule Skillstackr.JobsTest do
       attrs = Map.put(@valid_attrs, :account_id, account.id)
 
       assert {:ok, %{new_job: %Job{}}} = Jobs.create_job(attrs)
+    end
+
+    test "create_job/1 associates profiles with a created job" do
+      %{id: account_id} = account_fixture()
+      profile = valid_profile_fixture(account_id)
+
+      attrs = Map.put(@valid_attrs, :account_id, account_id)
+      {:ok, %{new_job: job}} = Jobs.create_job(attrs, [profile])
+
+      assoc_profiles =
+        Jobs.get_job(job.id).profiles_jobs
+        |> Enum.map(fn pj -> pj.profile end)
+
+      assert assoc_profiles == [profile]
     end
 
     test "create_job/1 with invalid data returns error changeset" do
