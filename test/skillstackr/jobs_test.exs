@@ -35,16 +35,16 @@ defmodule Skillstackr.JobsTest do
 
     test "create_job/1 associates profiles with a created job" do
       %{id: account_id} = account_fixture()
-      profile = valid_profile_fixture(account_id)
+      profile_id = valid_profile_fixture(account_id).id
 
       attrs = Map.put(@valid_attrs, :account_id, account_id)
-      {:ok, %{new_job: job}} = Jobs.create_job(attrs, [profile])
+      {:ok, %{new_job: job}} = Jobs.create_job(attrs, [profile_id])
 
-      assoc_profiles =
+      assoc_profile_ids =
         Jobs.get_job(job.id).profiles_jobs
-        |> Enum.map(fn pj -> pj.profile end)
+        |> Enum.map(fn pj -> pj.profile.id end)
 
-      assert assoc_profiles == [profile]
+      assert assoc_profile_ids == [profile_id]
     end
 
     test "create_job/1 with invalid data returns error changeset" do
@@ -56,14 +56,14 @@ defmodule Skillstackr.JobsTest do
       job = @valid_attrs |> Map.put(:account_id, account.id) |> job_fixture()
       update_attrs = %{}
 
-      assert {:ok, %{job: %Job{}}} = Jobs.update_job(job, update_attrs)
+      assert {:ok, %{updated_job: %Job{}}} = Jobs.update_job(job, update_attrs)
     end
 
     test "update_job/4 with invalid data returns error changeset" do
       account = account_fixture()
       job = @valid_attrs |> Map.put(:account_id, account.id) |> job_fixture()
 
-      assert {:error, :job, %Ecto.Changeset{}, %{}} = Jobs.update_job(job, @invalid_attrs)
+      assert {:error, :updated_job, %Ecto.Changeset{}, %{}} = Jobs.update_job(job, @invalid_attrs)
       assert job == Jobs.get_job(job.id)
     end
 
