@@ -4,6 +4,7 @@ defmodule Skillstackr.Projects do
   """
 
   import Ecto.Query, warn: false
+  alias Skillstackr.Technologies.Technology
   alias Skillstackr.Technologies
   alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.ProfilesProjects.ProfileProject
@@ -38,7 +39,13 @@ defmodule Skillstackr.Projects do
   @doc """
   Creates a project and associated technologies through a database transaction.
   Creating new technologies if they don't already exist is part of the
-  transaction as well.
+  transaction as well. It takes the following arguments:
+
+  - `attrs`: a map of attributes for the new project (`%{key: value}`)
+  - `assoc_profile_ids`: a list of profile IDs to be associated with the new
+  project
+  - `assoc_technologies`: a list of maps for technologies to be associated with
+  the new project (`[%{"name" => "tech_name", "category" => "tech_category"}]`)
 
   ## Examples
 
@@ -49,19 +56,35 @@ defmodule Skillstackr.Projects do
       {:error, :new_project, %Ecto.Changeset{}, []}
 
   """
-  def create_project(attrs \\ %{}, assoc_profiles \\ [], assoc_technologies \\ []) do
+  def create_project(attrs \\ %{}, assoc_profile_ids \\ [], assoc_technologies \\ []) do
     Multi.new()
     |> Multi.insert(:new_project, Project.changeset(%Project{}, attrs))
-    |> Multi.insert_all(:profiles_projects, ProfileProject, fn %{new_project: new_project} ->
-      Enum.map(assoc_profiles, fn p -> %{project_id: new_project.id, profile_id: p.id} end)
-    end)
-    |> Multi.run(:technologies, fn _repo, _changes ->
-      {:ok, Enum.map(assoc_technologies, &Technologies.get_or_create_technology/1)}
-    end)
+    |> Multi.insert_all(
+      :profiles_projects,
+      ProfileProject,
+      fn %{new_project: new_project} ->
+        Enum.map(assoc_profile_ids, fn profile_id ->
+          %{project_id: new_project.id, profile_id: profile_id}
+        end)
+      end
+    )
+    |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
+    |> Multi.all(
+      :technologies,
+      Enum.reduce(
+        assoc_technologies,
+        from(t in Technology, where: false),
+        fn %{name: name, category: category}, acc_query ->
+          new_query = from(t in Technology, where: t.name == ^name and t.category == ^category)
+          union_all(acc_query, ^new_query)
+        end
+      )
+    )
     |> Multi.insert_all(
       :projects_technologies,
       ProjectTechnology,
       fn %{new_project: new_project, technologies: technologies} ->
+        technologies |> dbg()
         Enum.map(technologies, fn t -> %{project_id: new_project.id, technology_id: t.id} end)
       end
     )

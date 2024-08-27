@@ -17,5 +17,6 @@ defmodule Skillstackr.Technologies.Technology do
     technology
     |> cast(attrs, [:name, :category])
     |> validate_required([:name, :category])
+    |> unique_constraint([:name, :category])
   end
 end

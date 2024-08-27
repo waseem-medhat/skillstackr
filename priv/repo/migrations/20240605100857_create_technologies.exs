@@ -7,5 +7,7 @@ defmodule Skillstackr.Repo.Migrations.CreateTechnologies do
       add :name, :string
       add :category, :string
     end
+
+    create unique_index(:technologies, [:name, :category])
   end
 end

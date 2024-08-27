@@ -71,17 +71,20 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
-    assoc_profiles =
+    assoc_profile_ids =
       socket.assigns.account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
+      |> Enum.map(& &1.id)
 
     project_params =
       params["project"]
       |> Map.put("account_id", socket.assigns.current_account.id)
 
-    assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
+    assoc_technologies =
+      Technologies.map_to_list(socket.assigns.tech_map)
+      |> Enum.map(fn tech -> %{name: tech["name"], category: tech["category"]} end)
 
-    case Projects.create_project(project_params, assoc_profiles, assoc_technologies) do
+    case Projects.create_project(project_params, assoc_profile_ids, assoc_technologies) do
       {:ok, _} ->
         {:noreply,
          socket
