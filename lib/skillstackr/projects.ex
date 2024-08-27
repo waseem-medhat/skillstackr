@@ -5,7 +5,6 @@ defmodule Skillstackr.Projects do
 
   import Ecto.Query, warn: false
   alias Skillstackr.Technologies.Technology
-  alias Skillstackr.Technologies
   alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.ProfilesProjects.ProfileProject
   alias Ecto.Multi
@@ -84,7 +83,6 @@ defmodule Skillstackr.Projects do
       :projects_technologies,
       ProjectTechnology,
       fn %{new_project: new_project, technologies: technologies} ->
-        technologies |> dbg()
         Enum.map(technologies, fn t -> %{project_id: new_project.id, technology_id: t.id} end)
       end
     )
@@ -107,7 +105,7 @@ defmodule Skillstackr.Projects do
         %Project{} = project,
         attrs,
         proj_tech_id_deletions \\ [],
-        tech_insertion_param_list \\ [],
+        assoc_technologies \\ [],
         prof_proj_id_deletions \\ [],
         prof_insertions \\ []
       ) do
@@ -117,17 +115,23 @@ defmodule Skillstackr.Projects do
       :removed_technologies,
       from(pt in ProjectTechnology, where: pt.id in ^proj_tech_id_deletions)
     )
-    |> Multi.run(
-      :new_technologies,
-      fn _repo, _changes ->
-        {:ok, Enum.map(tech_insertion_param_list, &Technologies.get_or_create_technology/1)}
-      end
+    |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
+    |> Multi.all(
+      :technologies,
+      Enum.reduce(
+        assoc_technologies,
+        from(t in Technology, where: false),
+        fn %{name: name, category: category}, acc_query ->
+          new_query = from(t in Technology, where: t.name == ^name and t.category == ^category)
+          union_all(acc_query, ^new_query)
+        end
+      )
     )
     |> Multi.insert_all(
       :projects_technologies,
       ProjectTechnology,
-      fn %{project: project, new_technologies: new_technologies} ->
-        Enum.map(new_technologies, fn t -> %{project_id: project.id, technology_id: t.id} end)
+      fn %{project: project, technologies: technologies} ->
+        Enum.map(technologies, fn t -> %{project_id: project.id, technology_id: t.id} end)
       end
     )
     |> Multi.delete_all(

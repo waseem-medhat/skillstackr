@@ -115,7 +115,7 @@ defmodule Skillstackr.Technologies do
     Enum.flat_map(
       tech_map,
       fn {category, tech_list} ->
-        Enum.map(tech_list, fn tech_name -> %{"name" => tech_name, "category" => category} end)
+        Enum.map(tech_list, fn tech_name -> %{name: tech_name, category: category} end)
       end
     )
   end
