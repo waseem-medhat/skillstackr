@@ -36,7 +36,8 @@ defmodule Skillstackr.Jobs do
   It takes the following arguments:
 
   - `attrs`: a map of attributes for the new job (`%{key: value}`)
-  - `assoc_profiles`: a list of profile structs
+  - `assoc_profile_ids`: a list of profile IDs to be associated with the new
+  job
 
   ## Examples
 
@@ -47,11 +48,13 @@ defmodule Skillstackr.Jobs do
       {:error, :new_job, %Ecto.Changeset{}, []}
 
   """
-  def create_job(attrs \\ %{}, assoc_profiles \\ []) do
+  def create_job(attrs \\ %{}, assoc_profile_ids \\ []) do
     Multi.new()
     |> Multi.insert(:new_job, Job.changeset(%Job{}, attrs))
     |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{new_job: new_job} ->
-      Enum.map(assoc_profiles, fn p -> %{job_id: new_job.id, profile_id: p.id} end)
+      Enum.map(assoc_profile_ids, fn profile_id ->
+        %{job_id: new_job.id, profile_id: profile_id}
+      end)
     end)
     |> Repo.transaction()
   end
