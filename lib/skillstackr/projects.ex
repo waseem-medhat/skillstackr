@@ -4,6 +4,7 @@ defmodule Skillstackr.Projects do
   """
 
   import Ecto.Query, warn: false
+  alias Skillstackr.Technologies
   alias Skillstackr.Technologies.Technology
   alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.ProfilesProjects.ProfileProject
@@ -57,28 +58,18 @@ defmodule Skillstackr.Projects do
   """
   def create_project(attrs \\ %{}, assoc_profile_ids \\ [], assoc_technologies \\ []) do
     Multi.new()
-    |> Multi.insert(:new_project, Project.changeset(%Project{}, attrs))
+    |> Multi.insert(:project, Project.changeset(%Project{}, attrs))
     |> Multi.insert_all(
       :profiles_projects,
       ProfileProject,
-      fn %{new_project: new_project} ->
+      fn %{project: project} ->
         Enum.map(assoc_profile_ids, fn profile_id ->
-          %{project_id: new_project.id, profile_id: profile_id}
+          %{project_id: project.id, profile_id: profile_id}
         end)
       end
     )
     |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
-    |> Multi.all(
-      :technologies,
-      Enum.reduce(
-        assoc_technologies,
-        from(t in Technology, where: false),
-        fn %{name: name, category: category}, acc_query ->
-          new_query = from(t in Technology, where: t.name == ^name and t.category == ^category)
-          union_all(acc_query, ^new_query)
-        end
-      )
-    )
+    |> Multi.all(:technologies, Technologies.build_search_query(assoc_technologies))
     |> Multi.insert_all(
       :projects_technologies,
       ProjectTechnology,
@@ -116,17 +107,7 @@ defmodule Skillstackr.Projects do
       from(pt in ProjectTechnology, where: pt.id in ^proj_tech_id_deletions)
     )
     |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
-    |> Multi.all(
-      :technologies,
-      Enum.reduce(
-        assoc_technologies,
-        from(t in Technology, where: false),
-        fn %{name: name, category: category}, acc_query ->
-          new_query = from(t in Technology, where: t.name == ^name and t.category == ^category)
-          union_all(acc_query, ^new_query)
-        end
-      )
-    )
+    |> Multi.all(:technologies, Technologies.build_search_query(assoc_technologies))
     |> Multi.insert_all(
       :projects_technologies,
       ProjectTechnology,

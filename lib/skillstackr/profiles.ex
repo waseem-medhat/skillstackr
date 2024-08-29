@@ -7,6 +7,7 @@ defmodule Skillstackr.Profiles do
   alias Skillstackr.ProfilesTechnologies.ProfileTechnology
   alias Ecto.Multi
   alias Skillstackr.Technologies
+  alias Skillstackr.Technologies.Technology
   alias Skillstackr.Repo
 
   alias Skillstackr.Profiles.Profile
@@ -55,9 +56,8 @@ defmodule Skillstackr.Profiles do
   def create_profile(attrs \\ %{}, assoc_technologies \\ []) do
     Multi.new()
     |> Multi.insert(:profile, Profile.changeset(%Profile{}, attrs))
-    |> Multi.run(:technologies, fn _repo, _changes ->
-      {:ok, Enum.map(assoc_technologies, &Technologies.get_or_create_technology/1)}
-    end)
+    |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
+    |> Multi.all(:technologies, Technologies.build_search_query(assoc_technologies))
     |> Multi.insert_all(
       :profiles_technologies,
       ProfileTechnology,
@@ -84,7 +84,7 @@ defmodule Skillstackr.Profiles do
         %Profile{} = profile,
         attrs,
         removed_profile_technology_ids \\ [],
-        new_tech_list \\ []
+        assoc_technologies \\ []
       ) do
     Multi.new()
     |> Multi.update(:profile, Profile.changeset(profile, attrs))
@@ -92,9 +92,8 @@ defmodule Skillstackr.Profiles do
       :removed_technologies,
       from(pt in ProfileTechnology, where: pt.id in ^removed_profile_technology_ids)
     )
-    |> Multi.run(:new_technologies, fn _repo, _changes ->
-      {:ok, Enum.map(new_tech_list, &Technologies.get_or_create_technology/1)}
-    end)
+    |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
+    |> Multi.all(:technologies, Technologies.build_search_query(assoc_technologies))
     |> Multi.insert_all(
       :profiles_technologies,
       ProfileTechnology,
