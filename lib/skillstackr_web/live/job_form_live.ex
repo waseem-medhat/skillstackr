@@ -52,7 +52,7 @@ defmodule SkillstackrWeb.JobFormLive do
          |> put_flash(:info, "Job experience added")
          |> redirect(to: ~p"/jobs")}
 
-      {:error, :new_job, changeset, _} ->
+      {:error, :job, changeset, _} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end

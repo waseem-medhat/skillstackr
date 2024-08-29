@@ -30,7 +30,7 @@ defmodule Skillstackr.JobsTest do
       account = account_fixture()
       attrs = Map.put(@valid_attrs, :account_id, account.id)
 
-      assert {:ok, %{new_job: %Job{}}} = Jobs.create_job(attrs)
+      assert {:ok, %{job: %Job{}}} = Jobs.create_job(attrs)
     end
 
     test "create_job/1 associates profiles with a created job" do
@@ -38,7 +38,7 @@ defmodule Skillstackr.JobsTest do
       profile_id = valid_profile_fixture(account_id).id
 
       attrs = Map.put(@valid_attrs, :account_id, account_id)
-      {:ok, %{new_job: job}} = Jobs.create_job(attrs, [profile_id])
+      {:ok, %{job: job}} = Jobs.create_job(attrs, [profile_id])
 
       assoc_profile_ids =
         Jobs.get_job(job.id).profiles_jobs
@@ -48,7 +48,7 @@ defmodule Skillstackr.JobsTest do
     end
 
     test "create_job/1 with invalid data returns error changeset" do
-      assert {:error, :new_job, %Ecto.Changeset{}, %{}} = Jobs.create_job(@invalid_attrs)
+      assert {:error, :job, %Ecto.Changeset{}, %{}} = Jobs.create_job(@invalid_attrs)
     end
 
     test "update_job/4 with valid data updates the job" do

@@ -42,19 +42,17 @@ defmodule Skillstackr.Jobs do
   ## Examples
 
       iex> create_job(%{field: value})
-      {:ok, %{new_job: %Job{}, profiles_jobs: []}}
+      {:ok, %{job: %Job{}, profiles_jobs: []}}
 
       iex> create_job(%{field: bad_value})
-      {:error, :new_job, %Ecto.Changeset{}, []}
+      {:error, :job, %Ecto.Changeset{}, []}
 
   """
   def create_job(attrs \\ %{}, assoc_profile_ids \\ []) do
     Multi.new()
-    |> Multi.insert(:new_job, Job.changeset(%Job{}, attrs))
-    |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{new_job: new_job} ->
-      Enum.map(assoc_profile_ids, fn profile_id ->
-        %{job_id: new_job.id, profile_id: profile_id}
-      end)
+    |> Multi.insert(:job, Job.changeset(%Job{}, attrs))
+    |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{job: job} ->
+      Enum.map(assoc_profile_ids, fn profile_id -> %{job_id: job.id, profile_id: profile_id} end)
     end)
     |> Repo.transaction()
   end
