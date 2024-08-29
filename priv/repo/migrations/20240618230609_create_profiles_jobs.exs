@@ -15,5 +15,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProfilesJobs do
 
       timestamps(type: :utc_datetime, default: fragment("now()"))
     end
+
+    create unique_index(:profiles_jobs, [:profile_id, :job_id])
   end
 end

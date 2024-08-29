@@ -33,27 +33,39 @@ defmodule Skillstackr.Jobs do
 
   @doc """
   Creates a job and adds its profile associations via a database transaction.
+  It takes the following arguments:
+
+  - `attrs`: a map of attributes for the new job (`%{key: value}`)
+  - `assoc_profile_ids`: a list of profile IDs to be associated with the new
+  job
 
   ## Examples
 
-      iex> create_job(%field: value)
-      {:ok, %{new_job: %Job{}, profiles_jobs: []}}
+      iex> create_job(%{field: value})
+      {:ok, %{job: %Job{}, profiles_jobs: []}}
 
       iex> create_job(%{field: bad_value})
-      {:error, :new_job, %Ecto.Changeset{}, []}
+      {:error, :job, %Ecto.Changeset{}, []}
 
   """
-  def create_job(attrs \\ %{}, assoc_profiles \\ []) do
+  def create_job(attrs \\ %{}, assoc_profile_ids \\ []) do
     Multi.new()
-    |> Multi.insert(:new_job, Job.changeset(%Job{}, attrs))
-    |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{new_job: new_job} ->
-      Enum.map(assoc_profiles, fn p -> %{job_id: new_job.id, profile_id: p.id} end)
+    |> Multi.insert(:job, Job.changeset(%Job{}, attrs))
+    |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{job: job} ->
+      Enum.map(assoc_profile_ids, fn profile_id -> %{job_id: job.id, profile_id: profile_id} end)
     end)
     |> Repo.transaction()
   end
 
   @doc """
-  Updates a job and its profile associations via a database transaction.
+  Updates a job and its profile associations via a database transaction. It
+  takes the following arguments:
+
+  - `job`, the job struct to be updated
+  - `attrs`, a map of attributes for updating the job (`%{key: value}`)
+  - `profile_job_id_deletions`, a list of profile-job association IDs to delete
+  - `assoc_profile_id_insertions`, a list of profile IDs to insert new
+  associations
 
   ## Examples
 
@@ -64,18 +76,25 @@ defmodule Skillstackr.Jobs do
       {:error, :job, %Ecto.Changeset{}}
 
   """
-  def update_job(%Job{} = job, attrs, prof_job_id_deletions \\ [], prof_insertions \\ []) do
+  def update_job(
+        %Job{} = job,
+        attrs \\ %{},
+        profile_job_id_deletions \\ [],
+        assoc_profile_id_insertions \\ []
+      ) do
     Multi.new()
-    |> Multi.update(:job, Job.changeset(job, attrs))
+    |> Multi.update(:updated_job, Job.changeset(job, attrs))
     |> Multi.delete_all(
       :removed_profiles_jobs,
-      from(pj in ProfileJob, where: pj.id in ^prof_job_id_deletions)
+      from(pj in ProfileJob, where: pj.id in ^profile_job_id_deletions)
     )
     |> Multi.insert_all(
       :profiles_jobs,
       ProfileJob,
-      fn %{job: job} ->
-        Enum.map(prof_insertions, fn p -> %{job_id: job.id, profile_id: p.id} end)
+      fn %{updated_job: updated_job} ->
+        Enum.map(assoc_profile_id_insertions, fn id ->
+          %{job_id: updated_job.id, profile_id: id}
+        end)
       end
     )
     |> Repo.transaction()

@@ -95,7 +95,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
          |> put_flash(:info, "Profile saved. Start adding some projects to it!")
          |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, :profile, %Ecto.Changeset{} = changeset, %{}} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end

@@ -36,22 +36,23 @@ defmodule SkillstackrWeb.JobFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
-    assoc_profiles =
+    assoc_profile_ids =
       socket.assigns.account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
+      |> Enum.map(& &1.id)
 
     job_params =
       params["job"]
       |> Map.put("account_id", socket.assigns.current_account.id)
 
-    case Jobs.create_job(job_params, assoc_profiles) do
+    case Jobs.create_job(job_params, assoc_profile_ids) do
       {:ok, _} ->
         {:noreply,
          socket
          |> put_flash(:info, "Job experience added")
          |> redirect(to: ~p"/jobs")}
 
-      {:error, :new_job, changeset, _} ->
+      {:error, :job, changeset, _} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
@@ -65,18 +66,28 @@ defmodule SkillstackrWeb.JobFormLive do
     } =
       socket.assigns
 
-    new_profiles =
+    new_assoc_profile_ids =
       account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
+      |> Enum.map(& &1.id)
 
-    {prof_job_id_deletions, prof_insertions} =
-      diff_profiles(current_profiles_jobs, new_profiles)
+    current_assoc_profile_ids =
+      current_profiles_jobs
+      |> Enum.map(& &1.profile.id)
+
+    assoc_profile_id_insertions = new_assoc_profile_ids -- current_assoc_profile_ids
+    assoc_profile_id_deletions = current_assoc_profile_ids -- new_assoc_profile_ids
+
+    profile_job_id_deletions =
+      current_profiles_jobs
+      |> Enum.filter(fn pj -> pj.profile.id in assoc_profile_id_deletions end)
+      |> Enum.map(& &1.id)
 
     Jobs.update_job(
       socket.assigns.job,
       params["job"],
-      prof_job_id_deletions,
-      prof_insertions
+      profile_job_id_deletions,
+      assoc_profile_id_insertions
     )
     |> case do
       {:ok, _} ->
@@ -101,24 +112,6 @@ defmodule SkillstackrWeb.JobFormLive do
       {:error, _} ->
         {:noreply, put_flash(socket, :error, "An error occurred!")}
     end
-  end
-
-  defp diff_profiles(current_profiles_jobs, new_profiles) do
-    prof_job_id_deletions =
-      current_profiles_jobs
-      |> Enum.filter(fn %{profile: profile} ->
-        profile.id not in Enum.map(new_profiles, & &1.id)
-      end)
-      |> IO.inspect()
-      |> Enum.map(& &1.id)
-
-    prof_insertions =
-      new_profiles
-      |> Enum.filter(fn profile ->
-        profile.id not in Enum.map(current_profiles_jobs, & &1.profile.id)
-      end)
-
-    {prof_job_id_deletions, prof_insertions}
   end
 
   def render(assigns) do

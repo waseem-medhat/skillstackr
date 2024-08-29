@@ -71,9 +71,10 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
-    assoc_profiles =
+    assoc_profile_ids =
       socket.assigns.account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
+      |> Enum.map(& &1.id)
 
     project_params =
       params["project"]
@@ -81,14 +82,14 @@ defmodule SkillstackrWeb.ProjectFormLive do
 
     assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
 
-    case Projects.create_project(project_params, assoc_profiles, assoc_technologies) do
+    case Projects.create_project(project_params, assoc_profile_ids, assoc_technologies) do
       {:ok, _} ->
         {:noreply,
          socket
          |> put_flash(:info, "Project added")
          |> redirect(to: ~p"/projects")}
 
-      {:error, :new_project, changeset, _} ->
+      {:error, :project, changeset, _} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
@@ -103,23 +104,39 @@ defmodule SkillstackrWeb.ProjectFormLive do
       }
     } = socket.assigns
 
-    new_profiles =
+    new_assoc_profile_ids =
       account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
+      |> Enum.map(& &1.id)
 
-    {proj_tech_id_deletions, tech_insertion_param_list} =
-      diff_technologies(current_projects_technologies, new_tech_map)
+    current_assoc_profile_ids =
+      current_profiles_projects
+      |> Enum.map(& &1.profile.id)
 
-    {prof_proj_id_deletions, prof_insertions} =
-      diff_profiles(current_profiles_projects, new_profiles)
+    assoc_profile_id_insertions = new_assoc_profile_ids -- current_assoc_profile_ids
+    assoc_profile_id_deletions = current_assoc_profile_ids -- new_assoc_profile_ids
+
+    profile_project_id_deletions =
+      current_profiles_projects
+      |> Enum.filter(fn pj -> pj.profile.id in assoc_profile_id_deletions end)
+      |> Enum.map(& &1.id)
+
+    project_technology_id_deletions =
+      current_projects_technologies
+      |> Enum.filter(fn %{technology: %Technology{name: tech_name, category: category}} ->
+        tech_name not in new_tech_map[category]
+      end)
+      |> Enum.map(& &1.id)
+
+    assoc_technologies = Technologies.map_to_list(new_tech_map)
 
     Projects.update_project(
       socket.assigns.project,
       params["project"],
-      proj_tech_id_deletions,
-      tech_insertion_param_list,
-      prof_proj_id_deletions,
-      prof_insertions
+      project_technology_id_deletions,
+      assoc_technologies,
+      profile_project_id_deletions,
+      assoc_profile_id_insertions
     )
     |> case do
       {:ok, _} ->
@@ -144,45 +161,6 @@ defmodule SkillstackrWeb.ProjectFormLive do
       {:error, _} ->
         {:noreply, put_flash(socket, :error, "An error occurred!")}
     end
-  end
-
-  defp diff_technologies(current_projects_technologies, new_tech_map) do
-    proj_tech_id_deletions =
-      current_projects_technologies
-      |> Enum.filter(fn %{technology: %Technology{name: tech_name, category: category}} ->
-        tech_name not in new_tech_map[category]
-      end)
-      |> Enum.map(& &1.id)
-
-    current_tech_list =
-      current_projects_technologies
-      |> Enum.map(fn %{technology: %{name: name, category: category}} ->
-        %{"name" => name, "category" => category}
-      end)
-
-    tech_insertion_param_list =
-      new_tech_map
-      |> Technologies.map_to_list()
-      |> Enum.filter(fn map -> map not in current_tech_list end)
-
-    {proj_tech_id_deletions, tech_insertion_param_list}
-  end
-
-  defp diff_profiles(current_profiles_projects, new_profiles) do
-    prof_proj_id_deletions =
-      current_profiles_projects
-      |> Enum.filter(fn %{profile: profile} ->
-        profile.id not in Enum.map(new_profiles, & &1.id)
-      end)
-      |> Enum.map(& &1.id)
-
-    prof_insertions =
-      new_profiles
-      |> Enum.filter(fn profile ->
-        profile.id not in Enum.map(current_profiles_projects, & &1.profile.id)
-      end)
-
-    {prof_proj_id_deletions, prof_insertions}
   end
 
   def render(assigns) do

@@ -8,7 +8,7 @@ defmodule Skillstackr.JobsFixtures do
   Generate a job.
   """
   def job_fixture(attrs \\ %{}) do
-    {:ok, %{new_job: job}} =
+    {:ok, %{job: job}} =
       attrs
       |> Enum.into(%{})
       |> Skillstackr.Jobs.create_job()

@@ -26,41 +26,6 @@ defmodule Skillstackr.Technologies do
     |> Repo.insert()
   end
 
-  def get_or_create_technology(%{"name" => name, "category" => category} = tech_attrs) do
-    query =
-      from t in Technology,
-        where: t.name == ^name and t.category == ^category
-
-    case Repo.one(query) do
-      nil ->
-        case create_technology(tech_attrs) do
-          {:ok, tech} -> tech
-          {:error, _} -> nil
-        end
-
-      tech ->
-        tech
-    end
-  end
-
-  @doc """
-  Updates a technology.
-
-  ## Examples
-
-      iex> update_technology(technology, %{field: new_value})
-      {:ok, %Technology{}}
-
-      iex> update_technology(technology, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_technology(%Technology{} = technology, attrs) do
-    technology
-    |> Technology.changeset(attrs)
-    |> Repo.update()
-  end
-
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking technology changes.
 
@@ -115,8 +80,29 @@ defmodule Skillstackr.Technologies do
     Enum.flat_map(
       tech_map,
       fn {category, tech_list} ->
-        Enum.map(tech_list, fn tech_name -> %{"name" => tech_name, "category" => category} end)
+        Enum.map(tech_list, fn tech_name -> %{name: tech_name, category: category} end)
       end
     )
+  end
+
+  @doc """
+  Builds a query for finding the given list of technologies in the database.
+  Its argument `technologies` is a list of maps.
+
+  ## Examples
+
+    iex> build_search_query([%{name: "Elixir", category: "backend"}])
+    #Ecto.Query<>
+  """
+  def build_search_query(technologies) do
+    base_query = from(t in Technology, where: false)
+
+    Enum.reduce(technologies, base_query, fn %{name: name, category: category}, acc_query ->
+      new_query =
+        from t in Technology,
+          where: t.name == ^name and t.category == ^category
+
+      union_all(acc_query, ^new_query)
+    end)
   end
 end
