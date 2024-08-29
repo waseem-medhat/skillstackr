@@ -98,7 +98,7 @@ defmodule Skillstackr.Projects do
         proj_tech_id_deletions \\ [],
         assoc_technologies \\ [],
         prof_proj_id_deletions \\ [],
-        prof_insertions \\ []
+        assoc_prof_id_insertions \\ []
       ) do
     Multi.new()
     |> Multi.update(:project, Project.changeset(project, attrs))
@@ -124,7 +124,9 @@ defmodule Skillstackr.Projects do
       :profiles_projects,
       ProfileProject,
       fn %{project: project} ->
-        Enum.map(prof_insertions, fn p -> %{project_id: project.id, profile_id: p.id} end)
+        Enum.map(assoc_prof_id_insertions, fn profile_id ->
+          %{project_id: project.id, profile_id: profile_id}
+        end)
       end
     )
     |> Repo.transaction()
