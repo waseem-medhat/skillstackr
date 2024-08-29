@@ -27,24 +27,6 @@ defmodule Skillstackr.Technologies do
   end
 
   @doc """
-  Updates a technology.
-
-  ## Examples
-
-      iex> update_technology(technology, %{field: new_value})
-      {:ok, %Technology{}}
-
-      iex> update_technology(technology, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_technology(%Technology{} = technology, attrs) do
-    technology
-    |> Technology.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Returns an `%Ecto.Changeset{}` for tracking technology changes.
 
   ## Examples

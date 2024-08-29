@@ -19,28 +19,6 @@ defmodule Skillstackr.TechnologiesTest do
       assert {:error, %Ecto.Changeset{}} = Technologies.create_technology(@invalid_attrs)
     end
 
-    test "update_technology/2 with valid data updates the technology" do
-      technology = technology_fixture(@valid_attrs)
-      update_attrs = %{}
-
-      assert {:ok, %Technology{}} = Technologies.update_technology(technology, update_attrs)
-    end
-
-    test "update_technology/2 with invalid data returns error changeset" do
-      technology = technology_fixture(@valid_attrs)
-
-      assert {:error, %Ecto.Changeset{}} =
-               Technologies.update_technology(technology, @invalid_attrs)
-
-      technology_copy =
-        Technologies.get_or_create_technology(%{
-          "name" => @valid_attrs.name,
-          "category" => @valid_attrs.category
-        })
-
-      assert technology == technology_copy
-    end
-
     test "change_technology/1 returns a technology changeset" do
       technology = technology_fixture(@valid_attrs)
       assert %Ecto.Changeset{} = Technologies.change_technology(technology)
