@@ -15,5 +15,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProjectsTechnologies do
 
       timestamps(type: :utc_datetime, default: fragment("now()"))
     end
+
+    create unique_index(:projects_technologies, [:project_id, :technology_id])
   end
 end

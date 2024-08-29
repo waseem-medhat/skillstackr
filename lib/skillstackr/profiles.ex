@@ -97,9 +97,10 @@ defmodule Skillstackr.Profiles do
     |> Multi.insert_all(
       :profiles_technologies,
       ProfileTechnology,
-      fn %{profile: profile, new_technologies: new_technologies} ->
+      fn %{profile: profile, technologies: new_technologies} ->
         Enum.map(new_technologies, fn t -> %{profile_id: profile.id, technology_id: t.id} end)
-      end
+      end,
+      on_conflict: :nothing
     )
     |> Repo.transaction()
   end

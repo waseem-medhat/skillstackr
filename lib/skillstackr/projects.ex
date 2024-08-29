@@ -73,7 +73,7 @@ defmodule Skillstackr.Projects do
     |> Multi.insert_all(
       :projects_technologies,
       ProjectTechnology,
-      fn %{new_project: new_project, technologies: technologies} ->
+      fn %{project: new_project, technologies: technologies} ->
         Enum.map(technologies, fn t -> %{project_id: new_project.id, technology_id: t.id} end)
       end
     )
@@ -113,7 +113,8 @@ defmodule Skillstackr.Projects do
       ProjectTechnology,
       fn %{project: project, technologies: technologies} ->
         Enum.map(technologies, fn t -> %{project_id: project.id, technology_id: t.id} end)
-      end
+      end,
+      on_conflict: :nothing
     )
     |> Multi.delete_all(
       :removed_profiles_projects,
