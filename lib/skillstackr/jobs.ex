@@ -65,8 +65,8 @@ defmodule Skillstackr.Jobs do
 
   - `job`, the job struct to be updated
   - `attrs`, a map of attributes for updating the job (`%{key: value}`)
-  - `prof_job_id_deletions`, a list of profile-job association IDs to delete
-  - `assoc_prof_id_insertions`, a list of profile IDs to insert new
+  - `profile_job_id_deletions`, a list of profile-job association IDs to delete
+  - `assoc_profile_id_insertions`, a list of profile IDs to insert new
   associations
 
   ## Examples
@@ -81,20 +81,22 @@ defmodule Skillstackr.Jobs do
   def update_job(
         %Job{} = job,
         attrs \\ %{},
-        prof_job_id_deletions \\ [],
-        assoc_prof_id_insertions \\ []
+        profile_job_id_deletions \\ [],
+        assoc_profile_id_insertions \\ []
       ) do
     Multi.new()
     |> Multi.update(:updated_job, Job.changeset(job, attrs))
     |> Multi.delete_all(
       :removed_profiles_jobs,
-      from(pj in ProfileJob, where: pj.id in ^prof_job_id_deletions)
+      from(pj in ProfileJob, where: pj.id in ^profile_job_id_deletions)
     )
     |> Multi.insert_all(
       :profiles_jobs,
       ProfileJob,
       fn %{updated_job: updated_job} ->
-        Enum.map(assoc_prof_id_insertions, fn id -> %{job_id: updated_job.id, profile_id: id} end)
+        Enum.map(assoc_profile_id_insertions, fn id ->
+          %{job_id: updated_job.id, profile_id: id}
+        end)
       end
     )
     |> Repo.transaction()

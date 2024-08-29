@@ -95,16 +95,16 @@ defmodule Skillstackr.Projects do
   def update_project(
         %Project{} = project,
         attrs,
-        proj_tech_id_deletions \\ [],
+        project_technology_id_deletions \\ [],
         assoc_technologies \\ [],
-        prof_proj_id_deletions \\ [],
-        assoc_prof_id_insertions \\ []
+        profile_project_id_deletions \\ [],
+        assoc_profile_id_insertions \\ []
       ) do
     Multi.new()
     |> Multi.update(:project, Project.changeset(project, attrs))
     |> Multi.delete_all(
       :removed_technologies,
-      from(pt in ProjectTechnology, where: pt.id in ^proj_tech_id_deletions)
+      from(pt in ProjectTechnology, where: pt.id in ^project_technology_id_deletions)
     )
     |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
     |> Multi.all(:technologies, Technologies.build_search_query(assoc_technologies))
@@ -118,13 +118,13 @@ defmodule Skillstackr.Projects do
     )
     |> Multi.delete_all(
       :removed_profiles_projects,
-      from(pp in ProfileProject, where: pp.id in ^prof_proj_id_deletions)
+      from(pp in ProfileProject, where: pp.id in ^profile_project_id_deletions)
     )
     |> Multi.insert_all(
       :profiles_projects,
       ProfileProject,
       fn %{project: project} ->
-        Enum.map(assoc_prof_id_insertions, fn profile_id ->
+        Enum.map(assoc_profile_id_insertions, fn profile_id ->
           %{project_id: project.id, profile_id: profile_id}
         end)
       end

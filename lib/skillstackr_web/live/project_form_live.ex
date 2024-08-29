@@ -104,39 +104,39 @@ defmodule SkillstackrWeb.ProjectFormLive do
       }
     } = socket.assigns
 
-    new_assoc_prof_ids =
+    new_assoc_profile_ids =
       account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
       |> Enum.map(& &1.id)
 
-    current_assoc_prof_ids =
+    current_assoc_profile_ids =
       current_profiles_projects
       |> Enum.map(& &1.profile.id)
 
-    assoc_prof_id_insertions = new_assoc_prof_ids -- current_assoc_prof_ids
-    assoc_prof_id_deletions = current_assoc_prof_ids -- new_assoc_prof_ids
+    assoc_profile_id_insertions = new_assoc_profile_ids -- current_assoc_profile_ids
+    assoc_profile_id_deletions = current_assoc_profile_ids -- new_assoc_profile_ids
 
-    prof_proj_id_deletions =
+    profile_project_id_deletions =
       current_profiles_projects
-      |> Enum.filter(fn pj -> pj.profile.id in assoc_prof_id_deletions end)
+      |> Enum.filter(fn pj -> pj.profile.id in assoc_profile_id_deletions end)
       |> Enum.map(& &1.id)
 
-    proj_tech_id_deletions =
+    project_technology_id_deletions =
       current_projects_technologies
       |> Enum.filter(fn %{technology: %Technology{name: tech_name, category: category}} ->
         tech_name not in new_tech_map[category]
       end)
       |> Enum.map(& &1.id)
 
-    tech_insertion_param_list = Technologies.map_to_list(new_tech_map)
+    assoc_technologies = Technologies.map_to_list(new_tech_map)
 
     Projects.update_project(
       socket.assigns.project,
       params["project"],
-      proj_tech_id_deletions,
-      tech_insertion_param_list,
-      prof_proj_id_deletions,
-      assoc_prof_id_insertions
+      project_technology_id_deletions,
+      assoc_technologies,
+      profile_project_id_deletions,
+      assoc_profile_id_insertions
     )
     |> case do
       {:ok, _} ->

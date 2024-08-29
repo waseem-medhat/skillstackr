@@ -66,28 +66,28 @@ defmodule SkillstackrWeb.JobFormLive do
     } =
       socket.assigns
 
-    new_assoc_prof_ids =
+    new_assoc_profile_ids =
       account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
       |> Enum.map(& &1.id)
 
-    current_assoc_prof_ids =
+    current_assoc_profile_ids =
       current_profiles_jobs
       |> Enum.map(& &1.profile.id)
 
-    assoc_prof_id_insertions = new_assoc_prof_ids -- current_assoc_prof_ids
-    assoc_prof_id_deletions = current_assoc_prof_ids -- new_assoc_prof_ids
+    assoc_profile_id_insertions = new_assoc_profile_ids -- current_assoc_profile_ids
+    assoc_profile_id_deletions = current_assoc_profile_ids -- new_assoc_profile_ids
 
-    prof_job_id_deletions =
+    profile_job_id_deletions =
       current_profiles_jobs
-      |> Enum.filter(fn pj -> pj.profile.id in assoc_prof_id_deletions end)
+      |> Enum.filter(fn pj -> pj.profile.id in assoc_profile_id_deletions end)
       |> Enum.map(& &1.id)
 
     Jobs.update_job(
       socket.assigns.job,
       params["job"],
-      prof_job_id_deletions,
-      assoc_prof_id_insertions
+      profile_job_id_deletions,
+      assoc_profile_id_insertions
     )
     |> case do
       {:ok, _} ->
