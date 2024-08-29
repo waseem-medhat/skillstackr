@@ -50,10 +50,10 @@ defmodule Skillstackr.Projects do
   ## Examples
 
       iex> create_project(%{field: value})
-      {:ok, %{new_project: %Project{}}}
+      {:ok, %{project: %Project{}}}
 
       iex> create_project(%{field: bad_value})
-      {:error, :new_project, %Ecto.Changeset{}, []}
+      {:error, :project, %Ecto.Changeset{}, []}
 
   """
   def create_project(attrs \\ %{}, assoc_profile_ids \\ [], assoc_technologies \\ []) do

@@ -89,7 +89,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
          |> put_flash(:info, "Project added")
          |> redirect(to: ~p"/projects")}
 
-      {:error, :new_project, changeset, _} ->
+      {:error, :project, changeset, _} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end

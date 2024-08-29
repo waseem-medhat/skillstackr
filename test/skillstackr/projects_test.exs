@@ -21,12 +21,12 @@ defmodule Skillstackr.ProjectsTest do
     test "create_project/1 with valid data creates a project" do
       %{id: account_id} = account_fixture()
 
-      assert {:ok, %{new_project: %Project{}}} =
+      assert {:ok, %{project: %Project{}}} =
                Projects.create_project(%{title: "My Project", account_id: account_id})
     end
 
     test "create_project/1 with invalid data returns error changeset" do
-      assert {:error, :new_project, %Ecto.Changeset{}, %{}} =
+      assert {:error, :project, %Ecto.Changeset{}, %{}} =
                Projects.create_project(@invalid_attrs)
     end
 

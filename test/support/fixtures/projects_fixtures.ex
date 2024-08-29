@@ -8,7 +8,7 @@ defmodule Skillstackr.ProjectsFixtures do
   Generate a project.
   """
   def project_fixture(attrs \\ %{}) do
-    {:ok, %{new_project: project}} =
+    {:ok, %{project: project}} =
       attrs
       |> Enum.into(%{})
       |> Skillstackr.Projects.create_project()
