@@ -15,8 +15,7 @@ defmodule Skillstackr.ProfilesJobs.ProfileJob do
   @doc false
   def changeset(profile_job, attrs) do
     profile_job
-    |> cast(attrs, [])
-    |> cast_assoc(:profile, with: &Profile.changeset/2)
-    |> cast_assoc(:job, with: &Job.changeset/2)
+    |> cast(attrs, [:profile_id, :job_id])
+    |> unique_constraint([:profile_id, :job_id])
   end
 end

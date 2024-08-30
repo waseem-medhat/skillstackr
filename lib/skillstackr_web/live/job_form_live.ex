@@ -58,38 +58,18 @@ defmodule SkillstackrWeb.JobFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
-    %{
-      account_profiles: account_profiles,
-      job: %{
-        profiles_jobs: current_profiles_jobs
-      }
-    } =
-      socket.assigns
-
-    new_assoc_profile_ids =
-      account_profiles
+    new_assoc_profile_params =
+      socket.assigns.account_profiles
       |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
-      |> Enum.map(& &1.id)
+      |> Enum.map(fn profile ->
+        %{"profile_id" => profile.id, "job_id" => socket.assigns.job.id}
+      end)
 
-    current_assoc_profile_ids =
-      current_profiles_jobs
-      |> Enum.map(& &1.profile.id)
+    job_params =
+      params["job"]
+      |> Map.put("profiles_jobs", new_assoc_profile_params)
 
-    assoc_profile_id_insertions = new_assoc_profile_ids -- current_assoc_profile_ids
-    assoc_profile_id_deletions = current_assoc_profile_ids -- new_assoc_profile_ids
-
-    profile_job_id_deletions =
-      current_profiles_jobs
-      |> Enum.filter(fn pj -> pj.profile.id in assoc_profile_id_deletions end)
-      |> Enum.map(& &1.id)
-
-    Jobs.update_job(
-      socket.assigns.job,
-      params["job"],
-      profile_job_id_deletions,
-      assoc_profile_id_insertions
-    )
-    |> case do
+    case Jobs.update_job(socket.assigns.job, job_params) do
       {:ok, _} ->
         {:noreply,
          socket

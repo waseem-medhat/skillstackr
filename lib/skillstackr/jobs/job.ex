@@ -14,13 +14,14 @@ defmodule Skillstackr.Jobs.Job do
 
     timestamps(type: :utc_datetime)
     belongs_to :account, Account
-    has_many :profiles_jobs, ProfileJob
+    has_many :profiles_jobs, ProfileJob, on_replace: :delete_if_exists
   end
 
   @doc false
   def changeset(job, attrs) do
     job
     |> cast(attrs, [:title, :company, :experience_years, :description, :account_id])
+    |> cast_assoc(:profiles_jobs, with: &ProfileJob.changeset/2)
     |> validate_required([:title, :company, :experience_years])
     |> validate_number(:experience_years, greater_than: 0)
   end
