@@ -4,8 +4,6 @@ defmodule Skillstackr.Jobs do
   """
 
   import Ecto.Query, warn: false
-  alias Ecto.Multi
-  alias Skillstackr.ProfilesJobs.ProfileJob
   alias Skillstackr.Repo
 
   alias Skillstackr.Jobs.Job
@@ -32,12 +30,10 @@ defmodule Skillstackr.Jobs do
   end
 
   @doc """
-  Creates a job and adds its profile associations via a database transaction.
-  It takes the following arguments:
+  Creates a job and adds its profile associations. It takes the following
+  arguments:
 
-  - `attrs`: a map of attributes for the new job (`%{key: value}`)
-  - `assoc_profile_ids`: a list of profile IDs to be associated with the new
-  job
+  - `attrs`: a map of attributes for the new job
 
   ## Examples
 
@@ -48,24 +44,15 @@ defmodule Skillstackr.Jobs do
       {:error, :job, %Ecto.Changeset{}, []}
 
   """
-  def create_job(attrs \\ %{}, assoc_profile_ids \\ []) do
-    Multi.new()
-    |> Multi.insert(:job, Job.changeset(%Job{}, attrs))
-    |> Multi.insert_all(:profiles_jobs, ProfileJob, fn %{job: job} ->
-      Enum.map(assoc_profile_ids, fn profile_id -> %{job_id: job.id, profile_id: profile_id} end)
-    end)
-    |> Repo.transaction()
+  def create_job(attrs \\ %{}) do
+    Repo.insert(Job.changeset(%Job{}, attrs))
   end
 
   @doc """
-  Updates a job and its profile associations via a database transaction. It
-  takes the following arguments:
+  Updates a job and its profile associations. It takes the following arguments:
 
   - `job`, the job struct to be updated
-  - `attrs`, a map of attributes for updating the job (`%{key: value}`)
-  - `profile_job_id_deletions`, a list of profile-job association IDs to delete
-  - `assoc_profile_id_insertions`, a list of profile IDs to insert new
-  associations
+  - `attrs`, a map of attributes for updating the job
 
   ## Examples
 

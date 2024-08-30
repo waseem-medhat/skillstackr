@@ -36,16 +36,9 @@ defmodule SkillstackrWeb.JobFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :new}} = socket) do
-    assoc_profile_ids =
-      socket.assigns.account_profiles
-      |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
-      |> Enum.map(& &1.id)
+    job_params = prep_job_params(params, socket.assigns)
 
-    job_params =
-      params["job"]
-      |> Map.put("account_id", socket.assigns.current_account.id)
-
-    case Jobs.create_job(job_params, assoc_profile_ids) do
+    case Jobs.create_job(job_params) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -58,16 +51,7 @@ defmodule SkillstackrWeb.JobFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
-    new_assoc_profile_params =
-      socket.assigns.account_profiles
-      |> Enum.filter(fn acc_p -> params[acc_p.slug] === "true" end)
-      |> Enum.map(fn profile ->
-        %{"profile_id" => profile.id, "job_id" => socket.assigns.job.id}
-      end)
-
-    job_params =
-      params["job"]
-      |> Map.put("profiles_jobs", new_assoc_profile_params)
+    job_params = prep_job_params(params, socket.assigns)
 
     case Jobs.update_job(socket.assigns.job, job_params) do
       {:ok, _} ->
@@ -93,6 +77,20 @@ defmodule SkillstackrWeb.JobFormLive do
         {:noreply, put_flash(socket, :error, "An error occurred!")}
     end
   end
+
+  defp prep_job_params(params, assigns) do
+    assoc_profile_params =
+      assigns.account_profiles
+      |> Enum.filter(fn account_profile -> params[account_profile.slug] === "true" end)
+      |> Enum.map(fn profile ->
+        %{"profile_id" => profile.id, "job_id" => assigns.job.id}
+      end)
+
+    params["job"]
+    |> Map.put("profiles_jobs", assoc_profile_params)
+    |> Map.put("account_id", assigns.current_account.id)
+  end
+
 
   def render(assigns) do
     ~H"""
