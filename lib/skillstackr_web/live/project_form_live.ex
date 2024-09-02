@@ -255,7 +255,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
       </section>
 
       <:actions>
-        <.button type="submit">Save Profile</.button>
+        <.button type="submit">Save Project</.button>
       </:actions>
     </.simple_form>
 
@@ -270,7 +270,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
           |> JS.add_class("hidden", to: "#delete-button")
         }
       >
-        Delete Profile
+        Delete Project
       </.button>
 
       <div id="confirm-prompt" class="hidden">

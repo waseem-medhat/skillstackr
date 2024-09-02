@@ -140,7 +140,7 @@ defmodule SkillstackrWeb.JobFormLive do
       </section>
 
       <:actions>
-        <.button type="submit">Save Profile</.button>
+        <.button type="submit">Save Job Experience</.button>
       </:actions>
     </.simple_form>
 

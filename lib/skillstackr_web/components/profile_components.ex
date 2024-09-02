@@ -18,52 +18,66 @@ defmodule SkillstackrWeb.ProfileComponents do
       id="project-grid"
       phx-hook="ReloadPrelineTooltip"
     >
-      <div
-        :for={p <- @projects}
-        class="flex flex-col bg-white border shadow rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70"
-      >
-        <img
-          class="w-full h-auto rounded-t-xl"
-          src={~p"/images/project-placeholder.png"}
-          alt={p.title}
-        />
-        <div class="p-4 md:p-5 relative">
-          <div :if={@editable} class="absolute top-6 right-6 flex gap-2 items-center">
-            <.link
-              navigate={~p"/projects/#{p.id}/edit"}
-              class="bg-primary text-white rounded-lg p-1.5 inline-flex items-center hover:bg-primary-lt z-10 text-sm gap-1"
-            >
-              <.icon name="hero-pencil-square-micro" />
-            </.link>
+      <.project_card :for={p <- @projects} project={p} editable={@editable} />
+    </div>
+    """
+  end
+
+  attr :project, :any, required: true
+  attr :editable, :boolean, default: false
+
+  defp project_card(assigns) do
+    ~H"""
+    <div class="flex flex-col bg-white border shadow rounded-xl dark:bg-slate-950/90 dark:border-neutral-700 dark:shadow-neutral-700/70">
+      <img
+        class="w-full h-auto rounded-t-xl"
+        src={~p"/images/project-placeholder.png"}
+        alt={@project.title}
+      />
+      <div class="p-4 md:p-5 relative">
+        <div :if={@editable} class="absolute top-6 right-6 flex gap-2 items-center">
+          <.link
+            navigate={~p"/projects/#{@project.id}/edit"}
+            class="bg-primary text-white rounded-lg p-1.5 inline-flex items-center hover:bg-primary-lt z-10 text-sm gap-1"
+          >
+            <.icon name="hero-pencil-square-micro" />
+          </.link>
+        </div>
+
+        <header>
+          <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+            <%= @project.title %>
+          </h3>
+          <div class="flex gap-2 mt-1 mb-2">
+            <.tech_badge
+              :for={tech <- Enum.map(@project.projects_technologies, & &1.technology)}
+              tech={tech.name}
+              size={16}
+            />
           </div>
+        </header>
 
-          <header>
-            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-              <%= p.title %>
-            </h3>
-            <div class="flex gap-2 mt-1 mb-2">
-              <.tech_badge
-                :for={tech <- Enum.map(p.projects_technologies, & &1.technology)}
-                tech={tech.name}
-                size={16}
-              />
-            </div>
-          </header>
+        <p class="text-gray-500 dark:text-neutral-400 my-4">
+          <%= @project.description %>
+        </p>
 
-          <p class="text-gray-500 dark:text-neutral-400 my-4">
-            <%= p.description %>
-          </p>
-
-          <footer class="text-primary">
-            <.link navigate={p.link_repo} class="hover:text-primary-lt">
+        <footer class="text-primary">
+          <%= if @project.link_repo do %>
+            <.link navigate={@project.link_repo} class="hover:text-primary-lt">
               Code
             </.link>
+          <% end %>
+
+          <%= if @project.link_repo && @project.link_website do %>
             <span class="text-gray-400 dark:text-gray-600 font-light mx-1">|</span>
-            <.link navigate={p.link_website} class="hover:text-primary-lt">
+          <% end %>
+
+          <%= if @project.link_website do %>
+            <.link navigate={@project.link_website} class="hover:text-primary-lt">
               Website
             </.link>
-          </footer>
-        </div>
+          <% end %>
+        </footer>
       </div>
     </div>
     """
