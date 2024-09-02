@@ -120,7 +120,10 @@ defmodule SkillstackrWeb.ProfileShowLive do
 
     <section id="professional-experience" class="my-5">
       <h2 class="text-xl font-bold mb-3">Projects</h2>
-      <.project_grid projects={Enum.map(@profile.profiles_projects, & &1.project)} />
+      <.project_grid
+        projects={Enum.map(@profile.profiles_projects, & &1.project)}
+        editable={@editable}
+      />
     </section>
 
     <section id="professional-experience" class="my-5">
@@ -130,7 +133,7 @@ defmodule SkillstackrWeb.ProfileShowLive do
           <%= @profile.profiles_jobs |> Enum.map(& &1.job.experience_years) |> Enum.sum() %> Years
         </p>
       </div>
-      <.job_accordion jobs={Enum.map(@profile.profiles_jobs, & &1.job)} />
+      <.job_accordion jobs={Enum.map(@profile.profiles_jobs, & &1.job)} editable={@editable} />
     </section>
     """
   end
