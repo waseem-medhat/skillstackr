@@ -32,6 +32,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
     |> assign(:tech_map, tech_map)
     |> assign(:tech_search_results, [])
     |> allow_upload(:resume, accept: ~w(.pdf))
+    |> allow_upload(:profile_photo, accept: ~w(.png .jpg .jpeg))
   end
 
   def handle_event("search-technologies", params, socket) do
@@ -181,9 +182,21 @@ defmodule SkillstackrWeb.ProfileFormLive do
         <.input field={@form[:slug]} type="text" label="Profile Slug" />
         <.input field={@form[:headline]} type="text" label="Headline" />
         <.input field={@form[:email]} type="email" label="Email" />
-        <div class="col-span-2">
-          <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
+        <div class="flex gap-3">
+          <div class="w-full">
+            <.label>Profile Photo</.label>
+            <.live_file_input
+              upload={@uploads.profile_photo}
+              class="mt-2 block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400"
+            />
+          </div>
+          <img
+            class="inline-block size-20 aspect-square rounded-full contrast-0"
+            src={~p"/images/profile-icon.png"}
+            alt="Image Description"
+          />
         </div>
+        <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
       </section>
 
       <h2 class="text-xl">Profile Links</h2>
