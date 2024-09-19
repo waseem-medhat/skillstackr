@@ -42,3 +42,5 @@ simple-icons
 skillstackr_dev
 skillstackr_dev-shm
 skillstackr_dev-wal
+
+.env

@@ -84,12 +84,13 @@ defmodule SkillstackrWeb.ProfileFormLive do
     profile_params =
       params
       |> Map.get("profile")
-      |> Map.put("resume", get_resume_blob(socket))
+      # |> Map.put("resume", get_resume_blob(socket))
       |> Map.put("account_id", socket.assigns.current_account.id)
 
     assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
+    resume_blob = get_resume_blob(socket)
 
-    case Profiles.create_profile(profile_params, assoc_technologies) do
+    case Profiles.create_profile(profile_params, assoc_technologies, resume_blob) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -169,7 +170,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
             {:ok, resume_blob}
           end)
 
-        %{"blob" => resume_blob}
+        resume_blob
     end
   end
 

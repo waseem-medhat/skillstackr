@@ -3,7 +3,7 @@ defmodule SkillstackrWeb.ProfileController do
   use SkillstackrWeb, :controller
 
   def get_resume(conn, %{"slug" => slug}) do
-    resume_blob = Profiles.get_resume_blob!(slug)
+    %{body: resume_blob} = Profiles.get_resume_blob!(slug)
 
     conn
     |> put_resp_content_type("application/pdf")
