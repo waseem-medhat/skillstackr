@@ -124,7 +124,18 @@ defmodule Skillstackr.Profiles do
 
   """
   def delete_profile(%Profile{} = profile) do
-    Repo.delete(profile)
+    Multi.new()
+    |> Multi.delete(:profile, profile)
+    |> Multi.run(:resume_upload, fn _repo, _changes ->
+      stream =
+        ExAws.S3.list_objects(@bucket_name, prefix: profile.slug)
+        |> ExAws.stream!()
+        |> Stream.map(& &1.key)
+
+      ExAws.S3.delete_all_objects(@bucket_name, stream)
+      |> ExAws.request()
+    end)
+    |> Repo.transaction()
   end
 
   @doc """

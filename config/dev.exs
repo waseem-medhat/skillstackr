@@ -85,5 +85,6 @@ config :phoenix_live_view,
 config :swoosh, :api_client, false
 
 config :ex_aws,
-  access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}],
-  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}]
+  access_key_id: [{:awscli, "skillstackrdev", 30}],
+  secret_access_key: [{:awscli, "skillstackrdev", 30}],
+  awscli_auth_adapter: ExAws.STS.AuthCache.AssumeRoleCredentialsAdapter
