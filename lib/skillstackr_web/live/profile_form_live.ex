@@ -84,11 +84,10 @@ defmodule SkillstackrWeb.ProfileFormLive do
     profile_params =
       params
       |> Map.get("profile")
-      # |> Map.put("resume", get_resume_blob(socket))
       |> Map.put("account_id", socket.assigns.current_account.id)
 
     assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
-    resume_blob = get_resume_blob(socket)
+    resume_blob = extract_uploaded_resume(socket)
 
     case Profiles.create_profile(profile_params, assoc_technologies, resume_blob) do
       {:ok, _} ->
@@ -97,14 +96,15 @@ defmodule SkillstackrWeb.ProfileFormLive do
          |> put_flash(:info, "Profile saved. Start adding some projects to it!")
          |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
 
-      {:error, :profile, %Ecto.Changeset{} = changeset, %{}} ->
+      {:error, :profile, %Ecto.Changeset{} = changeset, %{}} = error ->
+        IO.inspect(error)
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
     profile_params =
-      case get_resume_blob(socket) do
+      case extract_uploaded_resume(socket) do
         nil -> params["profile"]
         blob -> Map.put(params["profile"], "resume", blob)
       end
@@ -158,7 +158,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
     end
   end
 
-  defp get_resume_blob(socket) do
+  defp extract_uploaded_resume(socket) do
     case socket.assigns.uploads.resume.entries do
       [] ->
         nil

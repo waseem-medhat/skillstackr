@@ -151,62 +151,12 @@ defmodule Skillstackr.Profiles do
     Profile.changeset(profile, attrs)
   end
 
-  alias Skillstackr.Profiles.Resume
-
   @doc """
-  Gets a single resume.
-
-  Raises `Ecto.NoResultsError` if the Resume does not exist.
-
-  ## Examples
-
-      iex> get_resume!(123)
-      %Resume{}
-
-      iex> get_resume!(456)
-      ** (Ecto.NoResultsError)
-
+  Fetches a single resume using the given profile slug.
   """
   def get_resume_blob!(slug) do
-    # Repo.one!(
-    #   from p in Profile,
-    #     join: r in Resume,
-    #     on: r.profile_id == p.id,
-    #     where: p.slug == ^slug,
-    #     select: r.blob
-    # )
     ExAws.S3.get_object(@bucket_name, "#{slug}/resume.pdf")
     |> ExAws.request!()
-  end
-
-  @doc """
-  Creates a resume.
-
-  ## Examples
-
-      iex> create_resume(%{field: value})
-      {:ok, %Resume{}}
-
-      iex> create_resume(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_resume(attrs \\ %{}) do
-    %Resume{}
-    |> Resume.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking resume changes.
-
-  ## Examples
-
-      iex> change_resume(resume)
-      %Ecto.Changeset{data: %Resume{}}
-
-  """
-  def change_resume(%Resume{} = resume, attrs \\ %{}) do
-    Resume.changeset(resume, attrs)
+    |> Map.get(:body)
   end
 end

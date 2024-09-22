@@ -15,16 +15,4 @@ defmodule Skillstackr.ProfilesFixtures do
 
     profile
   end
-
-  @doc """
-  Generate a resume.
-  """
-  def resume_fixture(attrs \\ %{}) do
-    {:ok, resume} =
-      attrs
-      |> Enum.into(%{})
-      |> Skillstackr.Profiles.create_resume()
-
-    resume
-  end
 end

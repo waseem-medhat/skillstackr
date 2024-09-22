@@ -66,27 +66,4 @@ defmodule Skillstackr.ProfilesTest do
       assert %Ecto.Changeset{} = Profiles.change_profile(profile)
     end
   end
-
-  describe "resumes" do
-    alias Skillstackr.Profiles.Resume
-
-    import Skillstackr.ProfilesFixtures
-
-    test "create_resume/1 with valid data creates a resume" do
-      valid_attrs = %{blob: <<0>>}
-
-      assert {:ok, %Resume{} = resume} = Profiles.create_resume(valid_attrs)
-      assert resume.blob == <<0>>
-    end
-
-    test "create_resume/1 with invalid data returns error changeset" do
-      invalid_attrs = %{blob: <<0::size(5 * 1024 * 1024 + 100)-unit(8)>>}
-      assert {:error, %Ecto.Changeset{}} = Profiles.create_resume(invalid_attrs)
-    end
-
-    test "change_resume/1 returns a resume changeset" do
-      resume = resume_fixture()
-      assert %Ecto.Changeset{} = Profiles.change_resume(resume)
-    end
-  end
 end
