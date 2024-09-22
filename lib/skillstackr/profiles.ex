@@ -12,7 +12,7 @@ defmodule Skillstackr.Profiles do
 
   alias Skillstackr.Profiles.Profile
 
-  @bucket_name System.fetch_env!("S3_BUCKET_NAME")
+  @bucket_name System.get_env("S3_BUCKET_NAME", "")
 
   @doc """
   Gets a single profile associated with the given slug. Returns `nil` if the
@@ -55,7 +55,7 @@ defmodule Skillstackr.Profiles do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_profile(attrs \\ %{}, assoc_technologies \\ [], resume_blob) do
+  def create_profile(attrs \\ %{}, assoc_technologies \\ [], resume_blob \\ <<>>) do
     Multi.new()
     |> Multi.insert(:profile, Profile.changeset(%Profile{}, attrs))
     |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)

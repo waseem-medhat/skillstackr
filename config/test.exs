@@ -38,3 +38,8 @@ config :phoenix, :plug_init_mode, :runtime
 config :phoenix_live_view,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
+
+config :ex_aws,
+  access_key_id: [{:awscli, "skillstackrdev", 30}],
+  secret_access_key: [{:awscli, "skillstackrdev", 30}],
+  awscli_auth_adapter: ExAws.STS.AuthCache.AssumeRoleCredentialsAdapter

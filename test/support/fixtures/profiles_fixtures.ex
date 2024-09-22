@@ -11,7 +11,7 @@ defmodule Skillstackr.ProfilesFixtures do
     {:ok, %{profile: profile}} =
       attrs
       |> Enum.into(%{})
-      |> Skillstackr.Profiles.create_profile()
+      |> Skillstackr.Profiles.create_profile([], "test_blob")
 
     profile
   end

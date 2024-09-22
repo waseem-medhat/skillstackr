@@ -55,7 +55,7 @@ defmodule Skillstackr.ProfilesTest do
       %{id: account_id} = account_fixture()
       profile = valid_profile_fixture(account_id)
 
-      assert {:ok, %Profile{}} = Profiles.delete_profile(profile)
+      assert {:ok, %{profile: %Profile{}}} = Profiles.delete_profile(profile)
       assert is_nil(Profiles.get_profile_by_slug(profile.slug))
     end
 
