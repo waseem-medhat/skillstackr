@@ -11,20 +11,8 @@ defmodule Skillstackr.ProfilesFixtures do
     {:ok, %{profile: profile}} =
       attrs
       |> Enum.into(%{})
-      |> Skillstackr.Profiles.create_profile()
+      |> Skillstackr.Profiles.create_profile([], "test_blob")
 
     profile
-  end
-
-  @doc """
-  Generate a resume.
-  """
-  def resume_fixture(attrs \\ %{}) do
-    {:ok, resume} =
-      attrs
-      |> Enum.into(%{})
-      |> Skillstackr.Profiles.create_resume()
-
-    resume
   end
 end

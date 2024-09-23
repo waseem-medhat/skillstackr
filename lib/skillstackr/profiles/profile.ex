@@ -1,7 +1,6 @@
 defmodule Skillstackr.Profiles.Profile do
   alias Skillstackr.ProfilesTechnologies.ProfileTechnology
   alias Skillstackr.Accounts.Account
-  alias Skillstackr.Profiles.Resume
   alias Skillstackr.ProfilesJobs.ProfileJob
   alias Skillstackr.ProfilesProjects.ProfileProject
   use Ecto.Schema
@@ -21,7 +20,6 @@ defmodule Skillstackr.Profiles.Profile do
 
     timestamps(type: :utc_datetime)
     belongs_to :account, Account
-    has_one :resume, Resume
     has_many :profiles_projects, ProfileProject
     has_many :profiles_jobs, ProfileJob
     has_many :profiles_technologies, ProfileTechnology
@@ -41,7 +39,6 @@ defmodule Skillstackr.Profiles.Profile do
       :link_website,
       :account_id
     ])
-    |> cast_assoc(:resume, with: &Resume.changeset/2)
     |> unique_constraint(:slug)
     |> validate_required([:full_name, :slug, :account_id])
     |> validate_length(:summary, max: 280)

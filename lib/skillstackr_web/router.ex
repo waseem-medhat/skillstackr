@@ -99,5 +99,6 @@ defmodule SkillstackrWeb.Router do
 
     get "/", PageController, :home
     get "/profiles/:slug/resume.pdf", ProfileController, :get_resume
+    get "/profiles/:slug/photo.jpg", ProfileController, :get_photo
   end
 end

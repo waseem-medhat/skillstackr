@@ -32,6 +32,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
     |> assign(:tech_map, tech_map)
     |> assign(:tech_search_results, [])
     |> allow_upload(:resume, accept: ~w(.pdf))
+    |> allow_upload(:profile_photo, accept: ~w(.png .jpg .jpeg))
   end
 
   def handle_event("search-technologies", params, socket) do
@@ -83,26 +84,27 @@ defmodule SkillstackrWeb.ProfileFormLive do
     profile_params =
       params
       |> Map.get("profile")
-      |> Map.put("resume", get_resume_blob(socket))
       |> Map.put("account_id", socket.assigns.current_account.id)
 
     assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
+    uploads = extract_uploads(socket)
 
-    case Profiles.create_profile(profile_params, assoc_technologies) do
+    case Profiles.create_profile(profile_params, assoc_technologies, uploads) do
       {:ok, _} ->
         {:noreply,
          socket
          |> put_flash(:info, "Profile saved. Start adding some projects to it!")
          |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
 
-      {:error, :profile, %Ecto.Changeset{} = changeset, %{}} ->
+      {:error, :profile, %Ecto.Changeset{} = changeset, %{}} = error ->
+        IO.inspect(error)
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
     profile_params =
-      case get_resume_blob(socket) do
+      case extract_uploads(socket) do
         nil -> params["profile"]
         blob -> Map.put(params["profile"], "resume", blob)
       end
@@ -156,20 +158,20 @@ defmodule SkillstackrWeb.ProfileFormLive do
     end
   end
 
-  defp get_resume_blob(socket) do
-    case socket.assigns.uploads.resume.entries do
-      [] ->
-        nil
+  defp extract_uploads(socket) do
+    [resume_blob] =
+      consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
+        resume_blob = File.read!(path)
+        {:ok, resume_blob}
+      end)
 
-      _ ->
-        [resume_blob] =
-          consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
-            resume_blob = File.read!(path)
-            {:ok, resume_blob}
-          end)
+    [photo_blob] =
+      consume_uploaded_entries(socket, :profile_photo, fn %{path: path}, _entry ->
+        photo_blob = File.read!(path)
+        {:ok, photo_blob}
+      end)
 
-        %{"blob" => resume_blob}
-    end
+    {resume_blob, photo_blob}
   end
 
   def render(assigns) do
@@ -181,9 +183,27 @@ defmodule SkillstackrWeb.ProfileFormLive do
         <.input field={@form[:slug]} type="text" label="Profile Slug" />
         <.input field={@form[:headline]} type="text" label="Headline" />
         <.input field={@form[:email]} type="email" label="Email" />
-        <div class="col-span-2">
-          <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
+        <div class="flex gap-3">
+          <div class="flex-grow">
+            <.label>Profile Photo</.label>
+            <.live_file_input
+              upload={@uploads.profile_photo}
+              class="mt-2 block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400"
+            />
+          </div>
+          <div class="size-20">
+            <%= if length(@uploads.profile_photo.entries) > 0 do %>
+              <.live_img_preview entry={hd(@uploads.profile_photo.entries)} class="rounded-full" />
+            <% else %>
+              <img
+                class="inline-block aspect-square rounded-full contrast-0"
+                src={~p"/images/profile-icon.png"}
+                alt="Image Description"
+              />
+            <% end %>
+          </div>
         </div>
+        <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
       </section>
 
       <h2 class="text-xl">Profile Links</h2>

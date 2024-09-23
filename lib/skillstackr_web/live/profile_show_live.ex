@@ -44,8 +44,8 @@ defmodule SkillstackrWeb.ProfileShowLive do
     ~H"""
     <div id="profile-header" class="flex flex-col md:flex-row items-center gap-5 mb-8">
       <img
-        class="inline-block size-20 aspect-square rounded-full contrast-0"
-        src={~p"/images/profile-icon.png"}
+        class="inline-block size-20 aspect-square rounded-full"
+        src={~p"/profiles/#{@profile.slug}/photo.jpg"}
         alt="Image Description"
       />
 

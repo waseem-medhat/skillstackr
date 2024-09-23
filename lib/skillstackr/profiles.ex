@@ -12,6 +12,8 @@ defmodule Skillstackr.Profiles do
 
   alias Skillstackr.Profiles.Profile
 
+  @bucket_name System.get_env("S3_BUCKET_NAME", "")
+
   @doc """
   Gets a single profile associated with the given slug. Returns `nil` if the
   Profile does not exist.
@@ -44,16 +46,8 @@ defmodule Skillstackr.Profiles do
   transaction. Technologies that don't already exist in the database will be
   inserted as well.
 
-  ## Examples
-
-      iex> create_profile(%{field: value})
-      {:ok, %Profile{}}
-
-      iex> create_profile(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
-  def create_profile(attrs \\ %{}, assoc_technologies \\ []) do
+  def create_profile(attrs \\ %{}, assoc_technologies \\ [], {resume_blob, photo_blob}) do
     Multi.new()
     |> Multi.insert(:profile, Profile.changeset(%Profile{}, attrs))
     |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
@@ -65,6 +59,14 @@ defmodule Skillstackr.Profiles do
         Enum.map(technologies, fn t -> %{profile_id: profile.id, technology_id: t.id} end)
       end
     )
+    |> Multi.run(:resume_upload, fn _repo, %{profile: profile} ->
+      ExAws.S3.put_object(@bucket_name, "#{profile.slug}/resume.pdf", resume_blob)
+      |> ExAws.request()
+    end)
+    |> Multi.run(:photo_upload, fn _repo, %{profile: profile} ->
+      ExAws.S3.put_object(@bucket_name, "#{profile.slug}/photo.jpg", photo_blob)
+      |> ExAws.request()
+    end)
     |> Repo.transaction()
   end
 
@@ -118,7 +120,21 @@ defmodule Skillstackr.Profiles do
 
   """
   def delete_profile(%Profile{} = profile) do
-    Repo.delete(profile)
+    Multi.new()
+    |> Multi.delete(:profile, profile)
+    |> Multi.run(:resume_upload, fn _repo, _changes ->
+      keys =
+        ExAws.S3.list_objects(@bucket_name, prefix: profile.slug <> "/")
+        |> ExAws.stream!()
+        |> Stream.map(& &1.key)
+        |> Enum.to_list()
+
+      case keys do
+        [] -> {:ok, nil}
+        _ -> ExAws.S3.delete_multiple_objects(@bucket_name, keys) |> ExAws.request()
+      end
+    end)
+    |> Repo.transaction()
   end
 
   @doc """
@@ -134,60 +150,21 @@ defmodule Skillstackr.Profiles do
     Profile.changeset(profile, attrs)
   end
 
-  alias Skillstackr.Profiles.Resume
-
   @doc """
-  Gets a single resume.
-
-  Raises `Ecto.NoResultsError` if the Resume does not exist.
-
-  ## Examples
-
-      iex> get_resume!(123)
-      %Resume{}
-
-      iex> get_resume!(456)
-      ** (Ecto.NoResultsError)
-
+  Fetches a single resume using the given profile slug.
   """
   def get_resume_blob!(slug) do
-    Repo.one!(
-      from p in Profile,
-        join: r in Resume,
-        on: r.profile_id == p.id,
-        where: p.slug == ^slug,
-        select: r.blob
-    )
+    ExAws.S3.get_object(@bucket_name, "#{slug}/resume.pdf")
+    |> ExAws.request!()
+    |> Map.get(:body)
   end
 
   @doc """
-  Creates a resume.
-
-  ## Examples
-
-      iex> create_resume(%{field: value})
-      {:ok, %Resume{}}
-
-      iex> create_resume(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
+  Fetches a single photo using the given profile slug.
   """
-  def create_resume(attrs \\ %{}) do
-    %Resume{}
-    |> Resume.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking resume changes.
-
-  ## Examples
-
-      iex> change_resume(resume)
-      %Ecto.Changeset{data: %Resume{}}
-
-  """
-  def change_resume(%Resume{} = resume, attrs \\ %{}) do
-    Resume.changeset(resume, attrs)
+  def get_photo_blob!(slug) do
+    ExAws.S3.get_object(@bucket_name, "#{slug}/photo.jpg")
+    |> ExAws.request!()
+    |> Map.get(:body)
   end
 end
