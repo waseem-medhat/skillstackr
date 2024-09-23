@@ -87,9 +87,9 @@ defmodule SkillstackrWeb.ProfileFormLive do
       |> Map.put("account_id", socket.assigns.current_account.id)
 
     assoc_technologies = Technologies.map_to_list(socket.assigns.tech_map)
-    resume_blob = extract_uploaded_resume(socket)
+    uploads = extract_uploads(socket)
 
-    case Profiles.create_profile(profile_params, assoc_technologies, resume_blob) do
+    case Profiles.create_profile(profile_params, assoc_technologies, uploads) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -104,7 +104,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
     profile_params =
-      case extract_uploaded_resume(socket) do
+      case extract_uploads(socket) do
         nil -> params["profile"]
         blob -> Map.put(params["profile"], "resume", blob)
       end
@@ -158,20 +158,20 @@ defmodule SkillstackrWeb.ProfileFormLive do
     end
   end
 
-  defp extract_uploaded_resume(socket) do
-    case socket.assigns.uploads.resume.entries do
-      [] ->
-        nil
+  defp extract_uploads(socket) do
+    [resume_blob] =
+      consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
+        resume_blob = File.read!(path)
+        {:ok, resume_blob}
+      end)
 
-      _ ->
-        [resume_blob] =
-          consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
-            resume_blob = File.read!(path)
-            {:ok, resume_blob}
-          end)
+    [photo_blob] =
+      consume_uploaded_entries(socket, :profile_photo, fn %{path: path}, _entry ->
+        photo_blob = File.read!(path)
+        {:ok, photo_blob}
+      end)
 
-        resume_blob
-    end
+    {resume_blob, photo_blob}
   end
 
   def render(assigns) do

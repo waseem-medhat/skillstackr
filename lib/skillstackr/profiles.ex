@@ -46,16 +46,8 @@ defmodule Skillstackr.Profiles do
   transaction. Technologies that don't already exist in the database will be
   inserted as well.
 
-  ## Examples
-
-      iex> create_profile(%{field: value})
-      {:ok, %Profile{}}
-
-      iex> create_profile(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
-  def create_profile(attrs \\ %{}, assoc_technologies \\ [], resume_blob \\ <<>>) do
+  def create_profile(attrs \\ %{}, assoc_technologies \\ [], {resume_blob, photo_blob}) do
     Multi.new()
     |> Multi.insert(:profile, Profile.changeset(%Profile{}, attrs))
     |> Multi.insert_all(:tech_upsert, Technology, assoc_technologies, on_conflict: :nothing)
@@ -69,6 +61,10 @@ defmodule Skillstackr.Profiles do
     )
     |> Multi.run(:resume_upload, fn _repo, %{profile: profile} ->
       ExAws.S3.put_object(@bucket_name, "#{profile.slug}/resume.pdf", resume_blob)
+      |> ExAws.request()
+    end)
+    |> Multi.run(:photo_upload, fn _repo, %{profile: profile} ->
+      ExAws.S3.put_object(@bucket_name, "#{profile.slug}/photo.jpg", photo_blob)
       |> ExAws.request()
     end)
     |> Repo.transaction()
@@ -127,13 +123,16 @@ defmodule Skillstackr.Profiles do
     Multi.new()
     |> Multi.delete(:profile, profile)
     |> Multi.run(:resume_upload, fn _repo, _changes ->
-      stream =
-        ExAws.S3.list_objects(@bucket_name, prefix: profile.slug)
+      keys =
+        ExAws.S3.list_objects(@bucket_name, prefix: profile.slug <> "/")
         |> ExAws.stream!()
         |> Stream.map(& &1.key)
+        |> Enum.to_list()
 
-      ExAws.S3.delete_all_objects(@bucket_name, stream)
-      |> ExAws.request()
+      case keys do
+        [] -> {:ok, nil}
+        _ -> ExAws.S3.delete_multiple_objects(@bucket_name, keys) |> ExAws.request()
+      end
     end)
     |> Repo.transaction()
   end
@@ -156,6 +155,15 @@ defmodule Skillstackr.Profiles do
   """
   def get_resume_blob!(slug) do
     ExAws.S3.get_object(@bucket_name, "#{slug}/resume.pdf")
+    |> ExAws.request!()
+    |> Map.get(:body)
+  end
+
+  @doc """
+  Fetches a single photo using the given profile slug.
+  """
+  def get_photo_blob!(slug) do
+    ExAws.S3.get_object(@bucket_name, "#{slug}/photo.jpg")
     |> ExAws.request!()
     |> Map.get(:body)
   end

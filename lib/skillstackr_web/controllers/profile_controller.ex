@@ -9,4 +9,12 @@ defmodule SkillstackrWeb.ProfileController do
     |> put_resp_content_type("application/pdf")
     |> send_resp(200, resume_blob)
   end
+
+  def get_photo(conn, %{"slug" => slug}) do
+    photo_blob = Profiles.get_photo_blob!(slug)
+
+    conn
+    |> put_resp_content_type("image/jpg")
+    |> send_resp(200, photo_blob)
+  end
 end
