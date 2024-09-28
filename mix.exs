@@ -65,7 +65,8 @@ defmodule Skillstackr.MixProject do
       {:configparser_ex, "~> 4.0"},
       {:poison, "~> 3.0"},
       {:hackney, "~> 1.9"},
-      {:sweet_xml, "~> 0.6"}
+      {:sweet_xml, "~> 0.6"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 

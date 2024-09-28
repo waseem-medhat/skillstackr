@@ -97,7 +97,6 @@ defmodule SkillstackrWeb.ProfileFormLive do
          |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
 
       {:error, :profile, %Ecto.Changeset{} = changeset, %{}} = error ->
-        IO.inspect(error)
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
