@@ -1,4 +1,9 @@
 defmodule Skillstackr.Accounts.Account do
+  @moduledoc """
+  Defines the schema and changesets for user accounts within the application.
+  It provides functionalities for account registration, email and password
+  updates, and account confirmation.
+  """
   alias Skillstackr.Projects.Project
   alias Skillstackr.Jobs.Job
   alias Skillstackr.Profiles.Profile

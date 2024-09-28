@@ -1,4 +1,10 @@
 defmodule Skillstackr.ProfilesJobs.ProfileJob do
+  @moduledoc """
+  The ProfileJob schema and changeset.
+
+  It defines the join table associating Jobs with Profiles.
+
+  """
   alias Skillstackr.Jobs.Job
   alias Skillstackr.Profiles.Profile
   use Ecto.Schema

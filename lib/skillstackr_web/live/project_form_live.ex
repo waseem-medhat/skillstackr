@@ -35,12 +35,7 @@ defmodule SkillstackrWeb.ProjectFormLive do
   end
 
   def handle_event("search-technologies", params, socket) do
-    results =
-      case params["search-technologies"] do
-        "" -> []
-        str -> get_tech_names(str)
-      end
-
+    results = find_tech_names(params["search-technologies"])
     {:noreply, assign(socket, :tech_search_results, results)}
   end
 

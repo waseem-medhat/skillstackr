@@ -1,43 +1,83 @@
 defmodule SkillstackrWeb.TechnologyComponents do
   @moduledoc """
-  Components and data needed for rendering technologies icons.
+  Defines components and utility functions related to technologies.
 
-  The module uses a JSON file generated from parsing "Simple Icons" data
-  ("https://simpleicons.org/"). If the JSON file doesn't exist, it will
-  be generated.
+  Icon data is provided by `SkillstackrWeb.Simpleicons` which parses the Simple
+  Icons repository. Check the module's documentation for more info.
+
   """
-  alias SkillstackrWeb.Simpleicons
   use Phoenix.Component
+  alias SkillstackrWeb.Simpleicons
   import Phoenix.HTML
   import SkillstackrWeb.CoreComponents
 
   @technology_map Simpleicons.load_simpleicons_map()
 
+  @doc """
+  Given a technology name, return the corresponding SVG string.
+
+  ## Examples
+
+    iex> "<svg" <> _ = SkillstackrWeb.TechnologyComponents.name_to_svg("Elixir")
+
+  """
   def name_to_svg(tech_name), do: get_in(@technology_map, [tech_name, :svg])
+
+  @doc """
+  Given a technology name, return the slug.
+
+  ## Examples
+
+    iex> SkillstackrWeb.TechnologyComponents.name_to_slug("Elixir")
+    "elixir"
+
+  """
   def name_to_slug(tech_name), do: get_in(@technology_map, [tech_name, :slug])
 
-  def get_tech_names(search_str \\ "") do
+  @doc """
+  Searches for a technology by name.
+
+  Returns a list of technology names that contain the search string. The search
+  is case insensitive and puts the exact match as the first item.
+
+  ## Examples
+
+    iex> SkillstackrWeb.TechnologyComponents.find_tech_names("")
+    []
+
+    iex> "Elixir" in SkillstackrWeb.TechnologyComponents.find_tech_names("elix")
+    true
+
+  """
+  def find_tech_names(""), do: []
+
+  def find_tech_names(search_str) when is_binary(search_str) do
     search_str = String.downcase(search_str)
 
     @technology_map
     |> Map.keys()
-    |> Enum.reduce([], fn s, acc ->
-      s_downcase = String.downcase(s)
-
-      cond do
-        search_str == s_downcase ->
-          [s | acc]
-
-        String.contains?(s_downcase, search_str) ->
-          case acc do
-            [] -> [s | acc]
-            [hd | tl] -> [hd | [s | tl]]
-          end
-
-        true ->
-          acc
-      end
+    |> Enum.reduce([], fn tech_name, results ->
+      apply_search(search_str, tech_name, results)
     end)
+  end
+
+  defp apply_search(search_str, tech_name, results) do
+    search_str_lo = String.downcase(search_str)
+    tech_name_lo = String.downcase(tech_name)
+
+    cond do
+      search_str_lo == tech_name_lo ->
+        [tech_name | results]
+
+      String.contains?(tech_name_lo, search_str_lo) ->
+        case results do
+          [] -> [tech_name | results]
+          [hd | tl] -> [hd | [tech_name | tl]]
+        end
+
+      true ->
+        results
+    end
   end
 
   attr :tech, :string
@@ -66,15 +106,16 @@ defmodule SkillstackrWeb.TechnologyComponents do
   end
 
   @doc """
-  Renders a search box for technologies. Each technology can be added as either
-  frontend, backend, DevOps, or dev tools.
+  Renders a search box for technologies. Each technology can be added as on or
+  more of the following categories: frontend, backend, DevOps, or dev tools.
 
-  The associated `result_button` component can trigger any of four events
-  depending on the category chosen by the user:
+  The associated `result_button` component can trigger any of four events (on
+  click) depending on the category chosen by the user:
   - `"toggle-technology-frontend"`
   - `"toggle-technology-backend"`
   - `"toggle-technology-devops"`
   - `"toggle-technology-devtools"`
+
   """
   attr :tech_search_results, :list, required: true
 

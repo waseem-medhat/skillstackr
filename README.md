@@ -39,3 +39,37 @@ docker run -p 5432:5432 -e POSTGRES_USER=skillstackradmin -e POSTGRES_PASSWORD=s
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Tech Stack
+
+- [Elixir](https://elixir-lang.org/): main language
+- [Phoenix](https://www.phoenixframework.org/): backend framework, including:
+- [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html):
+server-driven UI interactivity
+- [PostgreSQL](https://www.postgresql.org/): database
+- [TailwindCSS](https://tailwindcss.com/): UI styling
+- [Preline](https://www.preline.co/): UI component library
+- [Simple Icons](https://simpleicons.org/): technology/brand icons
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues and PRs.
+
+- The project includes a CI pipeline that runs checks for formatting and
+testing via Mix and linting via Credo. Please ensure all checks pass in
+submitted PRs.
+
+- To do such checks locally, you can use the commands:
+
+```bash
+# check formatting without modifying files
+mix format --check-formatted
+
+# format the codebase
+mix format
+
+# run all tests
+mix test
+
+# run credo
+mix credo
+```

@@ -36,12 +36,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
   end
 
   def handle_event("search-technologies", params, socket) do
-    results =
-      case params["search-technologies"] do
-        "" -> []
-        str -> get_tech_names(str)
-      end
-
+    results = find_tech_names(params["search-technologies"])
     {:noreply, assign(socket, :tech_search_results, results)}
   end
 
@@ -96,8 +91,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
          |> put_flash(:info, "Profile saved. Start adding some projects to it!")
          |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
 
-      {:error, :profile, %Ecto.Changeset{} = changeset, %{}} = error ->
-        IO.inspect(error)
+      {:error, :profile, %Ecto.Changeset{} = changeset, %{}} = _error ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end

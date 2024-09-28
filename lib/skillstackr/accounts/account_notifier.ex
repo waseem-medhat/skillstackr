@@ -1,4 +1,9 @@
 defmodule Skillstackr.Accounts.AccountNotifier do
+  @moduledoc """
+  Defines functions for sending email notifications related to account actions
+  within the application. It leverages the Swoosh library to construct and
+  deliver emails.
+  """
   import Swoosh.Email
 
   alias Skillstackr.Mailer

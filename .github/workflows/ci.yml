@@ -113,3 +113,6 @@ jobs:
     - name: Run tests
       run: mix test
 
+    - name: Run Credo
+      run: mix credo
+
