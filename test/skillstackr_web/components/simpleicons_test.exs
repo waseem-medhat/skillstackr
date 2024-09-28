@@ -1,4 +1,4 @@
-defmodule SkillstackrWeb.SimpleiconsTest do
+defmodule SkillstackrWeb.Components.SimpleiconsTest do
   use SkillstackrWeb.ConnCase, async: true
 
   alias SkillstackrWeb.Simpleicons
