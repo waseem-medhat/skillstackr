@@ -42,7 +42,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 ## Tech Stack
 
 - [Elixir](https://elixir-lang.org/): main language
-- [Phoenix](https://www.phoenixframework.org/): backend framework, including:
+- [Phoenix](https://www.phoenixframework.org/): backend framework
 - [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html):
 server-driven UI interactivity
 - [PostgreSQL](https://www.postgresql.org/): database
@@ -56,9 +56,9 @@ Contributions are welcome! Feel free to open issues and PRs.
 
 - The project includes a CI pipeline that runs checks for formatting and
 testing via Mix and linting via Credo. Please ensure all checks pass in
-submitted PRs.
+submitted PR(s).
 
-- To do such checks locally, you can use the commands:
+- To run these checks locally, you can use the following commands:
 
 ```bash
 # check formatting without modifying files
