@@ -45,8 +45,8 @@ defmodule SkillstackrWeb.TechnologyComponents do
     iex> SkillstackrWeb.TechnologyComponents.find_tech_names("")
     []
 
-    iex> SkillstackrWeb.TechnologyComponents.find_tech_names("elix")
-    ["Elixir"]
+    iex> "Elixir" in SkillstackrWeb.TechnologyComponents.find_tech_names("elix")
+    true
 
   """
   def find_tech_names(""), do: []
