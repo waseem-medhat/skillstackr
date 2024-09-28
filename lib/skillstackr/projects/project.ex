@@ -1,4 +1,11 @@
 defmodule Skillstackr.Projects.Project do
+  @moduledoc """
+  The Project schema and changeset
+
+  A Project struct holds data about a portfolio project and can be associated
+  with profiles.
+
+  """
   alias Skillstackr.Accounts.Account
   alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.ProfilesProjects.ProfileProject

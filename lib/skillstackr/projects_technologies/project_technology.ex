@@ -1,4 +1,10 @@
 defmodule Skillstackr.ProjectsTechnologies.ProjectTechnology do
+  @moduledoc """
+  The ProjectTechnology schema and changeset.
+
+  It defines the join table associating Technologies with Projects.
+
+  """
   alias Skillstackr.Projects.Project
   alias Skillstackr.Technologies.Technology
   use Ecto.Schema

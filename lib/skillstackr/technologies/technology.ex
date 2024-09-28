@@ -1,4 +1,13 @@
 defmodule Skillstackr.Technologies.Technology do
+  @moduledoc """
+  The Technology schema and changeset
+
+  A Technology struct holds data about a technology that can be associated with
+  projects or profiles.
+
+  """
+
+  alias Skillstackr.ProjectsTechnologies.ProjectTechnology
   alias Skillstackr.ProfilesTechnologies.ProfileTechnology
   use Ecto.Schema
   import Ecto.Changeset
@@ -10,6 +19,7 @@ defmodule Skillstackr.Technologies.Technology do
     field :category, :string
 
     has_many :profiles_technologies, ProfileTechnology
+    has_many :projects_technologies, ProjectTechnology
   end
 
   @doc false

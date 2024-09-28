@@ -1,4 +1,14 @@
 defmodule SkillstackrWeb.AccountAuth do
+  @moduledoc """
+  Provides functionalities for managing account authentication within the
+  application. 
+
+  It handles user login and logout processes, session management, and the
+  retrieval of the currently authenticated account. It also includes utilities
+  for managing "remember me" functionality and integrates with Phoenix LiveView
+  for real-time updates and session handling.
+
+  """
   use SkillstackrWeb, :verified_routes
 
   import Plug.Conn

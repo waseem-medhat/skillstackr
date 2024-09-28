@@ -1,4 +1,11 @@
 defmodule Skillstackr.Jobs.Job do
+  @moduledoc """
+  The Job schema and changeset.
+
+  A Job struct holds data about work exprience and can be associated with
+  profiles.
+
+  """
   alias Skillstackr.Accounts.Account
   alias Skillstackr.ProfilesJobs.ProfileJob
   use Ecto.Schema

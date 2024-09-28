@@ -1,4 +1,20 @@
 defmodule Skillstackr.Accounts.AccountToken do
+  @moduledoc """
+  Defines a schema for account tokens used within the application. These tokens
+  are utilized for various purposes, including:
+
+  * Session Management: Tokens are generated and stored in the database to
+    manage user sessions. This allows for individual account sessions to be
+    expired and provides the ability to extend the system to track additional
+    session data.
+
+  * Email Deliveries: Hashed tokens are generated and sent to user emails
+    for account confirmation, password resets, and changing email addresses.
+    This approach ensures security as the original token cannot be reconstructed
+    from the hashed version stored in the database.
+
+  """
+
   use Ecto.Schema
   import Ecto.Query
   alias Skillstackr.Accounts.AccountToken

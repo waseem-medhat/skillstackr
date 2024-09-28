@@ -1,4 +1,10 @@
 defmodule Skillstackr.ProfilesProjects.ProfileProject do
+  @moduledoc """
+  The ProfileProject schema and changeset.
+
+  It defines the join table associating Projects with Profiles.
+
+  """
   alias Skillstackr.Projects.Project
   alias Skillstackr.Profiles.Profile
   use Ecto.Schema
@@ -13,8 +19,8 @@ defmodule Skillstackr.ProfilesProjects.ProfileProject do
   end
 
   @doc false
-  def changeset(profile_job, attrs) do
-    profile_job
+  def changeset(profile_project, attrs) do
+    profile_project
     |> cast(attrs, [])
     |> cast_assoc(:profile, with: &Profile.changeset/2)
     |> cast_assoc(:project, with: &Project.changeset/2)

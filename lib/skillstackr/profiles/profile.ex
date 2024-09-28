@@ -1,4 +1,13 @@
 defmodule Skillstackr.Profiles.Profile do
+  @moduledoc """
+  The Profile schema and changeset.
+
+  Profiles are the primary resources created by the user in the app, which are
+  intended to hold data to be displayed in public portfolio pages (name, email,
+  professional summary, etc.) and can include other resources like
+  technologies, projects, or jobs.
+
+  """
   alias Skillstackr.ProfilesTechnologies.ProfileTechnology
   alias Skillstackr.Accounts.Account
   alias Skillstackr.ProfilesJobs.ProfileJob

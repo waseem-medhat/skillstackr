@@ -1,4 +1,10 @@
 defmodule Skillstackr.ProfilesTechnologies.ProfileTechnology do
+  @moduledoc """
+  The ProfileTechnology schema and changeset.
+
+  It defines the join table associating Technologies with Profiles.
+
+  """
   alias Skillstackr.Profiles.Profile
   alias Skillstackr.Technologies.Technology
   use Ecto.Schema
@@ -13,8 +19,8 @@ defmodule Skillstackr.ProfilesTechnologies.ProfileTechnology do
   end
 
   @doc false
-  def changeset(profile_job, attrs) do
-    profile_job
+  def changeset(profile_technology, attrs) do
+    profile_technology
     |> cast(attrs, [])
     |> cast_assoc(:profile, with: &Profile.changeset/2)
     |> cast_assoc(:technology, with: &Technology.changeset/2)
