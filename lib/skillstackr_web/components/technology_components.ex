@@ -52,27 +52,24 @@ defmodule SkillstackrWeb.TechnologyComponents do
   def find_tech_names(""), do: []
 
   def find_tech_names(search_str) when is_binary(search_str) do
-    search_str = String.downcase(search_str)
+    search_str = search_str |> String.downcase() |> String.trim()
 
-    @technology_map
-    |> Map.keys()
-    |> Enum.reduce([], fn tech_name, results ->
+    Enum.reduce(@technology_map, [], fn {tech_name, _}, results ->
       apply_search(search_str, tech_name, results)
     end)
   end
 
   defp apply_search(search_str, tech_name, results) do
-    search_str_lo = String.downcase(search_str)
     tech_name_lo = String.downcase(tech_name)
 
     cond do
-      search_str_lo == tech_name_lo ->
-        [tech_name | results]
+      search_str == tech_name_lo ->
+        List.insert_at(results, 0, tech_name)
 
-      String.contains?(tech_name_lo, search_str_lo) ->
+      String.contains?(tech_name_lo, search_str) ->
         case results do
-          [] -> [tech_name | results]
-          [hd | tl] -> [hd | [tech_name | tl]]
+          [] -> List.insert_at(results, 0, tech_name)
+          [_ | _] -> List.insert_at(results, 1, tech_name)
         end
 
       true ->
