@@ -56,7 +56,7 @@ defmodule SkillstackrWeb.Simpleicons do
   defp parse_name(<<char::utf8, rest::binary>>, title),
     do: parse_name(rest, <<title::bitstring, char::utf8>>)
 
-  defp build_map_entry(file_name, icon_map) do
+  defp build_map_entry(file_name) do
     file = File.read!(file_name)
     name = parse_name(file)
 
@@ -65,14 +65,18 @@ defmodule SkillstackrWeb.Simpleicons do
       |> Path.basename()
       |> String.replace(~r/\.svg$/, "")
 
-    Map.put(icon_map, name, %{slug: slug, svg: file})
+    %{name => %{slug: slug, svg: file}}
   end
 
   defp parse_files(path) do
     path
     |> File.ls!()
     |> Enum.filter(fn file_name -> file_name =~ ~r/.*\.svg$/ and !(file_name =~ "-") end)
-    |> Enum.map(fn file_name -> Path.absname(file_name, path) end)
-    |> Enum.reduce(%{}, &build_map_entry/2)
+    |> Enum.map(fn file_name ->
+      file_name = Path.absname(file_name, path)
+      Task.async(fn -> build_map_entry(file_name) end)
+    end)
+    |> Enum.map(&Task.await/1)
+    |> Enum.reduce(%{}, &Map.merge/2)
   end
 end
