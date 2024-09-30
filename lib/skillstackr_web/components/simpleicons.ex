@@ -76,7 +76,9 @@ defmodule SkillstackrWeb.Simpleicons do
       file_name = Path.absname(file_name, path)
       Task.async(fn -> build_map_entry(file_name) end)
     end)
-    |> Enum.map(&Task.await/1)
-    |> Enum.reduce(%{}, &Map.merge/2)
+    |> Enum.reduce(%{}, fn task, map ->
+      map_entry = Task.await(task)
+      Map.merge(map, map_entry)
+    end)
   end
 end
