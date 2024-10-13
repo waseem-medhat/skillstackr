@@ -26,4 +26,4 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} ". $HOME/.asdf/asdf.sh && cd ~/app && make setup"
+          ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST_NAME }} ". ~/.asdf/asdf.sh && cd ~/app && make setup"
