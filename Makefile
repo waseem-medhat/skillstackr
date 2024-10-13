@@ -1,4 +1,4 @@
-include .env
+-include .env
 
 setup:
 	asdf install && mix deps.get
