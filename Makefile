@@ -1,7 +1,7 @@
 -include .env
 
 setup:
-	asdf install && mix deps.get
+	${HOME}/.asdf/bin/asdf install && mix deps.get
 
 start:
 	iex -S mix phx.server
