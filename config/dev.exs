@@ -2,13 +2,10 @@ import Config
 
 # Configure your database
 config :skillstackr, Skillstackr.Repo,
-  username: "skillstackradmin",
-  password: "skillstackradmin",
-  hostname: "localhost",
-  database: "skillstackr_dev",
+  database: Path.expand("../skillstackr_dev.db", __DIR__),
+  pool_size: 5,
   stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  show_sensitive_data_on_connection_error: true
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -19,11 +16,11 @@ config :skillstackr, Skillstackr.Repo,
 config :skillstackr, SkillstackrWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {0, 0, 0, 0}, port: 4000],
+  http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "PV+jh8dYyB3EbXfiXFHqpyPH/yhM4VrfYKHZdsLz3AefeiK6m0/jOqFzOHHiJziC",
+  secret_key_base: "5wXbYNDfpXShKNX58BnhRbVq0xMTryTKqMO/W49vz4Sakm9eqAshOhyMOAnHJeAB",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:skillstackr, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:skillstackr, ~w(--watch)]}

@@ -20,7 +20,7 @@ config :skillstackr, SkillstackrWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Skillstackr.PubSub,
-  live_view: [signing_salt: "pBQMsv5k"]
+  live_view: [signing_salt: "WSwuAUYn"]
 
 # Configures the mailer
 #
@@ -43,7 +43,7 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.4.0",
+  version: "3.4.3",
   skillstackr: [
     args: ~w(
       --config=tailwind.config.js
