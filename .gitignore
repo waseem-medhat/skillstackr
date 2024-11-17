@@ -38,9 +38,8 @@ npm-debug.log
 # The Simpleicons GitHub repo used to parse the icon data.
 simple-icons
 
-# local database files
-skillstackr_dev
-skillstackr_dev-shm
-skillstackr_dev-wal
+# Database files
+*.db
+*.db-*
 
 .env

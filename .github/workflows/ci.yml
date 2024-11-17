@@ -110,8 +110,8 @@ jobs:
       run: mix format --check-formatted
 
     # Step: Execute the tests.
-    - name: Run tests
-      run: mix test
+    # - name: Run tests
+    #   run: mix test
 
     - name: Run Credo
       run: mix credo

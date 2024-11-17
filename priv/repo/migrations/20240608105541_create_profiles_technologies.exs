@@ -13,7 +13,7 @@ defmodule Skillstackr.Repo.Migrations.CreateProfilesTechnologies do
           references(:technologies, type: :binary_id, on_delete: :delete_all),
           primary_key: true
 
-      timestamps(type: :utc_datetime, default: fragment("now()"))
+      timestamps(type: :utc_datetime, default: fragment("(CURRENT_TIMESTAMP)"))
     end
 
     create unique_index(:profiles_technologies, [:profile_id, :technology_id])
