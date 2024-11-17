@@ -118,7 +118,7 @@ defmodule SkillstackrWeb.ProfileShowLive do
       </div>
     </section>
 
-    <section id="professional-experience" class="my-5">
+    <section id="projects" class="my-5">
       <h2 class="text-xl font-bold mb-3">Projects</h2>
       <.project_grid
         projects={Enum.map(@profile.profiles_projects, & &1.project)}

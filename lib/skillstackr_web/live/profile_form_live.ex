@@ -1,8 +1,10 @@
 defmodule SkillstackrWeb.ProfileFormLive do
+  use SkillstackrWeb, :live_view
+
   alias Skillstackr.Technologies
   alias Skillstackr.Profiles
   alias Skillstackr.Profiles.Profile
-  use SkillstackrWeb, :live_view
+  import SkillstackrWeb.ProfileComponents
   import SkillstackrWeb.TechnologyComponents
 
   def mount(_params, _session, %{assigns: %{live_action: :new}} = socket) do
@@ -186,15 +188,10 @@ defmodule SkillstackrWeb.ProfileFormLive do
             />
           </div>
           <div class="size-20">
-            <%= if length(@uploads.profile_photo.entries) > 0 do %>
-              <.live_img_preview entry={hd(@uploads.profile_photo.entries)} class="rounded-full" />
-            <% else %>
-              <img
-                class="inline-block aspect-square rounded-full contrast-0"
-                src={~p"/images/profile-icon.png"}
-                alt="Image Description"
-              />
-            <% end %>
+            <.profile_photo_preview
+              slug={@profile.slug}
+              upload_entries={@uploads.profile_photo.entries}
+            />
           </div>
         </div>
         <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
