@@ -11,8 +11,7 @@ defmodule Skillstackr.Application do
       SkillstackrWeb.Telemetry,
       Skillstackr.Repo,
       {Ecto.Migrator,
-        repos: Application.fetch_env!(:skillstackr, :ecto_repos),
-        skip: skip_migrations?()},
+       repos: Application.fetch_env!(:skillstackr, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:skillstackr, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Skillstackr.PubSub},
       # Start the Finch HTTP client for sending emails
