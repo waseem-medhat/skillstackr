@@ -162,9 +162,8 @@ defmodule Skillstackr.Profiles do
   @doc """
   Fetches a single photo using the given profile slug.
   """
-  def get_photo_blob!(slug) do
+  def get_photo_blob(slug) do
     ExAws.S3.get_object(@bucket_name, "#{slug}/photo.jpg")
-    |> ExAws.request!()
-    |> Map.get(:body)
+    |> ExAws.request()
   end
 end

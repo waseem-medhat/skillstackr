@@ -188,10 +188,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
             />
           </div>
           <div class="size-20">
-            <.profile_photo_preview
-              slug={@profile.slug}
-              upload_entries={@uploads.profile_photo.entries}
-            />
+            <.profile_photo slug={@profile.slug} upload_entries={@uploads.profile_photo.entries} />
           </div>
         </div>
         <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
