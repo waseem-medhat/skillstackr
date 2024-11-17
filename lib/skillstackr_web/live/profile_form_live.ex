@@ -1,8 +1,10 @@
 defmodule SkillstackrWeb.ProfileFormLive do
+  use SkillstackrWeb, :live_view
+
   alias Skillstackr.Technologies
   alias Skillstackr.Profiles
   alias Skillstackr.Profiles.Profile
-  use SkillstackrWeb, :live_view
+  import SkillstackrWeb.ProfileComponents
   import SkillstackrWeb.TechnologyComponents
 
   def mount(_params, _session, %{assigns: %{live_action: :new}} = socket) do
@@ -153,17 +155,29 @@ defmodule SkillstackrWeb.ProfileFormLive do
   end
 
   defp extract_uploads(socket) do
-    [resume_blob] =
+    resume_blob_list =
       consume_uploaded_entries(socket, :resume, fn %{path: path}, _entry ->
         resume_blob = File.read!(path)
         {:ok, resume_blob}
       end)
 
-    [photo_blob] =
+    resume_blob =
+      case resume_blob_list do
+        [] -> nil
+        [blob] -> blob
+      end
+
+    photo_blob_list =
       consume_uploaded_entries(socket, :profile_photo, fn %{path: path}, _entry ->
         photo_blob = File.read!(path)
         {:ok, photo_blob}
       end)
+
+    photo_blob =
+      case photo_blob_list do
+        [] -> nil
+        [blob] -> blob
+      end
 
     {resume_blob, photo_blob}
   end
@@ -186,15 +200,7 @@ defmodule SkillstackrWeb.ProfileFormLive do
             />
           </div>
           <div class="size-20">
-            <%= if length(@uploads.profile_photo.entries) > 0 do %>
-              <.live_img_preview entry={hd(@uploads.profile_photo.entries)} class="rounded-full" />
-            <% else %>
-              <img
-                class="inline-block aspect-square rounded-full contrast-0"
-                src={~p"/images/profile-icon.png"}
-                alt="Image Description"
-              />
-            <% end %>
+            <.profile_photo slug={@profile.slug} upload_entries={@uploads.profile_photo.entries} />
           </div>
         </div>
         <.input field={@form[:summary]} type="textarea" label="Professional Summary" />
@@ -214,7 +220,6 @@ defmodule SkillstackrWeb.ProfileFormLive do
           <.label icon="simple-adobeacrobatreader">Resume</.label>
           <.live_file_input
             upload={@uploads.resume}
-            required={@live_action == :new}
             class="mt-2 block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 dark:file:bg-neutral-700 dark:file:text-neutral-400"
           />
         </div>

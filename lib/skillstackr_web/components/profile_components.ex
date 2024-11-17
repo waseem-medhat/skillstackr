@@ -173,4 +173,31 @@ defmodule SkillstackrWeb.ProfileComponents do
     </a>
     """
   end
+
+  def profile_photo(%{upload_entries: [_ | _]} = assigns) do
+    ~H"""
+    <.live_img_preview entry={hd(@upload_entries)} class="rounded-full" />
+    """
+  end
+
+  def profile_photo(%{slug: <<_, _::binary>>} = assigns) do
+    ~H"""
+    <img
+      class="inline-block size-20 aspect-square rounded-full"
+      src={~p"/profiles/#{@slug}/photo.jpg"}
+      alt="Profile photo"
+      onerror="this.src='/images/profile-icon.png';"
+    />
+    """
+  end
+
+  def profile_photo(assigns) do
+    ~H"""
+    <img
+      class="inline-block aspect-square rounded-full"
+      src={~p"/images/profile-icon.png"}
+      alt="Profile photo"
+    />
+    """
+  end
 end

@@ -11,10 +11,15 @@ defmodule SkillstackrWeb.ProfileController do
   end
 
   def get_photo(conn, %{"slug" => slug}) do
-    photo_blob = Profiles.get_photo_blob!(slug)
+    case Profiles.get_photo_blob(slug) do
+      {:ok, %{body: photo_blob}} ->
+        conn
+        |> put_resp_content_type("image/jpg")
+        |> send_resp(200, photo_blob)
 
-    conn
-    |> put_resp_content_type("image/jpg")
-    |> send_resp(200, photo_blob)
+      {:error, {:http_error, 404, _}} ->
+        conn
+        |> send_resp(404, "Not found")
+    end
   end
 end

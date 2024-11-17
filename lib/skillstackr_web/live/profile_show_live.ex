@@ -43,11 +43,7 @@ defmodule SkillstackrWeb.ProfileShowLive do
   def render(assigns) do
     ~H"""
     <div id="profile-header" class="flex flex-col md:flex-row items-center gap-5 mb-8">
-      <img
-        class="inline-block size-20 aspect-square rounded-full"
-        src={~p"/profiles/#{@profile.slug}/photo.jpg"}
-        alt="Image Description"
-      />
+      <.profile_photo slug={@profile.slug} />
 
       <hgroup class="flex-grow class flex flex-col items-center md:items-start">
         <h1 class="text-4xl font-bold mb-1"><%= @profile.full_name %></h1>
@@ -118,7 +114,7 @@ defmodule SkillstackrWeb.ProfileShowLive do
       </div>
     </section>
 
-    <section id="professional-experience" class="my-5">
+    <section id="projects" class="my-5">
       <h2 class="text-xl font-bold mb-3">Projects</h2>
       <.project_grid
         projects={Enum.map(@profile.profiles_projects, & &1.project)}

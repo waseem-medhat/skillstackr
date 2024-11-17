@@ -60,12 +60,24 @@ defmodule Skillstackr.Profiles do
       end
     )
     |> Multi.run(:resume_upload, fn _repo, %{profile: profile} ->
-      ExAws.S3.put_object(@bucket_name, "#{profile.slug}/resume.pdf", resume_blob)
-      |> ExAws.request()
+      case resume_blob do
+        nil ->
+          {:ok, nil}
+
+        blob ->
+          ExAws.S3.put_object(@bucket_name, "#{profile.slug}/resume.pdf", blob)
+          |> ExAws.request()
+      end
     end)
     |> Multi.run(:photo_upload, fn _repo, %{profile: profile} ->
-      ExAws.S3.put_object(@bucket_name, "#{profile.slug}/photo.jpg", photo_blob)
-      |> ExAws.request()
+      case photo_blob do
+        nil ->
+          {:ok, nil}
+
+        blob ->
+          ExAws.S3.put_object(@bucket_name, "#{profile.slug}/photo.jpg", blob)
+          |> ExAws.request()
+      end
     end)
     |> Repo.transaction()
   end
@@ -162,9 +174,8 @@ defmodule Skillstackr.Profiles do
   @doc """
   Fetches a single photo using the given profile slug.
   """
-  def get_photo_blob!(slug) do
+  def get_photo_blob(slug) do
     ExAws.S3.get_object(@bucket_name, "#{slug}/photo.jpg")
-    |> ExAws.request!()
-    |> Map.get(:body)
+    |> ExAws.request()
   end
 end
