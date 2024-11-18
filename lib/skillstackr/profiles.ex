@@ -98,7 +98,8 @@ defmodule Skillstackr.Profiles do
         %Profile{} = profile,
         attrs,
         removed_profile_technology_ids \\ [],
-        assoc_technologies \\ []
+        assoc_technologies \\ [],
+        {resume_blob, photo_blob}
       ) do
     Multi.new()
     |> Multi.update(:profile, Profile.changeset(profile, attrs))
@@ -116,6 +117,26 @@ defmodule Skillstackr.Profiles do
       end,
       on_conflict: :nothing
     )
+    |> Multi.run(:resume_upload, fn _repo, %{profile: profile} ->
+      case resume_blob do
+        nil ->
+          {:ok, nil}
+
+        blob ->
+          ExAws.S3.put_object(@bucket_name, "#{profile.slug}/resume.pdf", blob)
+          |> ExAws.request()
+      end
+    end)
+    |> Multi.run(:photo_upload, fn _repo, %{profile: profile} ->
+      case photo_blob do
+        nil ->
+          {:ok, nil}
+
+        blob ->
+          ExAws.S3.put_object(@bucket_name, "#{profile.slug}/photo.jpg", blob)
+          |> ExAws.request()
+      end
+    end)
     |> Repo.transaction()
   end
 

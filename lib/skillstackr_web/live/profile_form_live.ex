@@ -99,12 +99,6 @@ defmodule SkillstackrWeb.ProfileFormLive do
   end
 
   def handle_event("save", params, %{assigns: %{live_action: :edit}} = socket) do
-    profile_params =
-      case extract_uploads(socket) do
-        nil -> params["profile"]
-        blob -> Map.put(params["profile"], "resume", blob)
-      end
-
     existing_tech_list =
       socket.assigns.profile.profiles_technologies
       |> Enum.map(fn %{technology: %{name: name, category: category}} ->
@@ -123,18 +117,21 @@ defmodule SkillstackrWeb.ProfileFormLive do
       end)
       |> Enum.map(& &1.id)
 
+    uploads = extract_uploads(socket)
+
     Profiles.update_profile(
       socket.assigns.profile,
-      profile_params,
+      params["profile"],
       removed_profile_technology_ids,
-      new_tech_list
+      new_tech_list,
+      uploads
     )
     |> case do
       {:ok, _} ->
         {:noreply,
          socket
          |> put_flash(:info, "Profile saved!")
-         |> redirect(to: ~p"/profiles/#{profile_params["slug"]}")}
+         |> redirect(to: ~p"/profiles/#{params["profile"]["slug"]}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
@@ -153,6 +150,8 @@ defmodule SkillstackrWeb.ProfileFormLive do
         {:noreply, put_flash(socket, :error, "An error occurred!")}
     end
   end
+
+  @spec extract_uploads(Phoenix.LiveView.Socket.t()) :: {binary() | nil, binary() | nil}
 
   defp extract_uploads(socket) do
     resume_blob_list =
