@@ -11,7 +11,7 @@ kill_signal = 'SIGTERM'
 
 [env]
   DATABASE_PATH = '/mnt/name/name.db'
-  PHX_HOST = 'skillstackr.fly.dev'
+  PHX_HOST = 'skillstackr.dev'
   PORT = '8080'
 
 [[mounts]]
